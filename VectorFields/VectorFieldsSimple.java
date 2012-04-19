@@ -3,7 +3,7 @@ package VectorFields;
 import robocode.*;
 import java.lang.*;
 
-/*
+/**
  * Simple Robocode robot that uses vector fields to navigate towards a goal. 
  */
 public class VectorFieldsSimple extends Robot
@@ -11,7 +11,7 @@ public class VectorFieldsSimple extends Robot
     private boolean foundGoal = false;
     private double goalX, goalY;
 
-    /*
+    /**
      * If the robot doesn't know where it's goal is at, it tries to locate it by spinning in a circle.
      * Otherwise, it attempts to orient it self to the goal.
      */
@@ -46,7 +46,7 @@ public class VectorFieldsSimple extends Robot
         }
     }
 
-    /*
+    /**
      * On Scanning a robot, set it as our goal.
      */
     public void onScannedRobot(ScannedRobotEvent e)
