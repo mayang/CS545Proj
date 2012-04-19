@@ -53,7 +53,7 @@ public class ValueIterationDriver {
 		//Build reward model
 		for (int s=0; s<MDPUtility.NUM_STATES; s++) {
 			for (int a=0; a<MDPUtility.NUM_ACTIONS; a++) {
-				rew[s][a] = MDPUtility.getRewardNoisy(s, a, trans);
+				rew[s][a] = MDPUtility.getRewardForGoal(s, a, trans, 0);
 			}
 		}
 		

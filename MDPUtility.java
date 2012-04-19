@@ -10,7 +10,7 @@ public class MDPUtility {
 	public static final int NUM_STATES = 900;
 	public static final int NUM_ACTIONS = 8;
 	public static final double DISCOUNT_FACTOR = 0.9;
-	public static final double RESIDUAL = 0.0000001;
+	public static final double RESIDUAL = 0.001;
 	public static final int ACTION_NORTH = 0;
 	public static final int ACTION_SOUTH = 1;
 	public static final int ACTION_EAST = 2;
@@ -324,64 +324,26 @@ public class MDPUtility {
 		return reachable;
 	}
 	
-	
 	/*
 	 * This function returns a reward for any state/action pair. It makes use of the transition
 	 * function to determine what actions in what states lead to the goal state.
 	 */
-	public static double getReward(int state, int action, double[][][] transitions) {
+	public static double getRewardForGoal(int state, int action, double[][][] transitions, int goal_state) {
 		//running into the wall is -100 reward
-		if (state == GOAL_STATE) {
-			return 0.0;
-		} else {
-			if (state % NUM_STATES_IN_ROW == 0) {
-				if (action == ACTION_WEST || action == ACTION_NORTHWEST || action == ACTION_SOUTHWEST) {
-					return -100.0;
-				}
-			}
-			if (state % NUM_STATES_IN_ROW == NUM_STATES_IN_ROW -1) {
-				if (action == ACTION_EAST || action == ACTION_NORTHEAST || action == ACTION_SOUTHEAST) {
-					return -100.0;
-				}
-			}
-			if (state < NUM_STATES_IN_ROW) {
-				if (action == ACTION_SOUTH || action == ACTION_SOUTHWEST || action == ACTION_SOUTHEAST) {
-					return -100.0;
-				}
-			}
-			if ((state +  NUM_STATES_IN_ROW) >= NUM_STATES) {
-				if (action == ACTION_NORTH || action == ACTION_NORTHWEST || action == ACTION_NORTHEAST) {
-					return -100.0;
-				}
-			//transitioning to goal state gives 100 reward
-			}
-			if (transitions[state][GOAL_STATE][action] == 1.0) {
-				return 100.0;
-			//transitioning anywhere else is -1 reward
-			}
-			return -1.0;
-		}
-	}
-	
-	/*
-	 * This function returns a reward for any state/action pair. It makes use of the transition
-	 * function to determine what actions in what states lead to the goal state.
-	 */
-	public static double getRewardNoisy(int state, int action, double[][][] transitions) {
-		//running into the wall is -100 reward
-		if (state == GOAL_STATE) {
+		if (state == goal_state) {
 			return 0.0;
 		} else {
 			if (transitions[state][state][action] > 0.0) {
 				return -100.0;
 			}
-			if (transitions[state][GOAL_STATE][action] > 0.0) {
+			if (transitions[state][goal_state][action] > 0.0) {
 				return 100.0;
 			//transitioning anywhere else is -1 reward
 			}
 			return -1.0;
 		}
 	}
+
 	
 	/*
 	 * takes in a Q-table and produces a policy from it by selecting the action with the highest probability at each state 
