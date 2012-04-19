@@ -4,9 +4,10 @@ import robocode.*;
 import java.lang.*;
 
 /**
- * Simple Robocode robot that uses vector fields to navigate towards a goal. 
+ * Simple Robocode robot that uses vector fields to navigate towards a goal. This is used
+ * to test the moving goal instance. It is practically identical to the Simple version.
  */
-public class VectorFieldsSimple extends Robot
+public class VectorFieldsSimpleMovingGoal extends Robot
 {
     private boolean foundGoal = false;
     private double goalX, goalY;
@@ -18,8 +19,7 @@ public class VectorFieldsSimple extends Robot
     public void run()
     {
         double robotX, robotY, heading;
-        double angleToGoal;
-        double distance;
+        double angleToGoal, adjustment;
 
         while (true)
         {
@@ -37,12 +37,34 @@ public class VectorFieldsSimple extends Robot
                     angleToGoal += 360;
                 }
 
-                turnLeft(angleToGoal - heading);
+                adjustment = angleToGoal - heading;
 
-                distance = Math.sqrt(Math.pow(robotX - goalX, 2) + Math.pow(robotY - goalY, 2)) / 10;
-                ahead(Math.max(10, distance));
+                //System.out.println("Adjustment: " + adjustment);
+                //turnLeft(angleToGoal - heading);
+                
+                if (adjustment >= 360)
+                {
+                    adjustment -= 360;
+                }
+                else if (adjustment <= -360)
+                {
+                    adjustment += 360;
+                }
 
-                //ahead(1);
+                if (adjustment > 180 || adjustment < -180)
+                    System.out.println("Out of bounds value: " + adjustment);
+
+                if (adjustment < -180)
+                {
+                    adjustment += 360;
+                }
+                else if (adjustment > 180)
+                {
+                    adjustment -= 360;
+                }
+
+                turnLeft(adjustment);
+                ahead(1);
             }
             else
             {
@@ -63,6 +85,6 @@ public class VectorFieldsSimple extends Robot
         foundGoal = true;
         goalX = enemyX;
         goalY = enemyY;
-        System.out.println("Enemy is at " + enemyX + " " + enemyY);
+        //System.out.println("Enemy is at " + enemyX + " " + enemyY);
     }
 }
