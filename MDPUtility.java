@@ -10,7 +10,7 @@ public class MDPUtility {
 	public static final int NUM_STATES = 900;
 	public static final int NUM_ACTIONS = 8;
 	public static final double DISCOUNT_FACTOR = 0.9;
-	public static final double RESIDUAL = 0.0001;
+	public static final double RESIDUAL = 0.0000001;
 	public static final int ACTION_NORTH = 0;
 	public static final int ACTION_SOUTH = 1;
 	public static final int ACTION_EAST = 2;
@@ -60,6 +60,7 @@ public class MDPUtility {
 		System.out.println();
 		return q_table;
 	}
+	
 	
 	/*takes in two vectors (1D arrays) and returns the norm (in the linear algebra sense) of the vector defined by
 	 * vectorA- vectorB
@@ -120,6 +121,210 @@ public class MDPUtility {
 		return reachable;
 	}
 	
+	
+	public static double getTransitionProbabilityNoisy(int state1, int state2, int action) {
+		double reachable = 0.0;
+		if (action == ACTION_NORTH && state2 == (state1 + NUM_STATES_IN_ROW)) {
+			reachable = 0.8;
+		} else if (action == ACTION_SOUTH && state2 == (state1 - NUM_STATES_IN_ROW)) {
+			reachable = 0.8;
+		} else if (action == ACTION_EAST && state2 == (state1 + 1) && state1 % NUM_STATES_IN_ROW != (NUM_STATES_IN_ROW - 1)) {
+			reachable = 0.8;
+		} else if (action == ACTION_WEST && state2 == (state1 - 1) && state1 % NUM_STATES_IN_ROW != 0) {
+			reachable = 0.8;
+		} else if (action == ACTION_NORTHWEST && state2 == (state1 + NUM_STATES_IN_ROW - 1) && state1 % NUM_STATES_IN_ROW != 0) {
+			reachable = 0.8;
+		} else if (action == ACTION_NORTHEAST && state2 == (state1 + NUM_STATES_IN_ROW + 1) && state1 % NUM_STATES_IN_ROW != NUM_STATES_IN_ROW - 1) {
+			reachable = 0.8;
+		} else if (action == ACTION_SOUTHWEST && state2 == (state1 - NUM_STATES_IN_ROW - 1) && state1 % NUM_STATES_IN_ROW != 0) {
+			reachable = 0.8;
+		} else if (action == ACTION_SOUTHEAST && state2 == (state1 - NUM_STATES_IN_ROW + 1) && state1 % NUM_STATES_IN_ROW != NUM_STATES_IN_ROW - 1) {
+			reachable = 0.8;
+		} else if (action == ACTION_NORTH && state2 == (state1 + NUM_STATES_IN_ROW - 1) && state1 % NUM_STATES_IN_ROW != 0) {
+			reachable = 0.1;
+		} else if (action == ACTION_NORTH && state2 == (state1 + NUM_STATES_IN_ROW + 1) && state1 % NUM_STATES_IN_ROW != (NUM_STATES_IN_ROW - 1)) {
+			reachable = 0.1;
+		} else if (action == ACTION_SOUTH && state2 == (state1 - NUM_STATES_IN_ROW - 1) && state1 % NUM_STATES_IN_ROW != 0) {
+			reachable = 0.1;
+		} else if (action == ACTION_SOUTH && state2 == (state1 - NUM_STATES_IN_ROW + 1) && state1 % NUM_STATES_IN_ROW != (NUM_STATES_IN_ROW - 1)) {
+			reachable = 0.1;
+		} else if (action == ACTION_EAST && state2 == (state1 + NUM_STATES_IN_ROW + 1) && state1 % NUM_STATES_IN_ROW != (NUM_STATES_IN_ROW - 1)) {
+			reachable = 0.1;
+		} else if (action == ACTION_EAST && state2 == (state1 - NUM_STATES_IN_ROW + 1) && state1 % NUM_STATES_IN_ROW != (NUM_STATES_IN_ROW - 1)) {
+			reachable = 0.1;
+		} else if (action == ACTION_WEST && state2 == (state1 + NUM_STATES_IN_ROW - 1) && state1 % NUM_STATES_IN_ROW != 0) {
+			reachable = 0.1;
+		} else if (action == ACTION_WEST && state2 == (state1 - NUM_STATES_IN_ROW - 1) && state1 % NUM_STATES_IN_ROW != 0) {
+			reachable = 0.1;
+		} else if (action == ACTION_NORTHWEST && state2 == (state1 + NUM_STATES_IN_ROW)) {
+			reachable = 0.1;
+		} else if (action == ACTION_NORTHWEST && state2 == (state1 - 1) && state1 % NUM_STATES_IN_ROW != 0) {
+			reachable = 0.1;
+		} else if (action == ACTION_NORTHEAST && state2 == (state1 + 1) && state1 % NUM_STATES_IN_ROW != NUM_STATES_IN_ROW - 1) {
+			reachable = 0.1;
+		} else if (action == ACTION_NORTHEAST && state2 == (state1 + NUM_STATES_IN_ROW)) {
+			reachable = 0.1;
+		} else if (action == ACTION_SOUTHWEST && state2 == (state1 - 1) && state1 % NUM_STATES_IN_ROW != 0) {
+			reachable = 0.1;
+		} else if (action == ACTION_SOUTHWEST && state2 == (state1 - NUM_STATES_IN_ROW)) {
+			reachable = 0.1;
+		} else if (action == ACTION_SOUTHEAST && state2 == (state1 + 1) && state1 % NUM_STATES_IN_ROW != NUM_STATES_IN_ROW - 1) {
+			reachable = 0.1;
+		} else if (action == ACTION_SOUTHEAST && state2 == (state1 - NUM_STATES_IN_ROW)) {
+			reachable = 0.1;
+		} else if (state2 == state1) {
+			if (state1 % NUM_STATES_IN_ROW == 0 && state1 != 0 && state1 != NUM_STATES - NUM_STATES_IN_ROW) {
+				if (action == ACTION_WEST) {
+					reachable = 1.0;
+				} else if (action == ACTION_NORTHWEST) {
+					reachable = 0.9;
+				} else if (action == ACTION_SOUTHWEST) {
+					reachable = 0.9;
+				} else if (action == ACTION_EAST) {
+					reachable = 0.0;
+				} else if (action == ACTION_SOUTH) {
+					reachable = 0.1;
+				} else if (action == ACTION_NORTH) {
+					reachable = 0.1;
+				} else if (action == ACTION_SOUTHEAST) {
+					reachable = 0.0;
+				} else if (action == ACTION_NORTHEAST) {
+					reachable = 0.0;
+				}
+			} else if (state1 == 0 || state1 == NUM_STATES_IN_ROW - 1 || state1 == NUM_STATES - NUM_STATES_IN_ROW || state1 == NUM_STATES -1) {
+				if (state1 == 0) {
+					if (action == ACTION_WEST) {
+						reachable = 1.0;
+					} else if (action == ACTION_NORTHWEST) {
+						reachable = 0.9;
+					} else if (action == ACTION_SOUTHWEST) {
+						reachable = 1.0;
+					} else if (action == ACTION_EAST) {
+						reachable = 0.1;
+					} else if (action == ACTION_SOUTH) {
+						reachable = 1.0;
+					} else if (action == ACTION_NORTH) {
+						reachable = 0.1;
+					} else if (action == ACTION_SOUTHEAST) {
+						reachable = 0.9;
+					} else if (action == ACTION_NORTHEAST) {
+						reachable = 0.0;
+					}
+				} else if (state1 == NUM_STATES_IN_ROW -1) {
+					if (action == ACTION_WEST) {
+						reachable = 0.1;
+					} else if (action == ACTION_NORTHWEST) {
+						reachable = 0.0;
+					} else if (action == ACTION_SOUTHWEST) {
+						reachable = 0.9;
+					} else if (action == ACTION_EAST) {
+						reachable = 1.0;
+					} else if (action == ACTION_SOUTH) {
+						reachable = 1.0;
+					} else if (action == ACTION_NORTH) {
+						reachable = 0.1;
+					} else if (action == ACTION_SOUTHEAST) {
+						reachable = 1.0;
+					} else if (action == ACTION_NORTHEAST) {
+						reachable = 0.9;
+					}
+				} else if (state1 == NUM_STATES - NUM_STATES_IN_ROW) {
+					if (action == ACTION_WEST) {
+						reachable = 1.0;
+					} else if (action == ACTION_NORTHWEST) {
+						reachable = 1.0;
+					} else if (action == ACTION_SOUTHWEST) {
+						reachable = 0.9;
+					} else if (action == ACTION_EAST) {
+						reachable = 0.1;
+					} else if (action == ACTION_SOUTH) {
+						reachable = 0.1;
+					} else if (action == ACTION_NORTH) {
+						reachable = 1.0;
+					} else if (action == ACTION_SOUTHEAST) {
+						reachable = 0.0;
+					} else if (action == ACTION_NORTHEAST) {
+						reachable = 0.9;
+					}
+				} else if (state1 == NUM_STATES -1) {
+					if (action == ACTION_WEST) {
+						reachable = 0.1;
+					} else if (action == ACTION_NORTHWEST) {
+						reachable = 0.9;
+					} else if (action == ACTION_SOUTHWEST) {
+						reachable = 0.0;
+					} else if (action == ACTION_EAST) {
+						reachable = 1.0;
+					} else if (action == ACTION_SOUTH) {
+						reachable = 0.1;
+					} else if (action == ACTION_NORTH) {
+						reachable = 1.0;
+					} else if (action == ACTION_SOUTHEAST) {
+						reachable = 0.9;
+					} else if (action == ACTION_NORTHEAST) {
+						reachable = 1.0;
+					}
+				}
+			} else if (state1 % NUM_STATES_IN_ROW == NUM_STATES_IN_ROW -1 && state1 != NUM_STATES -1 && state1 != NUM_STATES_IN_ROW -1) {
+				if (action == ACTION_WEST) {
+					reachable = 0.0;
+				} else if (action == ACTION_NORTHWEST) {
+					reachable = 0.0;
+				} else if (action == ACTION_SOUTHWEST) {
+					reachable = 0.0;
+				} else if (action == ACTION_EAST) {
+					reachable = 1.0;
+				} else if (action == ACTION_SOUTH) {
+					reachable = 0.1;
+				} else if (action == ACTION_NORTH) {
+					reachable = 0.1;
+				} else if (action == ACTION_SOUTHEAST) {
+					reachable = 0.9;
+				} else if (action == ACTION_NORTHEAST) {
+					reachable = 0.9;
+				}
+			} else if (state1 < NUM_STATES_IN_ROW && state1 != 0 && state1 != NUM_STATES_IN_ROW - 1) {
+				if (action == ACTION_WEST) {
+					reachable = 0.1;
+				} else if (action == ACTION_NORTHWEST) {
+					reachable = 0.0;
+				} else if (action == ACTION_SOUTHWEST) {
+					reachable = 0.9;
+				} else if (action == ACTION_EAST) {
+					reachable = 0.1;
+				} else if (action == ACTION_SOUTH) {
+					reachable = 1.0;
+				} else if (action == ACTION_NORTH) {
+					reachable = 0.0;
+				} else if (action == ACTION_SOUTHEAST) {
+					reachable = 0.9;
+				} else if (action == ACTION_NORTHEAST) {
+					reachable = 0.0;
+				}
+			} else if ((state1 +  NUM_STATES_IN_ROW) >= NUM_STATES && state1 != NUM_STATES - NUM_STATES_IN_ROW && state1 != NUM_STATES -1) {
+				if (action == ACTION_WEST) {
+					reachable = 0.1;
+				} else if (action == ACTION_NORTHWEST) {
+					reachable = 0.9;
+				} else if (action == ACTION_SOUTHWEST) {
+					reachable = 0.0;
+				} else if (action == ACTION_EAST) {
+					reachable = 0.1;
+				} else if (action == ACTION_SOUTH) {
+					reachable = 0.0;
+				} else if (action == ACTION_NORTH) {
+					reachable = 1.0;
+				} else if (action == ACTION_SOUTHEAST) {
+					reachable = 0.0;
+				} else if (action == ACTION_NORTHEAST) {
+					reachable = 0.9;
+				}
+			}
+		}
+		return reachable;
+	}
+	
+	
 	/*
 	 * This function returns a reward for any state/action pair. It makes use of the transition
 	 * function to determine what actions in what states lead to the goal state.
@@ -151,6 +356,26 @@ public class MDPUtility {
 			//transitioning to goal state gives 100 reward
 			}
 			if (transitions[state][GOAL_STATE][action] == 1.0) {
+				return 100.0;
+			//transitioning anywhere else is -1 reward
+			}
+			return -1.0;
+		}
+	}
+	
+	/*
+	 * This function returns a reward for any state/action pair. It makes use of the transition
+	 * function to determine what actions in what states lead to the goal state.
+	 */
+	public static double getRewardNoisy(int state, int action, double[][][] transitions) {
+		//running into the wall is -100 reward
+		if (state == GOAL_STATE) {
+			return 0.0;
+		} else {
+			if (transitions[state][state][action] > 0.0) {
+				return -100.0;
+			}
+			if (transitions[state][GOAL_STATE][action] > 0.0) {
 				return 100.0;
 			//transitioning anywhere else is -1 reward
 			}

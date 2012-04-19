@@ -1,11 +1,13 @@
 package mdp;
-import mdp.MDPUtility;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 public class ValueIterationDriver {
 	public static final boolean OUTPUT_TRANSITIONS = false;
 	public static final boolean OUTPUT_REWARDS = false;
 	public static final boolean OUTPUT_POLICY = false;
 	public static final boolean OUTPUT_LOADABLE_POLICY = true;
+	public static final String OUTPUT_DIRECTORY = "/Users/collinst/Desktop/";
 
 	/**
 	 * @param args
@@ -15,16 +17,16 @@ public class ValueIterationDriver {
 		FileWriter fstream, fstream2, fstream3, fstream4;
 		BufferedWriter mout, mout2, mout3, mout4;
 		if (OUTPUT_TRANSITIONS) {
-			fstream = new FileWriter("/Users/collinst/Desktop/transitions.txt");
+			fstream = new FileWriter(OUTPUT_DIRECTORY + "transitions.txt");
 		}
 		if (OUTPUT_REWARDS) {
-			fstream2 = new FileWriter("/Users/collinst/Desktop/rewards.txt");
+			fstream2 = new FileWriter(OUTPUT_DIRECTORY + "rewards.txt");
 		}
 		if (OUTPUT_POLICY) {
-			fstream3 = new FileWriter("/Users/collinst/Desktop/policy.txt");
+			fstream3 = new FileWriter(OUTPUT_DIRECTORY + "policy.txt");
 		}
 		if (OUTPUT_LOADABLE_POLICY) {
-			fstream4 = new FileWriter("/Users/collinst/Desktop/policy_load.txt");
+			fstream4 = new FileWriter(OUTPUT_DIRECTORY + "policy_load.txt");
 		}
 		if (OUTPUT_TRANSITIONS) {
 			mout = new BufferedWriter(fstream);
@@ -44,14 +46,14 @@ public class ValueIterationDriver {
 			for (int s=0; s<MDPUtility.NUM_STATES; s++) {
 				for (int sprime=0; sprime<MDPUtility.NUM_STATES; sprime++) {
 					for (int a=0; a<MDPUtility.NUM_ACTIONS; a++) {
-						trans[s][sprime][a] = MDPUtility.getTransitionProbability(s, sprime, a);
+						trans[s][sprime][a] = MDPUtility.getTransitionProbabilityNoisy(s, sprime, a);
 					}
 				}
 			}
 		//Build reward model
 		for (int s=0; s<MDPUtility.NUM_STATES; s++) {
 			for (int a=0; a<MDPUtility.NUM_ACTIONS; a++) {
-				rew[s][a] = MDPUtility.getReward(s, a, trans);
+				rew[s][a] = MDPUtility.getRewardNoisy(s, a, trans);
 			}
 		}
 		
@@ -134,3 +136,4 @@ public class ValueIterationDriver {
 	}
 
 }
+
