@@ -1,4 +1,4 @@
-# Moving Goal Vector Field
+# Moving Goal Vector Field where the bot starts in the center
 robocode.battleField.width=600
 robocode.battleField.height=600
 robocode.battle.numRounds=10

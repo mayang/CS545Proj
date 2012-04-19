@@ -39,9 +39,6 @@ public class VectorFieldsSimpleMovingGoal extends Robot
 
                 adjustment = angleToGoal - heading;
 
-                //System.out.println("Adjustment: " + adjustment);
-                //turnLeft(angleToGoal - heading);
-                
                 if (adjustment >= 360)
                 {
                     adjustment -= 360;
@@ -51,8 +48,8 @@ public class VectorFieldsSimpleMovingGoal extends Robot
                     adjustment += 360;
                 }
 
-                if (adjustment > 180 || adjustment < -180)
-                    System.out.println("Out of bounds value: " + adjustment);
+                //if (adjustment > 180 || adjustment < -180)
+                    //System.out.println("Out of bounds value: " + adjustment);
 
                 if (adjustment < -180)
                 {

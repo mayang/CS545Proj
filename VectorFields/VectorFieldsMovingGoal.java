@@ -4,7 +4,7 @@ import robocode.*;
 import java.lang.*;
 
 /**
- * Robocode robot that acts as a moving goal for testing.
+ * Robocode robot that acts as a moving goal for testing
  */
 public class VectorFieldsMovingGoal extends Robot
 {

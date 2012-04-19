@@ -1,4 +1,4 @@
-# Simple Vector Field
+# Simple Vector Field.
 robocode.battleField.width=600
 robocode.battleField.height=600
 robocode.battle.numRounds=10

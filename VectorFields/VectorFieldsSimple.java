@@ -41,8 +41,6 @@ public class VectorFieldsSimple extends Robot
 
                 distance = Math.sqrt(Math.pow(robotX - goalX, 2) + Math.pow(robotY - goalY, 2)) / 10;
                 ahead(Math.max(10, distance));
-
-                //ahead(1);
             }
             else
             {
