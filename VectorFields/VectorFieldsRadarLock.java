@@ -17,19 +17,13 @@ public class VectorFieldsRadarLock extends AdvancedRobot
 
     private boolean foundGoal = false;
     private double goalX, goalY;
-    //private double goalBearing;
-
-    //private int radarDirection = 1;
 
     public void run()
     {
         double angleToGoal, adjustment;
         double robotX, robotY, heading;
 
-        //addCustomEvent(new RadarTurnCompleteCondition(this));
-        //setAdjustRadarForGunTurn(true);
         setAdjustRadarForRobotTurn(true);
-        //setTurnRadarRight(360);
 
         while (true)
         {
@@ -57,9 +51,6 @@ public class VectorFieldsRadarLock extends AdvancedRobot
                     adjustment += 360;
                 }
 
-                //if (adjustment > 180 || adjustment < -180)
-                    //System.out.println("Out of bounds value: " + adjustment);
-
                 if (adjustment < -180)
                 {
                     adjustment += 360;
@@ -69,20 +60,12 @@ public class VectorFieldsRadarLock extends AdvancedRobot
                     adjustment -= 360;
                 }
 
-                //setTurnRadarLeft(180);
                 setTurnLeft(adjustment);
                 ahead(calcRobotSpeedLinear(robotX, robotY, goalX, goalY));
-                //setTurnRadarLeft(180);
             }
             else
             {
-                //setAdjustRadarForGunTurn(false);
-                //setTurnGunRight(360);
-                //setAdjustRadarForGunTurn(true);
-                //
                 setTurnRadarRight(360);
-
-                //setAdjustRadarForGunTurn(false);
             }
 
             scan();
@@ -106,31 +89,6 @@ public class VectorFieldsRadarLock extends AdvancedRobot
         double radarTurn = getHeadingRadians() + e.getBearingRadians() - getRadarHeadingRadians();
         setTurnRadarRightRadians(robocode.util.Utils.normalRelativeAngle(radarTurn));
     }
-
-    /**
-     * Handle a custom event handler for sweeping
-     */
-    //public void onCustomEvent(CustomEvent e)
-    //{
-        //if (e.getCondition() instanceof RadarTurnCompleteCondition) 
-            //sweep();
-    //}
-
-    /**
-     * Determines the direction and amount to sweep the radar
-     */
-    //private void sweep() 
-    //{
-        ////double bearing=normalRelativeAngle
-                    ////(getHeading() + tmp.getBearing()
-                              ////- getRadarHeading());
-
-        //double tmpBearing = robocode.util.Utils.normalRelativeAngle(getHeading() + goalBearing - getRadarHeading());
-        //double radarTurn = tmpBearing + (Math.signum(tmpBearing) * 22.5); 
-
-        //setTurnRadarRight(radarTurn);
-        ////radarDirection=sign(radarTurn);
-    //}
 
     /**
      * Linearly decay the speed of the robot when it nears the goal.
