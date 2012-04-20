@@ -343,6 +343,28 @@ public class MDPUtility {
 			return -1.0;
 		}
 	}
+	
+	public static double[][][] getTransitions() {
+		double[][][] trans = new double[MDPUtility.NUM_STATES][MDPUtility.NUM_STATES][MDPUtility.NUM_ACTIONS];
+			for (int s=0; s<MDPUtility.NUM_STATES; s++) {
+				for (int sprime=0; sprime<MDPUtility.NUM_STATES; sprime++) {
+					for (int a=0; a<MDPUtility.NUM_ACTIONS; a++) {
+						trans[s][sprime][a] = MDPUtility.getTransitionProbability(s, sprime, a);
+					}
+				}
+			}
+			return trans;
+	}
+	public static double[][] getRewards(double[][][] transitions, int goal_state) {
+		double[][] rew = new double[MDPUtility.NUM_STATES][MDPUtility.NUM_ACTIONS];
+		//Build reward model
+		for (int s=0; s<MDPUtility.NUM_STATES; s++) {
+			for (int a=0; a<MDPUtility.NUM_ACTIONS; a++) {
+				rew[s][a] = MDPUtility.getRewardForGoal(s, a, transitions, goal_state);
+			}
+		}
+		return rew;
+	}
 
 	
 	/*

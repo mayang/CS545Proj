@@ -41,21 +41,9 @@ public class ValueIterationDriver {
 			mout4 = new BufferedWriter(fstream4);
 		}
 		//Build transition model
-		double[][][] trans = new double[MDPUtility.NUM_STATES][MDPUtility.NUM_STATES][MDPUtility.NUM_ACTIONS];
-		double[][] rew = new double[MDPUtility.NUM_STATES][MDPUtility.NUM_ACTIONS];
-			for (int s=0; s<MDPUtility.NUM_STATES; s++) {
-				for (int sprime=0; sprime<MDPUtility.NUM_STATES; sprime++) {
-					for (int a=0; a<MDPUtility.NUM_ACTIONS; a++) {
-						trans[s][sprime][a] = MDPUtility.getTransitionProbabilityNoisy(s, sprime, a);
-					}
-				}
-			}
+		double[][][] trans = MDPUtility.getTransitions();
 		//Build reward model
-		for (int s=0; s<MDPUtility.NUM_STATES; s++) {
-			for (int a=0; a<MDPUtility.NUM_ACTIONS; a++) {
-				rew[s][a] = MDPUtility.getRewardForGoal(s, a, trans, 0);
-			}
-		}
+		double[][] rew = MDPUtility.getRewards(trans, 0);
 		
 		if (OUTPUT_TRANSITIONS) {
 			for (int i=0;i<MDPUtility.NUM_STATES; i++) {
