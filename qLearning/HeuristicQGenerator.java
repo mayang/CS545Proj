@@ -5,7 +5,7 @@ import java.util.List;
 
 public class HeuristicQGenerator {
 	
-	public static final int NUM_EPISODES = 100000;
+	public static final int NUM_EPISODES = 2000000;
 	
 	public static void main(String[] args) throws Exception {
 		final long startTime = System.currentTimeMillis();
@@ -15,7 +15,7 @@ public class HeuristicQGenerator {
 		double[][] Q = new double[QUtilities.NUM_STATES][QUtilities.NUM_ACTIONS];
 		for(int episode = 0; episode < NUM_EPISODES; episode++) {
 			int T = 11;
-			int s = (int)Math.random() * 600;
+			int s = (int)Math.random() * QUtilities.NUM_STATES;
 			int sNext;
 			int a = boltzmannPickAction(s, Q, T);
 			double r = -1;

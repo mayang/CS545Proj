@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QUtilities {
-	public static final int NUM_STATES = 900;
 	public static final int ROW_LENGTH = 30;
+	public static final double TILE_SIZE = 600/ROW_LENGTH;
+	public static final int NUM_STATES = ROW_LENGTH * ROW_LENGTH;
 	public static final int NUM_ACTIONS = 8;
 	public static final int NUM_EPISODES = 100000;
 	public static final int GOAL_STATE = 329;
@@ -31,12 +32,22 @@ public class QUtilities {
 	}
 	
 	public static double[][] generateQTable(int goal) {
+		return generateQTable(goal, -1);
+	}
+	
+	public static double[][] generateQTable(int goal, int current) {
 		double[][] Q = new double[QUtilities.NUM_STATES][QUtilities.NUM_ACTIONS];
 		for(int episode = 0; episode < NUM_EPISODES; episode++) {
 			int T = 11;
-			int s = (int)Math.random() * 600;
+			int s;
+			if (current == -1) {
+				s = (int)Math.random() * QUtilities.NUM_STATES;
+			} else {
+				s = current;
+			}
 			int sNext;
-			int a = epsilonPickAction(s, Q, 0.0);
+//			int a = epsilonPickAction(s, Q, 0.0);
+			int a = boltzmannPickAction(s, Q, T);	
 			double r = -1;
 			double rNext;
 //			int step = 1;
@@ -58,7 +69,8 @@ public class QUtilities {
 				updateQ(Q, s, a, r, sNext);
 				s = sNext;
 				r = rNext;
-				a = epsilonPickAction(s, Q, QUtilities.epsilon);
+//				a = epsilonPickAction(s, Q, QUtilities.epsilon);
+				a = boltzmannPickAction(s, Q, T);
 			}
 		}
 		
@@ -160,7 +172,7 @@ public class QUtilities {
 	}
 	
 	public static boolean nextToTopWall(int state) {
-		if ((state/30) >= 29){
+		if ((state/ROW_LENGTH) >= (ROW_LENGTH -1)){
 			return true;
 		} else {
 			return false;
@@ -168,7 +180,7 @@ public class QUtilities {
 	}
 	
 	public static boolean nextToBottomWall(int state) {
-		if ((state/30) <= 0){
+		if ((state/ROW_LENGTH) <= 0){
 			return true;
 		} else {
 			return false;
@@ -176,7 +188,7 @@ public class QUtilities {
 	}
 	
 	public static boolean nextToRightWall(int state) {
-		if ((state % 30) >= 29){
+		if ((state % ROW_LENGTH) >= (ROW_LENGTH -1)){
 			return true;
 		} else {
 			return false;
@@ -184,7 +196,7 @@ public class QUtilities {
 	}
 	
 	public static boolean nextToLeftWall(int state) {
-		if ((state % 30) <= 0){
+		if ((state % ROW_LENGTH) <= 0){
 			return true;
 		} else {
 			return false;
@@ -192,11 +204,11 @@ public class QUtilities {
 	}
 	
 	public static int stateToX(int state) {
-		return state % 30;
+		return state % ROW_LENGTH;
 	}
 	
 	public static int stateToY(int state) {
-		return state / 30;
+		return state / ROW_LENGTH;
 	}
 	
 	public static boolean isTerminal (int state, int goal) {
@@ -252,5 +264,13 @@ public class QUtilities {
 	
 	public int randomAction() {
 		return (int) Math.random() * QUtilities.NUM_ACTIONS;
+	}
+	
+	public static int XYtoState(double x, double y) {
+		int state = -1;
+		int row = (int) (y/TILE_SIZE);
+		int column = (int) (x/TILE_SIZE);
+		state = row*ROW_LENGTH + column;
+		return state;
 	}
 }
