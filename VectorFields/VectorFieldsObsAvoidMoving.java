@@ -6,7 +6,7 @@ import java.lang.*;
 /**
  * Robocode robot that locates and navigates toward a goal while also avoiding obstacles that it gets near.
  */
-public class VectorFieldsObstacleAvoid extends AdvancedRobot
+public class VectorFieldsObsAvoidMoving extends AdvancedRobot
 {
     private static final int SCREEN_WIDTH = 600;
     private static final int SCREEN_HEIGHT = 600;
@@ -52,12 +52,10 @@ public class VectorFieldsObstacleAvoid extends AdvancedRobot
 
                 if (foundObstacle)
                 {
-                    System.out.println("HANDLING OBSTACLE");
                     speedFromObj = calcObjRepulseSpeed(robotX, robotY, obsX, obsY);
 
                     if (speedFromObj != 0)
                     {
-                        System.out.println("SPEED IS NOT 0");
                         obsAngle = Math.toDegrees(Math.atan2(robotY - obsY, robotX - obsX));
                         if (obsAngle < 0)
                             obsAngle += 360;
@@ -66,14 +64,10 @@ public class VectorFieldsObstacleAvoid extends AdvancedRobot
                         angleDiff = normalizeAngle(angleDiff);
                         adjustment += (angleDiff * (speedFromObj / speedToGoal));
                         speedToGoal -= speedFromObj;
-
-                        System.out.println("obsAngle: " + obsAngle);
-                        System.out.println("angleDiff: " + angleDiff);
-                        System.out.println("adjustmentTick: " + (angleDiff * (speedFromObj / speedToGoal)));
                     }
                 }
 
-                adjustment = normalizeAngle(adjustment);
+                adjustment = normalizeAngle(adjustment); // Not 100% sure this is needed;
                 setTurnLeft(adjustment);
                 ahead(speedToGoal);
             }
@@ -88,7 +82,8 @@ public class VectorFieldsObstacleAvoid extends AdvancedRobot
         double tmpX = getX() + e.getDistance() * Math.sin(Math.toRadians(targetBearing));
         double tmpY = getY() + e.getDistance() * Math.cos(Math.toRadians(targetBearing));
 
-        if (e.getName().equals("VectorFields.VectorFieldsGoal*") && !foundGoal)
+        //if (e.getName().equals("VectorFields.VectorFieldsGoal*") && !foundGoal)
+        if (e.getName().equals("VectorFields.VectorFieldsMovingGoal*"))
         {
             foundGoal = true;
             goalX = tmpX;
