@@ -8,6 +8,12 @@ import java.lang.*;
  */
 public class VectorFieldsSimple extends Robot
 {
+    private static final int SCREEN_WIDTH = 600;
+    private static final int SCREEN_HEIGHT = 600;
+    private static final double MAX_DISTANCE = Math.sqrt(Math.pow(SCREEN_WIDTH, 2) + Math.pow(SCREEN_HEIGHT, 2));
+    private static final int MAX_SPEED = 10;
+    private static final int GOAL_DISTANCE = 200;
+
     private boolean foundGoal = false;
     private double goalX, goalY;
 
@@ -38,8 +44,9 @@ public class VectorFieldsSimple extends Robot
 
                 turnLeft(angleToGoal - heading);
 
-                ahead(calcRobotSpeedLinear(robotX, robotY, goalX, goalY));
                 //ahead(Math.min(10, distance));
+                ahead(calcRobotSpeedLinear(robotX, robotY, goalX, goalY));
+                //ahead(calcRobotSpeedGlobalFields(robotX, robotY, goalX, goalY));
             }
             else
             {
@@ -69,16 +76,27 @@ public class VectorFieldsSimple extends Robot
     public int calcRobotSpeedLinear(double robotX, double robotY, double goalX, double goalY)
     {
         int speed = 0;
-        double distance = Math.sqrt(Math.pow(robotX - goalX, 2) + Math.pow(robotY - goalY, 2)) / 10;
-        if (distance >= 100)
+
+        double distance = Math.sqrt(Math.pow(robotX - goalX, 2) + Math.pow(robotY - goalY, 2));
+        if (distance >= GOAL_DISTANCE)
         {
-            speed = 10;
+            speed = MAX_SPEED;
         }
         else
         {
-            speed = (int)((distance / 10) + 0.5);
+            speed = (int)((distance / GOAL_DISTANCE) * MAX_SPEED + 0.5);
         }
         
         return speed;
+    }
+
+    /**
+     * Decay the speed "globally." The goal doens't have a range at which it starts to cause a speed drop off.
+     * Instead, the entire screen has a scaled gradient.
+     */
+    public int calcRobotSpeedGlobalFields(double robotX, double robotY, double goalX, double goalY)
+    {
+        double distance = Math.sqrt(Math.pow(robotX - goalX, 2) + Math.pow(robotY - goalY, 2));
+        return (int)((distance / MAX_DISTANCE) * MAX_SPEED + 0.5);
     }
 }
