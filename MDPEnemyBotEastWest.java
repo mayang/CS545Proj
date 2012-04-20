@@ -12,7 +12,7 @@ import mdp.MDPUtility;
  * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
  * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
  */
-public class MDPEnemyBotNorthSouth extends Robot {
+public class MDPEnemyBotEastWest extends Robot {
 	//Constants for orientation
 	private final double NORTH = 0.0;
 	private final double NORTH_ALT = 360.0;
@@ -36,9 +36,9 @@ public class MDPEnemyBotNorthSouth extends Robot {
         		direction = 1;
         	}
         	if (direction == 1) {
-        		goNorth(2);
+        		goWest(2);
         	} else {
-        		goSouth(2);
+        		goEast(2);
         	}
         }
 }
