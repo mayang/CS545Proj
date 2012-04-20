@@ -12,7 +12,7 @@ import mdp.MDPUtility;
  * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
  * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
  */
-public class MDPTestBotMovingTarget extends Robot {
+public class MDPTestBotMovingTargetDynamic extends Robot {
 	//Constants for orientation
 	private final double NORTH = 0.0;
 	private final double NORTH_ALT = 360.0;
@@ -30,47 +30,73 @@ public class MDPTestBotMovingTarget extends Robot {
     private int[] policy = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
     public boolean currently_updating;
     private int goal_state;
+    long time1;
+    long time2;
+    double avg_velocity = 2.0;
+    double current_velocity;
+    double velocity_sum = 0.0;
+    int random_walk = 10;
+    int random_trigger_value;
+    int num_velocities = 0;
+    long est_update_time = 40;
+    double distance_trigger = 100.0;
+    int last_valid_goal;
+    int previous_goal;
     public void run() {
 		currently_updating = false;
     	 while (true) {
-        	//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
-        	int state = MDPUtility.getStateForXandY(getX(), getY());
-        	if (policy[state] == MDPUtility.ACTION_NORTH) {
-        		goNorth(10);
-        	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
-        		goSouth(10);
-        	} else if (policy[state] == MDPUtility.ACTION_EAST) {
-        		goEast(10);
-        	} else if (policy[state] == MDPUtility.ACTION_WEST) {
-        		goWest(10);
-        	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
-        		goNorthwest(10);
-        	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
-        		goNortheast(10);
-        	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
-        		goSouthwest(10);
-        	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
-        		goSoutheast(10);
-        	} else if (policy[state] == -1) {
-            	double r = Math.random();
-            	if (r < 0.125) {
-            		goNorth(10);
-            	} else if (r >= 0.125 && r < 0.25) {
-            		goSouth(100);
-            	} else if (r >= 0.25 && r < 0.375) {
-            		goEast(100);
-            	} else if (r >= 0.375 && r < 0.5) {
-            		goWest(100);
-            	} else if (r >= 0.5 && r < 0.625) {
-            		goNorthwest(100);
-            	} else if (r >= 0.625 && r < 0.750) {
-            		goSouthwest(100);
-            	} else if (r >=0.75 && r < 0.875) {
-            		goSoutheast(100);
-            	} else if (r >= 0.875 && r < 1.0) {
-            		goNortheast(100);
-            	}
+    		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
+         	int state = MDPUtility.getStateForXandY(getX(), getY());
+        	current_velocity = getVelocity();
+        	random_walk--;
+        	if (random_walk == 0){ 
+        		for (int i=0; i<MDPUtility.NUM_STATES; i++) {
+        			policy[i] = -1;
+        		}
+        		random_walk = random_trigger_value;
         	}
+        	if (current_velocity > 0.0) {
+        		velocity_sum += current_velocity;
+        		num_velocities++;
+        		avg_velocity = velocity_sum/num_velocities;
+        	}
+         	if (policy[state] == MDPUtility.ACTION_NORTH) {
+         		goNorth(10);
+         	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
+         		goSouth(10);
+         	} else if (policy[state] == MDPUtility.ACTION_EAST) {
+         		goEast(10);
+         	} else if (policy[state] == MDPUtility.ACTION_WEST) {
+         		goWest(10);
+         	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
+         		goNorthwest(10);
+         	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
+         		goNortheast(10);
+         	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
+         		goSouthwest(10);
+         	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
+         		goSoutheast(10);
+         	} else if (policy[state] == -1) {
+             	double r = Math.random();
+             	if (r < 0.125) {
+             		goNorth(10);
+             	} else if (r >= 0.125 && r < 0.25) {
+             		goSouth(10);
+             	} else if (r >= 0.25 && r < 0.375) {
+             		goEast(10);
+             	} else if (r >= 0.375 && r < 0.5) {
+             		goWest(10);
+             	} else if (r >= 0.5 && r < 0.625) {
+             		goNorthwest(10);
+             	} else if (r >= 0.625 && r < 0.750) {
+             		goSouthwest(10);
+             	} else if (r >=0.75 && r < 0.875) {
+             		goSoutheast(10);
+             	} else if (r >= 0.875 && r < 1.0) {
+             		goNortheast(10);
+             	}
+         	}
+         	
         }
 }
 
@@ -79,17 +105,23 @@ public class MDPTestBotMovingTarget extends Robot {
      * long as we keep our gun heading the same as our body heading. http://old.nabble.com/Using-Random-Statements-td4010734.html
      */
     public void onScannedRobot(ScannedRobotEvent e) {
+    	random_walk = random_trigger_value;
     	double enemyBearing = getHeading() + e.getBearing(); 
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
-    	System.out.print("Found enemy at: (" + enemyX + "," + enemyY + ")\n" );
     	goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
-    	if (!currently_updating) {
+    	if(goal_state >= 0 && goal_state < MDPUtility.NUM_STATES) last_valid_goal = goal_state;
+    	if (goal_state < 0) goal_state = last_valid_goal;
+    	if (goal_state >= MDPUtility.NUM_STATES) goal_state = last_valid_goal;
+    	if (!currently_updating /*&& e.getDistance() > distance_trigger*/) {
+    		time1 = getTime();
     		currently_updating = true;
-    		System.out.print("Updating the policy\n");
     		Thread policy_update = new Thread() {
     			public void run() {
-    					transitions = MDPUtility.getTransitions();
+    					if (transitions == null) {
+    						System.out.print("Updating transitions\n");
+    						transitions = MDPUtility.getTransitions();
+    					}
     					rewards = MDPUtility.getRewards(transitions, goal_state);
     					q_table = MDPUtility.valueIteration(transitions, rewards);
     					policy = MDPUtility.generatePolicyFromQTable(q_table);
@@ -97,13 +129,16 @@ public class MDPTestBotMovingTarget extends Robot {
 			    	}
 				};
 			policy_update.start();
+			
     	}
         fire(1);
 	}
 
 	public void doneUpdating() {
-		
 		currently_updating = false;
+		time2 = getTime();
+		est_update_time = time2-time1;
+		System.out.print(est_update_time + "\n");
 	}
 	
 	public void onHitByBullet(HitByBulletEvent e) {
