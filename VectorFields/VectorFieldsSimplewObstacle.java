@@ -60,7 +60,7 @@ public class VectorFieldsSimplewObstacle extends Robot
 					double dist = Math.sqrt(Math.pow(obstacleX - robotX, 2.0) + Math.pow(obstacleY - robotY, 2.0));
 					effect = (100.0 - dist) / 100.0;
 					//System.out.println("effect" + effect);
-					//if (effect >= 0) {
+					if (effect >= 0) {
 					//if (dist < 100) {
 						if (angleToObstacle < 0) {
 							angleToObstacle += 360;
@@ -68,7 +68,7 @@ public class VectorFieldsSimplewObstacle extends Robot
 						obstacleTurn = angleToObstacle - heading;
 						obstacleTurn *= effect;
 						obstacleTurn *= -1;
-					//} 
+					} 
 				}
 				turn = goalTurn + obstacleTurn;
 				turnLeft(turn);
