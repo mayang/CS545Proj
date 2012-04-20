@@ -12,7 +12,7 @@ import mdp.MDPUtility;
  * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
  * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
  */
-public class MDPEnemyBotNorthSouth extends Robot {
+public class MDPTestBotMovingTargetNoisy extends Robot {
 	//Constants for orientation
 	private final double NORTH = 0.0;
 	private final double NORTH_ALT = 360.0;
@@ -24,33 +24,105 @@ public class MDPEnemyBotNorthSouth extends Robot {
 	private final double SOUTHWEST = 225.0;
 	private final double SOUTHEAST = 135.0;
 	//Policy
-	//Oscillates North and South along the battlefield
+    private double[][][] transitions;
+    private double[][] rewards;
+    private double[][] q_table;
+    private int[] policy = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+    public boolean currently_updating;
+    private int goal_state;
     public void run() {
-    	int direction = 1;
-        while (true) {
+		currently_updating = false;
+    	 while (true) {
         	//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
         	int state = MDPUtility.getStateForXandY(getX(), getY());
-        	if (state + MDPUtility.NUM_STATES_IN_ROW >= MDPUtility.NUM_STATES) {
-        		direction = 0;
-        	} else if (state < MDPUtility.NUM_STATES_IN_ROW) {
-        		direction = 1;
-        	}
-        	if (direction == 1) {
-        		goNorth(2);
-        	} else {
-        		goSouth(2);
+        	double random = Math.random();
+        	if (random > 0.8) System.out.print("Oops...slip\n");
+        	if (policy[state] == MDPUtility.ACTION_NORTH) {
+        		if (random <=0.8) goNorth(10);
+        		else if (random > 0.8 && random < 0.9) goNortheast(10);
+        		else goNorthwest(10);
+        	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
+        		if (random <=0.8) goSouth(10);
+        		else if (random > 0.8 && random < 0.9) goSoutheast(10);
+        		else goSouthwest(10);
+        	} else if (policy[state] == MDPUtility.ACTION_EAST) {
+        		if (random <=0.8) goEast(10);
+        		else if (random > 0.8 && random < 0.9) goNortheast(10);
+        		else goSoutheast(10);
+        	} else if (policy[state] == MDPUtility.ACTION_WEST) {
+        		if (random <=0.8) goWest(10);
+        		else if (random > 0.8 && random < 0.9) goNorthwest(10);
+        		else goSouthwest(10);
+        	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
+        		if (random <=0.8) goNorthwest(10);
+        		else if (random > 0.8 && random < 0.9) goNorth(10);
+        		else goWest(10);
+        	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
+        		if (random <=0.8) goNortheast(10);
+        		else if (random > 0.8 && random < 0.9) goNorth(10);
+        		else goEast(10);
+        	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
+        		if (random <=0.8) goSouthwest(10);
+        		else if (random > 0.8 && random < 0.9) goSouth(10);
+        		else goWest(10);
+        	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
+        		if (random <=0.8) goSoutheast(10);
+        		else if (random > 0.8 && random < 0.9) goSouth(10);
+        		else goEast(10);
+        	} else if (policy[state] == -1) {
+            	double r = Math.random();
+            	if (r < 0.125) {
+            		goNorth(10);
+            	} else if (r >= 0.125 && r < 0.25) {
+            		goSouth(100);
+            	} else if (r >= 0.25 && r < 0.375) {
+            		goEast(100);
+            	} else if (r >= 0.375 && r < 0.5) {
+            		goWest(100);
+            	} else if (r >= 0.5 && r < 0.625) {
+            		goNorthwest(100);
+            	} else if (r >= 0.625 && r < 0.750) {
+            		goSouthwest(100);
+            	} else if (r >=0.75 && r < 0.875) {
+            		goSoutheast(100);
+            	} else if (r >= 0.875 && r < 1.0) {
+            		goNortheast(100);
+            	}
         	}
         }
 }
 
     /*
      * Fire when we scan a robot. Our policy keeps us oriented toward the enemy almost all the time, so firing straight ahead works, so
-     * long as we keep our gun heading the same as our body heading
+     * long as we keep our gun heading the same as our body heading. http://old.nabble.com/Using-Random-Statements-td4010734.html
      */
     public void onScannedRobot(ScannedRobotEvent e) {
+    	double enemyBearing = getHeading() + e.getBearing(); 
+    	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
+    	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
+    	System.out.print("Found enemy at: (" + enemyX + "," + enemyY + ")\n" );
+    	goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
+    	if (!currently_updating) {
+    		currently_updating = true;
+    		System.out.print("Updating the policy\n");
+    		Thread policy_update = new Thread() {
+    			public void run() {
+    					transitions = MDPUtility.getTransitionsNoisy();
+    					rewards = MDPUtility.getRewards(transitions, goal_state);
+    					q_table = MDPUtility.valueIteration(transitions, rewards);
+    					policy = MDPUtility.generatePolicyFromQTable(q_table);
+    					doneUpdating();
+			    	}
+				};
+			policy_update.start();
+    	}
         fire(1);
 	}
 
+	public void doneUpdating() {
+		
+		currently_updating = false;
+	}
 	
 	public void onHitByBullet(HitByBulletEvent e) {
         
@@ -190,3 +262,4 @@ public class MDPEnemyBotNorthSouth extends Robot {
 		ahead(distance);
 	}
 }
+

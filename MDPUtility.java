@@ -7,10 +7,10 @@ package mdp;
  * definition of rewards, among other things
  */
 public class MDPUtility {
-	public static final int NUM_STATES = 900;
+	public static final int NUM_STATES = 400;
 	public static final int NUM_ACTIONS = 8;
 	public static final double DISCOUNT_FACTOR = 0.9;
-	public static final double RESIDUAL = 0.001;
+	public static final double RESIDUAL = 0.1;
 	public static final int ACTION_NORTH = 0;
 	public static final int ACTION_SOUTH = 1;
 	public static final int ACTION_EAST = 2;
@@ -19,8 +19,8 @@ public class MDPUtility {
 	public static final int ACTION_NORTHWEST = 5;
 	public static final int ACTION_SOUTHEAST = 6;
 	public static final int ACTION_SOUTHWEST = 7;
-	public static final int NUM_STATES_IN_ROW = 30;
-	public static final int TILE_SIZE = 20;
+	public static final int NUM_STATES_IN_ROW = 20;
+	public static final int TILE_SIZE = 30;
 	public static final double GRID_SIZE_X = 600.0;
 	public static final double GRID_SIZE_Y = 600.0;
 	public static final int GOAL_STATE = 0;
@@ -355,6 +355,21 @@ public class MDPUtility {
 			}
 			return trans;
 	}
+	
+	
+	public static double[][][] getTransitionsNoisy() {
+		double[][][] trans = new double[MDPUtility.NUM_STATES][MDPUtility.NUM_STATES][MDPUtility.NUM_ACTIONS];
+			for (int s=0; s<MDPUtility.NUM_STATES; s++) {
+				for (int sprime=0; sprime<MDPUtility.NUM_STATES; sprime++) {
+					for (int a=0; a<MDPUtility.NUM_ACTIONS; a++) {
+						trans[s][sprime][a] = MDPUtility.getTransitionProbabilityNoisy(s, sprime, a);
+					}
+				}
+			}
+			return trans;
+	}
+	
+	
 	public static double[][] getRewards(double[][][] transitions, int goal_state) {
 		double[][] rew = new double[MDPUtility.NUM_STATES][MDPUtility.NUM_ACTIONS];
 		//Build reward model

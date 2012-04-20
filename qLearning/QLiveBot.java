@@ -1,4 +1,4 @@
-package mdp;
+package qLearning;
 
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
@@ -6,13 +6,8 @@ import robocode.HitByBulletEvent;
 import java.awt.Graphics2D;
 import mdp.MDPUtility;
 
-/*
- * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
- * Date: 16 April 2012
- * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
- * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
- */
-public class MDPEnemyBotNorthSouth extends Robot {
+
+public class QLiveBot extends Robot {
 	//Constants for orientation
 	private final double NORTH = 0.0;
 	private final double NORTH_ALT = 360.0;
@@ -24,33 +19,91 @@ public class MDPEnemyBotNorthSouth extends Robot {
 	private final double SOUTHWEST = 225.0;
 	private final double SOUTHEAST = 135.0;
 	//Policy
-	//Oscillates North and South along the battlefield
-    public void run() {
-    	int direction = 1;
-        while (true) {
+    private int[] policy = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+    public boolean currently_updating;
+    private int goal_state;
+    private int last_view = 0;
+    
+;	public void run() {
+		currently_updating = false;
+    	 while (true) {
+    		 last_view = last_view + 1;
+    		 if (last_view > 30) {
+    			 updatePolicy();
+    		 }
         	//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
         	int state = MDPUtility.getStateForXandY(getX(), getY());
-        	if (state + MDPUtility.NUM_STATES_IN_ROW >= MDPUtility.NUM_STATES) {
-        		direction = 0;
-        	} else if (state < MDPUtility.NUM_STATES_IN_ROW) {
-        		direction = 1;
-        	}
-        	if (direction == 1) {
-        		goNorth(2);
-        	} else {
-        		goSouth(2);
+        	if (policy[state] == QUtilities.ACTION_NORTH) {
+        		goNorth(10);
+        	} else if (policy[state] == QUtilities.ACTION_SOUTH) {
+        		goSouth(10);
+        	} else if (policy[state] == QUtilities.ACTION_EAST) {
+        		goEast(10);
+        	} else if (policy[state] == QUtilities.ACTION_WEST) {
+        		goWest(10);
+        	} else if (policy[state] == QUtilities.ACTION_NORTHWEST) {
+        		goNorthwest(10);
+        	} else if (policy[state] == QUtilities.ACTION_NORTHEAST) {
+        		goNortheast(10);
+        	} else if (policy[state] == QUtilities.ACTION_SOUTHWEST) {
+        		goSouthwest(10);
+        	} else if (policy[state] == QUtilities.ACTION_SOUTHEAST) {
+        		goSoutheast(10);
+        	} else if (policy[state] == -1) {
+            	double r = Math.random();
+            	if (r < 0.125) {
+            		goNorth(10);
+            	} else if (r >= 0.125 && r < 0.25) {
+            		goSouth(100);
+            	} else if (r >= 0.25 && r < 0.375) {
+            		goEast(100);
+            	} else if (r >= 0.375 && r < 0.5) {
+            		goWest(100);
+            	} else if (r >= 0.5 && r < 0.625) {
+            		goNorthwest(100);
+            	} else if (r >= 0.625 && r < 0.750) {
+            		goSouthwest(100);
+            	} else if (r >=0.75 && r < 0.875) {
+            		goSoutheast(100);
+            	} else if (r >= 0.875 && r < 1.0) {
+            		goNortheast(100);
+            	}
         	}
         }
 }
 
     /*
      * Fire when we scan a robot. Our policy keeps us oriented toward the enemy almost all the time, so firing straight ahead works, so
-     * long as we keep our gun heading the same as our body heading
+     * long as we keep our gun heading the same as our body heading. http://old.nabble.com/Using-Random-Statements-td4010734.html
      */
     public void onScannedRobot(ScannedRobotEvent e) {
+    	last_view = 0;
+    	double enemyBearing = getHeading() + e.getBearing(); 
+    	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
+    	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
+    	System.out.print("Found enemy at: (" + enemyX + "," + enemyY + ")\n" );
+    	goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
+    	updatePolicy();
         fire(1);
 	}
+    
+    public void updatePolicy() {
+    	if (!currently_updating) {
+    		currently_updating = true;
+    		System.out.print("Updating the policy\n");
+    		Thread policy_update = new Thread() {
+    			public void run() {
+    					policy = QUtilities.QtoPolicy(QUtilities.generateQTable(goal_state));
+    					doneUpdating();
+			    	}
+				};
+			policy_update.start();
+    	}
+    }
 
+	public void doneUpdating() {
+		currently_updating = false;
+	}
 	
 	public void onHitByBullet(HitByBulletEvent e) {
         
@@ -190,3 +243,4 @@ public class MDPEnemyBotNorthSouth extends Robot {
 		ahead(distance);
 	}
 }
+
