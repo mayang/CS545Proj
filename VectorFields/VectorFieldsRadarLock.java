@@ -31,7 +31,7 @@ public class VectorFieldsRadarLock extends AdvancedRobot
             {
                 robotX = getX();
                 robotY = getY();
-                // Robocode headings return 0 degrees as North, 90 as East, etc
+                // Robocode headings return 0 degrees as North, 90 as East, etc.
                 heading = 360 - (getHeading() - 90);
                 angleToGoal = Math.toDegrees(Math.atan2(goalY - robotY, goalX - robotX));
 
