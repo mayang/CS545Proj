@@ -19,7 +19,6 @@ public class VectorFieldsSimple extends Robot
     {
         double robotX, robotY, heading;
         double angleToGoal;
-        double distance;
 
         while (true)
         {
@@ -39,8 +38,8 @@ public class VectorFieldsSimple extends Robot
 
                 turnLeft(angleToGoal - heading);
 
-                distance = Math.sqrt(Math.pow(robotX - goalX, 2) + Math.pow(robotY - goalY, 2)) / 10;
-                ahead(Math.max(10, distance));
+                ahead(calcRobotSpeedLinear(robotX, robotY, goalX, goalY));
+                //ahead(Math.min(10, distance));
             }
             else
             {
@@ -62,5 +61,24 @@ public class VectorFieldsSimple extends Robot
         goalX = enemyX;
         goalY = enemyY;
         System.out.println("Enemy is at " + enemyX + " " + enemyY);
+    }
+
+    /**
+     * Linearly decay the speed of the robot when it nears the goal.
+     */
+    public int calcRobotSpeedLinear(double robotX, double robotY, double goalX, double goalY)
+    {
+        int speed = 0;
+        double distance = Math.sqrt(Math.pow(robotX - goalX, 2) + Math.pow(robotY - goalY, 2)) / 10;
+        if (distance >= 100)
+        {
+            speed = 10;
+        }
+        else
+        {
+            speed = (int)((distance / 10) + 0.5);
+        }
+        
+        return speed;
     }
 }
