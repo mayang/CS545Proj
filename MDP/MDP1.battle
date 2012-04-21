@@ -5,5 +5,5 @@ robocode.battle.numRounds=10
 robocode.battle.gunCoolingRate=0.1
 robocode.battle.rules.inactivityTime=450
 robocode.battle.hideEnemyNames=false
-robocode.battle.selectedRobots=sample.SittingDuck, mdp.MDPTestBotNoisy*
-robocode.battle.initialPositions = (0, 0, 0), (300, 550, 90)
+robocode.battle.selectedRobots=mdp.MDPEnemyBotRandom*, sample.SittingDuck, sample.SittingDuck, sample.SittingDuck, sample.SittingDuck, mdp.MDPTestBotDynamicObNoisy*
+robocode.battle.initialPositions (300, 0, 0), (100, 200, 0), (200, 200, 0), (300,200,0), (400, 200, 0), (300, 400, 0)
