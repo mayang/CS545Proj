@@ -7,6 +7,7 @@ public class ValueIterationDriver {
 	public static final boolean OUTPUT_REWARDS = false;
 	public static final boolean OUTPUT_POLICY = false;
 	public static final boolean OUTPUT_LOADABLE_POLICY = true;
+	public static final boolean OUTPUT_LOADABLE_POLICY_UPDATED = true;
 	public static final String OUTPUT_DIRECTORY = "/Users/collinst/Desktop/";
 
 	/**
@@ -14,8 +15,9 @@ public class ValueIterationDriver {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		FileWriter fstream, fstream2, fstream3, fstream4;
-		BufferedWriter mout, mout2, mout3, mout4;
+		
+		FileWriter fstream, fstream2, fstream3, fstream4, fstream5;
+		BufferedWriter mout, mout2, mout3, mout4, mout5;
 		if (OUTPUT_TRANSITIONS) {
 			fstream = new FileWriter(OUTPUT_DIRECTORY + "transitions.txt");
 		}
@@ -28,6 +30,9 @@ public class ValueIterationDriver {
 		if (OUTPUT_LOADABLE_POLICY) {
 			fstream4 = new FileWriter(OUTPUT_DIRECTORY + "policy_load.txt");
 		}
+		if (OUTPUT_LOADABLE_POLICY_UPDATED) {
+			fstream5 = new FileWriter(OUTPUT_DIRECTORY + "policy_load_updated.txt");
+		}
 		if (OUTPUT_TRANSITIONS) {
 			mout = new BufferedWriter(fstream);
 		}
@@ -39,6 +44,9 @@ public class ValueIterationDriver {
 		}
 		if (OUTPUT_LOADABLE_POLICY) {
 			mout4 = new BufferedWriter(fstream4);
+		}
+		if (OUTPUT_LOADABLE_POLICY_UPDATED) {
+			mout5= new BufferedWriter(fstream5);
 		}
 		//Build transition model
 		double[][][] trans = MDPUtility.getTransitions();
@@ -109,6 +117,38 @@ public class ValueIterationDriver {
 				}
 			}
 		}
+		
+		rew = MDPUtility.updateRewardsRealTime(20, 0, trans, rew);
+		q_table = MDPUtility.valueIterationRealTime(20, 0, trans, rew, q_table);
+		policy = MDPUtility.updatePolicyRealTime(policy, q_table, 20, 0);
+		
+		for (int s=0; s<MDPUtility.NUM_STATES; s++) {
+			String action_string = "";
+			if (policy[s] == MDPUtility.ACTION_NORTH) {
+				action_string = "North";
+			} else if (policy[s] == MDPUtility.ACTION_SOUTH) {
+				action_string = "South";
+			} else if (policy[s] == MDPUtility.ACTION_EAST) {
+				action_string = "East";
+			} else if (policy[s] == MDPUtility.ACTION_WEST) {
+				action_string = "West";
+			} else if (policy[s] == MDPUtility.ACTION_NORTHWEST) {
+				action_string = "Northwest";
+			} else if (policy[s] == MDPUtility.ACTION_NORTHEAST) {
+				action_string = "Northeast";
+			} else if (policy[s] == MDPUtility.ACTION_SOUTHWEST) {
+				action_string = "Southwest";
+			} else if (policy[s] == MDPUtility.ACTION_SOUTHEAST) {
+				action_string = "Southeast";
+			}
+			if (OUTPUT_POLICY) {
+				mout3.write("Take action " + action_string + " in state " + s + "\n");
+			}
+			if (OUTPUT_LOADABLE_POLICY_UPDATED) {
+				mout5.write(policy[s] + ",");
+			}
+		}
+		
 		if (OUTPUT_TRANSITIONS) {
 			mout.close();
 		}
@@ -121,6 +161,10 @@ public class ValueIterationDriver {
 		if (OUTPUT_LOADABLE_POLICY) {
 			mout4.close();
 		}
+		if (OUTPUT_LOADABLE_POLICY_UPDATED) {
+			mout5.close();
+		}
+		
 	}
 
 }

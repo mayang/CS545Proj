@@ -29,7 +29,7 @@ public class MDPEnemyBotRandom extends Robot {
         while (true) {
         	double r = Math.random();
         	if (r < 0.125) {
-        		goNorth(10);
+        		goNorth(100);
         	} else if (r >= 0.125 && r < 0.25) {
         		goSouth(100);
         	} else if (r >= 0.25 && r < 0.375) {

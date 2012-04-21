@@ -36,9 +36,9 @@ public class MDPEnemyBotNorthSouth extends Robot {
         		direction = 1;
         	}
         	if (direction == 1) {
-        		goNorth(2);
+        		goNorth(10);
         	} else {
-        		goSouth(2);
+        		goSouth(10);
         	}
         }
 }
