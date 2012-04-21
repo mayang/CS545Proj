@@ -3,6 +3,7 @@ package VectorFields;
 import robocode.*;
 import java.lang.*;
 import java.util.*;
+import java.awt.Color;
 
 /**
  * Robocode robot that locates and navigates toward a goal while also avoiding obstacles that it gets near.
@@ -12,9 +13,9 @@ public class VectorFieldsMultMovObsAvoid extends AdvancedRobot
     private static final int SCREEN_WIDTH = 600;
     private static final int SCREEN_HEIGHT = 600;
     private static final double MAX_DISTANCE = Math.sqrt(Math.pow(SCREEN_WIDTH, 2) + Math.pow(SCREEN_HEIGHT, 2));
-    private static final int MAX_SPEED = 20;
+    private static final int MAX_SPEED = 5;
     private static final int GOAL_DISTANCE = 50;
-    private static final int OBJ_DISTANCE = 150;
+    private static final int OBJ_DISTANCE = 200;
     private static final String GOAL_NAME = "VectorFields.VectorFieldsMovingGoal*";
 
     private double goalX, goalY;
@@ -26,6 +27,7 @@ public class VectorFieldsMultMovObsAvoid extends AdvancedRobot
 
     public void run()
     {
+        setAllColors(Color.GREEN);
         setTurnRadarRight(Double.POSITIVE_INFINITY);
 
         double robotX, robotY;
@@ -47,6 +49,9 @@ public class VectorFieldsMultMovObsAvoid extends AdvancedRobot
                 goalX = obstacles.get(GOAL_NAME).x;
                 goalY = obstacles.get(GOAL_NAME).y;
 
+                // Adjust robocode's returned heading so that 0 aligns with the positive x-axis instead of the positive y-axis.
+                // Also make it so that positive angle indicates a counter clockwise rotation instead of the clockwise style
+                // returned by robocode.
                 robotHeading = 360 - (getHeading() - 90);
                 angleToGoal = Math.toDegrees(Math.atan2(goalY - robotY, goalX - robotX));
                 if (angleToGoal < 0)
@@ -58,6 +63,8 @@ public class VectorFieldsMultMovObsAvoid extends AdvancedRobot
                 adjustment = normalizeAngle(adjustment);
                 speedToGoal = calcRobotSpeedLinear(robotX, robotY, goalX, goalY);
 
+                // Calculate how the robot's heading and speed should be affected by objects that it has located
+                // as it explores the world.
                 Iterator it = obstacles.entrySet().iterator();
                 while (it.hasNext()) 
                 {
@@ -65,11 +72,13 @@ public class VectorFieldsMultMovObsAvoid extends AdvancedRobot
 
                     Map.Entry pairs = (Map.Entry)it.next();
 
+                    // If the current item in the Iterator isn't the goal.
                     if (!pairs.getKey().equals(GOAL_NAME))
                     {
                         temp = (Enemy)pairs.getValue();
                         speedFromObs = calcObjRepulseSpeed(robotX, robotY, temp.x, temp.y);
 
+                        // If the robot is in range of the object to be affected by it's repulsion.
                         if (speedFromObs != 0)
                         {
                             obsAngle = Math.toDegrees(Math.atan2(robotY - temp.y, robotX - temp.x));
@@ -83,18 +92,24 @@ public class VectorFieldsMultMovObsAvoid extends AdvancedRobot
                         }
                     }
 
+                    // Was getting a null pointer exception when using this. The internet lied about its usefulness.
                     //it.remove(); // avoids a ConcurrentModificationException
                 }
 
                 adjustment = normalizeAngle(adjustment);
                 setTurnLeft(adjustment);
-                ahead(speedToGoal);
+                //ahead(speedToGoal);
+                setAhead(speedToGoal);
             }
 
             execute();
         }
     }
 
+    /**
+     * When scanning a robot we need to add it to the collection of scanned objects so it can
+     * be used later for updates to the bots movement.
+     */
     public void onScannedRobot(ScannedRobotEvent e)
     {
         double targetBearing = getHeading() + e.getBearing();
@@ -108,38 +123,6 @@ public class VectorFieldsMultMovObsAvoid extends AdvancedRobot
         }
 
         obstacles.put(name, new Enemy(tmpX, tmpY, e.getBearing()));
-
-        //if (name.equals("VectorFields.VectorFieldsGoal*"))
-        //{
-            //foundGoal = true;
-            //goalX = tmpX;
-            //goalY = tmpY;
-
-        //if (obstacles.containsKey(name))
-        //{
-            //// Update the existing data
-            ////Enemy tmp = obstacles.get(name);
-            ////tmp.x = tmpX;
-            ////tmp.y = tmpY;
-            ////tmp.bearing = e.getBearing();
-            //obstacles.put(name, new Enemy(tmpX, tmpY, e.getBearing()));
-
-        //}
-        //else
-        //{
-            //obstacles.put(name, new Enemy(tmpX, tmpY, e.getBearing()));
-        //}
-        //}
-        //else
-        //{
-        //}
-        ////else if (e.getName().equals("sample.SittingDuck"))
-        ////{
-            ////System.out.println("Obstacle at " + tmpX + " " + tmpY);
-            ////foundObstacle = true;
-            ////obsX = tmpX;
-            ////obsY = tmpY;
-        ////}
 
         setTurnRadarRight(getRadarTurnRemaining());
     }
@@ -174,6 +157,9 @@ public class VectorFieldsMultMovObsAvoid extends AdvancedRobot
         return (int)((distance / MAX_DISTANCE) * MAX_SPEED + 0.5);
     }
 
+    /**
+     * Normalize an angle so it falls in the range -180 to 180 in the least efficient manner possible.
+     */
     public double normalizeAngle(double angle)
     {
         if (angle <= -360)
@@ -197,6 +183,9 @@ public class VectorFieldsMultMovObsAvoid extends AdvancedRobot
         return angle;
     }
 
+    /**
+     * Calculate how repusled the scanning robot is by a nearby object.
+     */
     public double calcObjRepulseSpeed(double robotX, double robotY, double obsX, double obsY)
     {
         double speed = 0.0;

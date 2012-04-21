@@ -1,4 +1,4 @@
-# Obstacle Avoid Moving Goal Battle
+# Multiple Obstacle Avoid Moving Goal Battle
 robocode.battleField.width=600
 robocode.battleField.height=600
 robocode.battle.numRounds=10

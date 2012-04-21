@@ -11,7 +11,7 @@ public class VectorFieldsObstacleAvoid extends AdvancedRobot
     private static final int SCREEN_WIDTH = 600;
     private static final int SCREEN_HEIGHT = 600;
     private static final double MAX_DISTANCE = Math.sqrt(Math.pow(SCREEN_WIDTH, 2) + Math.pow(SCREEN_HEIGHT, 2));
-    private static final int MAX_SPEED = 20;
+    private static final int MAX_SPEED = 10;
     private static final int GOAL_DISTANCE = 50;
     private static final int OBJ_DISTANCE = 150;
 
@@ -69,7 +69,7 @@ public class VectorFieldsObstacleAvoid extends AdvancedRobot
 
                 adjustment = normalizeAngle(adjustment);
                 setTurnLeft(adjustment);
-                ahead(speedToGoal);
+                setAhead(speedToGoal);
             }
 
             execute();
