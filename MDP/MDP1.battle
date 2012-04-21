@@ -1,0 +1,9 @@
+#Battle Properties
+robocode.battleField.width=600
+robocode.battleField.height=600
+robocode.battle.numRounds=10
+robocode.battle.gunCoolingRate=0.1
+robocode.battle.rules.inactivityTime=450
+robocode.battle.hideEnemyNames=false
+robocode.battle.selectedRobots=sample.SittingDuck, mdp.MDPTestBotNoisy*
+robocode.battle.initialPositions = (0, 0, 0), (300, 550, 90)
