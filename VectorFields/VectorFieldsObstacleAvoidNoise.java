@@ -49,14 +49,7 @@ public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
 
                 adjustment = angleToGoal - robotHeading;
                 adjustment = normalizeAngle(adjustment);
-				double rand = Math.random();
-				if (rand < 0.2 && rand >= 0.1) {
-					System.out.println("Slip!");
-					adjustment += 180;
-				} else if (rand < 0.1 && rand >= 0.0) {
-				System.out.println("Slip!");
-					adjustment -= 180;
-				}
+				adjustment = addNoise(adjustment);
                 speedToGoal = calcRobotSpeedLinear(robotX, robotY, goalX, goalY);
 
                 if (foundObstacle)
@@ -73,14 +66,7 @@ public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
 
                         angleDiff = obsAngle - angleToGoal;
                         adjustment += (angleDiff * (speedFromObj / speedToGoal));
-						rand = Math.random();
-						if (rand < 0.2 && rand >= 0.1) {
-							System.out.println("Slip!");
-							adjustment += 180;
-						} else if (rand < 0.1 && rand >= 0.0) {
-						System.out.println("Slip!");
-							adjustment -= 180;
-						}
+						adjustment = addNoise(adjustment);
 						speedToGoal -= speedFromObj;
 
                         System.out.println("obsAngle: " + obsAngle);
@@ -185,4 +171,16 @@ public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
 
         return speed;
     }
+	
+	public double addNoise(double adj) {
+		double rand = Math.random();
+		if (rand < 0.2 && rand >= 0.1) {
+			System.out.println("Slip!");
+			adj += 30;
+		} else if (rand < 0.1 && rand >= 0.0) {
+		System.out.println("Slip!");
+			adj -= 30;
+		}
+		return adj;
+	}
 }
