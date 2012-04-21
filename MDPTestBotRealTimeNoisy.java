@@ -12,7 +12,7 @@ import mdp.MDPUtility;
  * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
  * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
  */
-public class MDPTestBotRealTime extends Robot {
+public class MDPTestBotRealTimeNoisy extends Robot {
 	//Constants for orientation
 	private final double NORTH = 0.0;
 	private final double NORTH_ALT = 360.0;
@@ -64,42 +64,60 @@ public class MDPTestBotRealTime extends Robot {
         		num_velocities++;
         		avg_velocity = velocity_sum/num_velocities;
         	}
-         	if (policy[state] == MDPUtility.ACTION_NORTH) {
-         		goNorth(30);
-         	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
-         		goSouth(30);
-         	} else if (policy[state] == MDPUtility.ACTION_EAST) {
-         		goEast(30);
-         	} else if (policy[state] == MDPUtility.ACTION_WEST) {
-         		goWest(30);
-         	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
-         		goNorthwest(30);
-         	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
-         		goNortheast(30);
-         	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
-         		goSouthwest(30);
-         	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
-         		goSoutheast(30);
-         	} else if (policy[state] == -1) {
-             	double r = Math.random();
-             	if (r < 0.125) {
-             		goNorth(30);
-             	} else if (r >= 0.125 && r < 0.25) {
-             		goSouth(30);
-             	} else if (r >= 0.25 && r < 0.375) {
-             		goEast(30);
-             	} else if (r >= 0.375 && r < 0.5) {
-             		goWest(30);
-             	} else if (r >= 0.5 && r < 0.625) {
-             		goNorthwest(30);
-             	} else if (r >= 0.625 && r < 0.750) {
-             		goSouthwest(30);
-             	} else if (r >=0.75 && r < 0.875) {
-             		goSoutheast(30);
-             	} else if (r >= 0.875 && r < 1.0) {
-             		goNortheast(30);
-             	}
-         	}
+        	double random = Math.random();
+        	if (random > 0.8) System.out.print("Oops...slip\n");
+        	if (policy[state] == MDPUtility.ACTION_NORTH) {
+        		if (random <=0.8) goNorth(20);
+        		else if (random > 0.8 && random < 0.9) goNortheast(20);
+        		else goNorthwest(0);
+        	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
+        		if (random <=0.8) goSouth(20);
+        		else if (random > 0.8 && random < 0.9) goSoutheast(20);
+        		else goSouthwest(20);
+        	} else if (policy[state] == MDPUtility.ACTION_EAST) {
+        		if (random <=0.8) goEast(20);
+        		else if (random > 0.8 && random < 0.9) goNortheast(20);
+        		else goSoutheast(20);
+        	} else if (policy[state] == MDPUtility.ACTION_WEST) {
+        		if (random <=0.8) goWest(20);
+        		else if (random > 0.8 && random < 0.9) goNorthwest(20);
+        		else goSouthwest(20);
+        	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
+        		if (random <=0.8) goNorthwest(20);
+        		else if (random > 0.8 && random < 0.9) goNorth(20);
+        		else goWest(20);
+        	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
+        		if (random <=0.8) goNortheast(20);
+        		else if (random > 0.8 && random < 0.9) goNorth(20);
+        		else goEast(20);
+        	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
+        		if (random <=0.8) goSouthwest(20);
+        		else if (random > 0.8 && random < 0.9) goSouth(20);
+        		else goWest(20);
+        	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
+        		if (random <=0.8) goSoutheast(20);
+        		else if (random > 0.8 && random < 0.9) goSouth(20);
+        		else goEast(20);
+        	} else if (policy[state] == -1) {
+            	double r = Math.random();
+            	if (r < 0.125) {
+            		goNorth(50);
+            	} else if (r >= 0.125 && r < 0.25) {
+            		goSouth(50);
+            	} else if (r >= 0.25 && r < 0.375) {
+            		goEast(50);
+            	} else if (r >= 0.375 && r < 0.5) {
+            		goWest(50);
+            	} else if (r >= 0.5 && r < 0.625) {
+            		goNorthwest(50);
+            	} else if (r >= 0.625 && r < 0.750) {
+            		goSouthwest(50);
+            	} else if (r >=0.75 && r < 0.875) {
+            		goSoutheast(50);
+            	} else if (r >= 0.875 && r < 1.0) {
+            		goNortheast(50);
+            	}
+        	}
          	
         }
 }
@@ -126,7 +144,7 @@ public class MDPTestBotRealTime extends Robot {
     			public void run() {
     					if (transitions == null || ejected_policy || sre.getDistance() > 150.0) {
     						System.out.print("Updating full\n");
-    						transitions = MDPUtility.getTransitions();
+    						transitions = MDPUtility.getTransitionsNoisy();
     						rewards = MDPUtility.getRewards(transitions, goal_state);
     						q_table = MDPUtility.valueIteration(transitions, rewards);
         					policy = MDPUtility.generatePolicyFromQTable(q_table);
@@ -291,4 +309,5 @@ public class MDPTestBotRealTime extends Robot {
 		ahead(distance);
 	}
 }
+
 
