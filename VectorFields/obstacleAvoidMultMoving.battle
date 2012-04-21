@@ -1,0 +1,9 @@
+# Obstacle Avoid Moving Goal Battle
+robocode.battleField.width=600
+robocode.battleField.height=600
+robocode.battle.numRounds=10
+robocode.battle.gunCoolingRate=0.1
+robocode.battle.rules.inactivityTime=450
+robocode.battle.hideEnemyNames=false
+robocode.battle.selectedRobots=VectorFields.VectorFieldsMovingGoal*, VectorFields.VectorFieldsMultMovObsAvoid*, sample.SittingDuck, VectorFields.SimpleMovingObstacle*, VectorFields.SimpleMovingObstacle2*
+robocode.battle.initialPositions = (10, 10, 0), (300, 500, 180), (200, 400, 0), (450, 450, 180), (450, 100, 270)
