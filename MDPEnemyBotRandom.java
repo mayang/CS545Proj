@@ -29,21 +29,21 @@ public class MDPEnemyBotRandom extends Robot {
         while (true) {
         	double r = Math.random();
         	if (r < 0.125) {
-        		goNorth(100);
+        		goNorth(1);
         	} else if (r >= 0.125 && r < 0.25) {
-        		goSouth(100);
+        		goSouth(50);
         	} else if (r >= 0.25 && r < 0.375) {
-        		goEast(100);
+        		goEast(50);
         	} else if (r >= 0.375 && r < 0.5) {
-        		goWest(100);
+        		goWest(50);
         	} else if (r >= 0.5 && r < 0.625) {
-        		goNorthwest(100);
+        		goNorthwest(50);
         	} else if (r >= 0.625 && r < 0.750) {
-        		goSouthwest(100);
+        		goSouthwest(50);
         	} else if (r >=0.75 && r < 0.875) {
-        		goSoutheast(100);
+        		goSoutheast(1);
         	} else if (r >= 0.875 && r < 1.0) {
-        		goNortheast(100);
+        		goNortheast(50);
         	}
         }
 }
@@ -53,7 +53,7 @@ public class MDPEnemyBotRandom extends Robot {
      * long as we keep our gun heading the same as our body heading
      */
     public void onScannedRobot(ScannedRobotEvent e) {
-        fire(1);
+        if(e.getName().substring(0,3).equals("mdp")) fire(1);
 	}
 
 	

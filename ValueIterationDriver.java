@@ -1,13 +1,14 @@
 package mdp;
 import java.io.BufferedWriter;
+import java.util.*;
 import java.io.FileWriter;
 import java.io.IOException;
 public class ValueIterationDriver {
 	public static final boolean OUTPUT_TRANSITIONS = false;
-	public static final boolean OUTPUT_REWARDS = false;
+	public static final boolean OUTPUT_REWARDS = true;
 	public static final boolean OUTPUT_POLICY = false;
-	public static final boolean OUTPUT_LOADABLE_POLICY = true;
-	public static final boolean OUTPUT_LOADABLE_POLICY_UPDATED = true;
+	public static final boolean OUTPUT_LOADABLE_POLICY = false;
+	public static final boolean OUTPUT_LOADABLE_POLICY_UPDATED = false;
 	public static final String OUTPUT_DIRECTORY = "/Users/collinst/Desktop/";
 
 	/**
@@ -51,7 +52,10 @@ public class ValueIterationDriver {
 		//Build transition model
 		double[][][] trans = MDPUtility.getTransitions();
 		//Build reward model
-		double[][] rew = MDPUtility.getRewards(trans, 0);
+		Map<String,Integer> m = new HashMap<String,Integer>();
+		m.put("s", MDPUtility.getStateForXandY(300.0,300.0));
+		System.out.print(MDPUtility.getStateForXandY(300, 300));
+		double[][] rew = MDPUtility.getRewardsWithObstacles(trans, 0, m);
 		
 		if (OUTPUT_TRANSITIONS) {
 			for (int i=0;i<MDPUtility.NUM_STATES; i++) {

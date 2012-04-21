@@ -48,7 +48,7 @@ public class MDPEnemyBotEastWest extends Robot {
      * long as we keep our gun heading the same as our body heading
      */
     public void onScannedRobot(ScannedRobotEvent e) {
-        fire(1);
+        //fire(1);
 	}
 
 	

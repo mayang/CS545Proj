@@ -1,4 +1,5 @@
 package mdp;
+import java.util.*;
 /*
  * Abstract: Implements methods to create/manage/implement a Markov Decision Process over a disctrete state-space.
  * Date: 16 April 2012
@@ -56,8 +57,8 @@ public class MDPUtility {
 			}
 			count++;
 		}
-		System.out.print("Convergence in " + count + " iterations");
-		System.out.println();
+		//System.out.print("Convergence in " + count + " iterations");
+		//System.out.println();
 		return q_table;
 	}
 	
@@ -135,8 +136,8 @@ public class MDPUtility {
 			}
 			count++;
 		}
-		System.out.print("Real time Convergence in " + count + " iterations");
-		System.out.println();
+		//System.out.print("Real time Convergence in " + count + " iterations");
+		//System.out.println();
 		return new_q;
 	}
 	
@@ -162,15 +163,9 @@ public class MDPUtility {
 			int maxa = -1;
 			if (states_to_update[s] != -1) {
 			for (int a = 0; a<NUM_ACTIONS; a++) {
-				if (states_to_update[s] == 1) {
-					System.out.print(q_table[states_to_update[s]][a] + "\n");
-				}
 				if (q_table[states_to_update[s]][a] > maxq) {
 					maxq = q_table[states_to_update[s]][a];
 					maxa = a;
-				}
-				if (states_to_update[s] == 1) {
-					System.out.print(maxq + "\n");
 				}
 			}
 			new_policy[states_to_update[s]] = maxa;
@@ -517,6 +512,50 @@ public class MDPUtility {
 		}
 	}
 	
+	/*
+	 * This function returns a reward for any state/action pair. It makes use of the transition
+	 * function to determine what actions in what states lead to the goal state.
+	 */
+	public static double getRewardForGoalWithObstacles(int state, int action, double[][][] transitions, int goal_state, Map<String,Integer> obstacles) {
+		//running into the wall is -100 reward
+		if (state == goal_state) {
+			return 0.0;
+		} else {
+			synchronized(obstacles) {
+			for (Map.Entry<String, Integer> entry : obstacles.entrySet()) {
+				if (transitions[state][entry.getValue()][action] > 0.0) {
+					return -20.0;
+				}
+				int[] states = getSurroundingStates(entry.getValue());
+				for (int i=0; i<NUM_ACTIONS; i++) {
+					if(states[i] != -1) {
+						if(transitions[state][states[i]][action] > 0.0) {
+							return -20.0;
+						}
+						int[] sub_states = getSurroundingStates(states[i]);
+							for (int j=0; j<NUM_ACTIONS; j++) {
+								if (sub_states[j] != -1) {
+									if (transitions[state][sub_states[j]][action] > 0.0) {
+										return -20.0;
+									}
+								}
+							}
+						
+					}
+				}
+			}
+			}
+			if (transitions[state][state][action] > 0.0) {
+				return -100.0;
+			}
+			if (transitions[state][goal_state][action] > 0.0) {
+				return 1.0;
+			//transitioning anywhere else is -1 reward
+			}
+			return -1.0;
+		}
+	}
+	
 	public static double[][][] getTransitions() {
 		double[][][] trans = new double[MDPUtility.NUM_STATES][MDPUtility.NUM_STATES][MDPUtility.NUM_ACTIONS];
 			for (int s=0; s<MDPUtility.NUM_STATES; s++) {
@@ -549,6 +588,17 @@ public class MDPUtility {
 		for (int s=0; s<MDPUtility.NUM_STATES; s++) {
 			for (int a=0; a<MDPUtility.NUM_ACTIONS; a++) {
 				rew[s][a] = MDPUtility.getRewardForGoal(s, a, transitions, goal_state);
+			}
+		}
+		return rew;
+	}
+	
+	public static double[][] getRewardsWithObstacles(double[][][] transitions, int goal_state, Map<String, Integer> obstacles) {
+		double[][] rew = new double[MDPUtility.NUM_STATES][MDPUtility.NUM_ACTIONS];
+		//Build reward model
+		for (int s=0; s<MDPUtility.NUM_STATES; s++) {
+			for (int a=0; a<MDPUtility.NUM_ACTIONS; a++) {
+				rew[s][a] = MDPUtility.getRewardForGoalWithObstacles(s, a, transitions, goal_state, obstacles);
 			}
 		}
 		return rew;
