@@ -30,15 +30,15 @@ public class MDPEnemyBotEastWest extends Robot {
         while (true) {
         	//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
         	int state = MDPUtility.getStateForXandY(getX(), getY());
-        	if (state + MDPUtility.NUM_STATES_IN_ROW >= MDPUtility.NUM_STATES) {
+        	if (state % MDPUtility.NUM_STATES_IN_ROW == 0) {
         		direction = 0;
-        	} else if (state < MDPUtility.NUM_STATES_IN_ROW) {
+        	} else if (state % MDPUtility.NUM_STATES_IN_ROW == MDPUtility.NUM_STATES_IN_ROW - 1) {
         		direction = 1;
         	}
         	if (direction == 1) {
-        		goWest(2);
+        		goWest(10);
         	} else {
-        		goEast(2);
+        		goEast(10);
         	}
         }
 }

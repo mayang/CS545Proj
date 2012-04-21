@@ -36,7 +36,7 @@ public class MDPTestBotMovingTargetDynamic extends Robot {
     double current_velocity;
     double velocity_sum = 0.0;
     int random_walk = 10;
-    int random_trigger_value;
+    int random_trigger_value = 10;
     int num_velocities = 0;
     long est_update_time = 40;
     double distance_trigger = 100.0;
@@ -61,39 +61,39 @@ public class MDPTestBotMovingTargetDynamic extends Robot {
         		avg_velocity = velocity_sum/num_velocities;
         	}
          	if (policy[state] == MDPUtility.ACTION_NORTH) {
-         		goNorth(10);
+         		goNorth(20);
          	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
-         		goSouth(10);
+         		goSouth(20);
          	} else if (policy[state] == MDPUtility.ACTION_EAST) {
-         		goEast(10);
+         		goEast(20);
          	} else if (policy[state] == MDPUtility.ACTION_WEST) {
-         		goWest(10);
+         		goWest(20);
          	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
-         		goNorthwest(10);
+         		goNorthwest(20);
          	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
-         		goNortheast(10);
+         		goNortheast(20);
          	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
-         		goSouthwest(10);
+         		goSouthwest(20);
          	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
-         		goSoutheast(10);
+         		goSoutheast(20);
          	} else if (policy[state] == -1) {
              	double r = Math.random();
              	if (r < 0.125) {
-             		goNorth(10);
+             		goNorth(20);
              	} else if (r >= 0.125 && r < 0.25) {
-             		goSouth(10);
+             		goSouth(20);
              	} else if (r >= 0.25 && r < 0.375) {
-             		goEast(10);
+             		goEast(20);
              	} else if (r >= 0.375 && r < 0.5) {
-             		goWest(10);
+             		goWest(20);
              	} else if (r >= 0.5 && r < 0.625) {
-             		goNorthwest(10);
+             		goNorthwest(20);
              	} else if (r >= 0.625 && r < 0.750) {
-             		goSouthwest(10);
+             		goSouthwest(20);
              	} else if (r >=0.75 && r < 0.875) {
              		goSoutheast(10);
              	} else if (r >= 0.875 && r < 1.0) {
-             		goNortheast(10);
+             		goNortheast(20);
              	}
          	}
          	

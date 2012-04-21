@@ -46,7 +46,7 @@ public class MDPUtility {
 					}
 					q_table[s][a] = rewards[s][a] + DISCOUNT_FACTOR*backup;
 				}
-				double maxq = Double.MIN_VALUE;
+				double maxq = -Double.MAX_VALUE;
 				for (int k = 0; k<NUM_ACTIONS; k++) {
 					if (q_table[s][k] > maxq) {
 						maxq = q_table[s][k];
@@ -59,6 +59,179 @@ public class MDPUtility {
 		System.out.print("Convergence in " + count + " iterations");
 		System.out.println();
 		return q_table;
+	}
+	
+	public static double[][] updateRewardsRealTime(int goal_state, int previous_goal_state, double[][][] transitions, double[][] rewards) {
+		double[][] new_rewards = rewards;
+		int[] states_surrounding_new_goal = getSurroundingStates(goal_state);
+		int[] states_surrounding_old_goal = getSurroundingStates(previous_goal_state);
+		
+		for (int s = 0; s < NUM_ACTIONS; s++) {
+			if (states_surrounding_new_goal[s] != -1) {
+				for (int a = 0; a< NUM_ACTIONS; a++) {
+					new_rewards[states_surrounding_new_goal[s]][a] = getRewardForGoal(states_surrounding_new_goal[s], a, transitions, goal_state);
+				}
+			}
+		}
+		for (int a = 0; a < NUM_ACTIONS; a++) {
+			new_rewards[goal_state][a] = getRewardForGoal(goal_state, a, transitions, goal_state);
+		}
+		
+		for (int s = 0; s < NUM_ACTIONS; s++) {
+			if (states_surrounding_old_goal[s] != -1) {
+				for (int a = 0; a< NUM_ACTIONS; a++) {
+					new_rewards[states_surrounding_old_goal[s]][a] = getRewardForGoal(states_surrounding_old_goal[s], a, transitions, goal_state);
+				}
+			}
+		}
+		for (int a = 0; a < NUM_ACTIONS; a++) {
+			new_rewards[previous_goal_state][a] = getRewardForGoal(previous_goal_state, a, transitions, goal_state);
+		}
+		return new_rewards;
+	}
+	
+	public static double[][] valueIterationRealTime(int goal_state, int previous_goal_state, double[][][] transitions, double[][] rewards, double[][] q_table) {
+		double[][] new_q = q_table;
+		double[] value = new double[NUM_STATES];
+		double[] valuePrevious = new double[NUM_STATES];
+		int[] states_to_update = new int[2*NUM_ACTIONS + 2];
+		int count = 0;
+		int[] states_surrounding_new_goal = getSurroundingStates(goal_state);
+		int[] states_surrounding_old_goal = getSurroundingStates(previous_goal_state);
+		
+		for (int s = 0; s < NUM_ACTIONS; s++) {
+			states_to_update[s] = states_surrounding_new_goal[s];
+		}
+		
+		for (int s = NUM_ACTIONS; s < 2*NUM_ACTIONS; s++) {
+			states_to_update[s] = states_surrounding_old_goal[s - NUM_ACTIONS];
+		}
+		
+		states_to_update[NUM_ACTIONS*2] = goal_state;
+		states_to_update[NUM_ACTIONS*2 + 1] = previous_goal_state;
+		
+		while (vectorNormOfDifference(value, valuePrevious) > RESIDUAL || count == 0) {
+			for (int i = 0; i < 2*NUM_ACTIONS + 2; i++) {
+				if(states_to_update[i] != -1) valuePrevious[states_to_update[i]] = value[states_to_update[i]];
+			}
+			for (int s = 0; s < 2*NUM_ACTIONS+2; s++) {
+				for (int a = 0; a < NUM_ACTIONS; a++) {
+					double backup = 0.0;
+					int[] sur = getSurroundingStates(states_to_update[s]);
+					for (int sprime = 0; sprime < NUM_ACTIONS; sprime++) {
+						if (states_to_update[s] != -1 && sur[sprime] != -1) backup += transitions[states_to_update[s]][sur[sprime]][a]*valuePrevious[sur[sprime]];
+					}
+					if (states_to_update[s] != -1) q_table[states_to_update[s]][a] = rewards[states_to_update[s]][a] + DISCOUNT_FACTOR*backup;
+				}
+				double maxq = -Double.MAX_VALUE;
+				if (states_to_update[s] != -1) {
+					for (int k = 0; k<NUM_ACTIONS; k++) {
+						if (q_table[states_to_update[s]][k] > maxq) {
+							maxq = q_table[states_to_update[s]][k];
+						}
+					}
+				}
+				if (states_to_update[s] != -1 && maxq > Double.MIN_VALUE) value[states_to_update[s]] = maxq;
+			}
+			count++;
+		}
+		System.out.print("Real time Convergence in " + count + " iterations");
+		System.out.println();
+		return new_q;
+	}
+	
+	public static int[] updatePolicyRealTime(int[] policy, double[][] q_table, int goal_state, int previous_goal_state) {
+		int[] new_policy = policy;
+		int[] states_to_update = new int[2*NUM_ACTIONS + 2];
+		int[] states_surrounding_new_goal = getSurroundingStates(goal_state);
+		int[] states_surrounding_old_goal = getSurroundingStates(previous_goal_state);
+		
+		for (int s = 0; s < NUM_ACTIONS; s++) {
+			states_to_update[s] = states_surrounding_new_goal[s];
+		}
+		
+		for (int s = NUM_ACTIONS; s < 2*NUM_ACTIONS; s++) {
+			states_to_update[s] = states_surrounding_old_goal[s - NUM_ACTIONS];
+		}
+		
+		states_to_update[NUM_ACTIONS*2] = goal_state;
+		states_to_update[NUM_ACTIONS*2 + 1] = previous_goal_state;
+		
+		for (int s = 0; s < 2*NUM_ACTIONS+2; s++) {
+			double maxq = -Double.MAX_VALUE;
+			int maxa = -1;
+			if (states_to_update[s] != -1) {
+			for (int a = 0; a<NUM_ACTIONS; a++) {
+				if (states_to_update[s] == 1) {
+					System.out.print(q_table[states_to_update[s]][a] + "\n");
+				}
+				if (q_table[states_to_update[s]][a] > maxq) {
+					maxq = q_table[states_to_update[s]][a];
+					maxa = a;
+				}
+				if (states_to_update[s] == 1) {
+					System.out.print(maxq + "\n");
+				}
+			}
+			new_policy[states_to_update[s]] = maxa;
+			}
+		}
+		return new_policy;
+	}
+	
+	public static int[] getSurroundingStates(int state) {
+		int[] surrounding = new int[8];
+		
+		if (state % NUM_STATES_IN_ROW != 0 && state - 1 >= 0)  {
+			surrounding[0] = state - 1;
+		} else {
+			surrounding[0] = -1;
+		}
+		
+		if (state % NUM_STATES_IN_ROW != NUM_STATES_IN_ROW - 1 && state + 1 < NUM_STATES) {
+			surrounding[1] = state + 1;
+		} else {
+			surrounding[1] = -1;
+		}
+		
+		if (state + NUM_STATES_IN_ROW < NUM_STATES) {
+			surrounding[2] = state + NUM_STATES_IN_ROW;
+		} else {
+			surrounding[2] = -1;
+		}
+		
+		if (state - NUM_STATES_IN_ROW >= 0) {
+			surrounding[3] = state - NUM_STATES_IN_ROW;
+		} else {
+			surrounding[3] = -1;
+		}
+		
+		if (state % NUM_STATES_IN_ROW != 0 && state + NUM_STATES_IN_ROW - 1 < NUM_STATES) {
+			surrounding[4] = state + NUM_STATES_IN_ROW - 1;
+		} else {
+			surrounding[4] = -1;
+		}
+		
+		if (state % NUM_STATES_IN_ROW != 0 && state - NUM_STATES_IN_ROW - 1 >= 0) {
+			surrounding[5] = state - NUM_STATES_IN_ROW - 1;
+		} else {
+			surrounding[5] = -1;
+		}
+		
+		if (state % NUM_STATES_IN_ROW != NUM_STATES_IN_ROW - 1 && state + NUM_STATES_IN_ROW + 1 < NUM_STATES) {
+			surrounding[6] = state + NUM_STATES_IN_ROW + 1;
+		} else {
+			surrounding[6] = -1;
+		}
+		
+		if (state % NUM_STATES_IN_ROW != NUM_STATES_IN_ROW - 1 && state - NUM_STATES_IN_ROW + 1 >= 0) {
+			surrounding[7] = state - NUM_STATES_IN_ROW + 1;
+		} else {
+			surrounding[7] = -1;
+		}
+		
+		
+		return surrounding;
 	}
 	
 	
@@ -388,7 +561,7 @@ public class MDPUtility {
 	public static int[] generatePolicyFromQTable(double[][] q_table) {
 		int[] policy = new int[NUM_STATES];
 		for (int s = 0; s<NUM_STATES; s++) {
-			double maxq = Double.MIN_VALUE;
+			double maxq = -Double.MAX_VALUE;
 			int maxa = -1;
 			for (int a = 0; a<NUM_ACTIONS; a++) {
 				if (q_table[s][a] > maxq) {

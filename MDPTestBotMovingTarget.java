@@ -89,7 +89,7 @@ public class MDPTestBotMovingTarget extends Robot {
     		System.out.print("Updating the policy\n");
     		Thread policy_update = new Thread() {
     			public void run() {
-    					transitions = MDPUtility.getTransitions();
+    					if (transitions == null) transitions = MDPUtility.getTransitions();
     					rewards = MDPUtility.getRewards(transitions, goal_state);
     					q_table = MDPUtility.valueIteration(transitions, rewards);
     					policy = MDPUtility.generatePolicyFromQTable(q_table);
