@@ -2,19 +2,20 @@ package VectorFields;
 
 import robocode.*;
 import java.lang.*;
+import java.util.*;
 
 /**
  * Robocode robot that locates and navigates toward a goal while also avoiding obstacles that it gets near.
- * This has some noise and slippage
  */
-public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
+public class VectorFieldsMultMovObsAvoidNoise extends AdvancedRobot
 {
     private static final int SCREEN_WIDTH = 600;
     private static final int SCREEN_HEIGHT = 600;
     private static final double MAX_DISTANCE = Math.sqrt(Math.pow(SCREEN_WIDTH, 2) + Math.pow(SCREEN_HEIGHT, 2));
-    private static final int MAX_SPEED = 10;
+    private static final int MAX_SPEED = 20;
     private static final int GOAL_DISTANCE = 50;
     private static final int OBJ_DISTANCE = 150;
+    private static final String GOAL_NAME = "VectorFields.VectorFieldsMovingGoal*";
 	private static final int SLIPPAGE = 30;
 
     private double goalX, goalY;
@@ -22,24 +23,30 @@ public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
     private boolean foundGoal = false;
     private boolean foundObstacle = false;
 
+    private Map<String, Enemy> obstacles;
+
     public void run()
     {
         setTurnRadarRight(Double.POSITIVE_INFINITY);
 
         double robotX, robotY;
-        double robotHeading, angleToGoal, angleToObj;
+        double robotHeading, angleToGoal, angleToObs;
         double adjustment;
         double obsAngle, obsAdjustment;
         double angleDiff;
+        double speedToGoal, speedFromObs;
 
-        double speedToGoal, speedFromObj;
+        Enemy temp;
+        obstacles = new HashMap<String, Enemy>(10);
 
         while (true)
         {
-             if (foundGoal)
+            if (foundGoal)
             {
                 robotX = getX();
                 robotY = getY();
+                goalX = obstacles.get(GOAL_NAME).x;
+                goalY = obstacles.get(GOAL_NAME).y;
 
                 robotHeading = 360 - (getHeading() - 90);
                 angleToGoal = Math.toDegrees(Math.atan2(goalY - robotY, goalX - robotX));
@@ -52,27 +59,38 @@ public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
                 adjustment = normalizeAngle(adjustment);
                 speedToGoal = calcRobotSpeedLinear(robotX, robotY, goalX, goalY);
 
-                if (foundObstacle)
+                Iterator it = obstacles.entrySet().iterator();
+                while (it.hasNext()) 
                 {
-                    speedFromObj = calcObjRepulseSpeed(robotX, robotY, obsX, obsY);
+                    System.out.println("Iterating through objects.");
 
-                    if (speedFromObj != 0)
+                    Map.Entry pairs = (Map.Entry)it.next();
+
+                    if (!pairs.getKey().equals(GOAL_NAME))
                     {
-                        obsAngle = Math.toDegrees(Math.atan2(robotY - obsY, robotX - obsX));
-                        if (obsAngle < 0)
-                            obsAngle += 360;
+                        temp = (Enemy)pairs.getValue();
+                        speedFromObs = calcObjRepulseSpeed(robotX, robotY, temp.x, temp.y);
 
-                        angleDiff = obsAngle - angleToGoal;
-                        angleDiff = normalizeAngle(angleDiff);
-                        adjustment += (angleDiff * (speedFromObj / speedToGoal));
-                        speedToGoal -= speedFromObj;
+                        if (speedFromObs != 0)
+                        {
+                            obsAngle = Math.toDegrees(Math.atan2(robotY - temp.y, robotX - temp.x));
+                            if (obsAngle < 0)
+                                obsAngle += 360;
+
+                            angleDiff = obsAngle - angleToGoal;
+                            angleDiff = normalizeAngle(angleDiff);
+                            adjustment += (angleDiff * (speedFromObs / speedToGoal));
+                            speedToGoal -= speedFromObs;
+                        }
                     }
+
+                    //it.remove(); // avoids a ConcurrentModificationException
                 }
 
                 adjustment = normalizeAngle(adjustment);
-                adjustment = addNoise(adjustment);
-				setTurnLeft(adjustment);
-                setAhead(speedToGoal);
+				adjustment = addNoise(adjustment);
+                setTurnLeft(adjustment);
+                ahead(speedToGoal);
             }
 
             execute();
@@ -84,20 +102,46 @@ public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
         double targetBearing = getHeading() + e.getBearing();
         double tmpX = getX() + e.getDistance() * Math.sin(Math.toRadians(targetBearing));
         double tmpY = getY() + e.getDistance() * Math.cos(Math.toRadians(targetBearing));
+        String name = e.getName();
 
-        if (e.getName().equals("VectorFields.VectorFieldsGoal*") && !foundGoal)
+        if (name.equals(GOAL_NAME))
         {
             foundGoal = true;
-            goalX = tmpX;
-            goalY = tmpY;
         }
-        else if (e.getName().equals("sample.SittingDuck") && !foundObstacle)
-        {
-            System.out.println("Obstacle at " + tmpX + " " + tmpY);
-            foundObstacle = true;
-            obsX = tmpX;
-            obsY = tmpY;
-        }
+
+        obstacles.put(name, new Enemy(tmpX, tmpY, e.getBearing()));
+
+        //if (name.equals("VectorFields.VectorFieldsGoal*"))
+        //{
+            //foundGoal = true;
+            //goalX = tmpX;
+            //goalY = tmpY;
+
+        //if (obstacles.containsKey(name))
+        //{
+            //// Update the existing data
+            ////Enemy tmp = obstacles.get(name);
+            ////tmp.x = tmpX;
+            ////tmp.y = tmpY;
+            ////tmp.bearing = e.getBearing();
+            //obstacles.put(name, new Enemy(tmpX, tmpY, e.getBearing()));
+
+        //}
+        //else
+        //{
+            //obstacles.put(name, new Enemy(tmpX, tmpY, e.getBearing()));
+        //}
+        //}
+        //else
+        //{
+        //}
+        ////else if (e.getName().equals("sample.SittingDuck"))
+        ////{
+            ////System.out.println("Obstacle at " + tmpX + " " + tmpY);
+            ////foundObstacle = true;
+            ////obsX = tmpX;
+            ////obsY = tmpY;
+        ////}
 
         setTurnRadarRight(getRadarTurnRemaining());
     }
@@ -167,7 +211,7 @@ public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
 
         return speed;
     }
-	
+
 	public double addNoise(double adj) {
 		double rand = Math.random();
 		if (rand < 0.2 && rand >= 0.1) {
@@ -179,4 +223,5 @@ public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
 		}
 		return adj;
 	}
+	
 }
