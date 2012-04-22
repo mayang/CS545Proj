@@ -1,0 +1,8 @@
+1. Static goal, static policy, enemy does not fire upon us. We want our robot, 
+in red, to move to the other robot, who is yellow (the goal). Value iteration
+converged in 114 iterations. The enemy is at 273. Our robot starts at an arbitrary location (279, 75). This is associated with the file MDPStatic.battle. The policy produced
+is in mdp_static_policy.png
+
+2. Same as above with noisy motion model. 80% of the time, the robot does the correct action. 20% of the time, the robot drifts to the state to the right or left of where
+it was trying to go (assuming the robot's heading was toward where it wanted to go. our
+robot is green. The goal robot, again, is yellow. Value iteration converged in 116 iterations. The associated battle file is MDPStaticNoisy.battle. The policy produced is in mdp_static_noisy_policy.png.
