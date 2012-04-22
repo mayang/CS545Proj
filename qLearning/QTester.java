@@ -9,6 +9,8 @@ public class QTester {
 		final long endTime;
 		int[] policy;
 		try {
+			System.out.println(ObstacleQUtilities2.XYtoState(200, 45));
+			System.out.println(ObstacleQUtilities2.OBSTACLE_STATES);
 		
 			policy = ObstacleQUtilities2.QtoPolicy(ObstacleQUtilities2.generateQTable(2, ObstacleQUtilities2.XYtoState(450, 450)));
 		

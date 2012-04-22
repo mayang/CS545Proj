@@ -12,7 +12,7 @@ public class ObstacleQUtilities2 {
 	public static final int NUM_ACTIONS = 8;
 	public static final int NUM_EPISODES = 100000;
 	public static final int GOAL_STATE = 329;
-	public static final int[] OBSTACLES = {200,15,200,45,200,75,200,105,200,135,200,165,200,195,200,230,200,265,200,300};
+	public static final int[] OBSTACLES = {200,10,200,30,200,50,200,70,200,90,200,110,200,130,200,150,200,170,200,190};
 	public static final Set<Integer> OBSTACLE_STATES = obstacleXYsToStates(OBSTACLES);
 	public static final double alpha = 0.5;
 	public static final double gamma = 0.9;
