@@ -56,13 +56,13 @@ public class MDPEnemyBotPerimeter extends Robot {
         	}
         	if (direction == DIRECTION_NORTH) {
         		System.out.print("Going north \n");
-        		goNorth(5);
+        		goNorth(30);
         	} else if (direction == DIRECTION_EAST) {
-        		goEast(5);
+        		goEast(30);
         	} else if (direction == DIRECTION_WEST) {
-        		goWest(5);
+        		goWest(30);
         	} else if (direction == DIRECTION_SOUTH) {
-        		goSouth(5);
+        		goSouth(30);
         	}
         }
 }

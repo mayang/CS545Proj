@@ -47,18 +47,9 @@ public class MDPTestBotMovingTargetDynamic extends Robot {
     	 while (true) {
     		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
          	int state = MDPUtility.getStateForXandY(getX(), getY());
-        	current_velocity = getVelocity();
-        	random_walk--;
-        	if (random_walk == 0){ 
-        		for (int i=0; i<MDPUtility.NUM_STATES; i++) {
-        			policy[i] = -1;
-        		}
-        		random_walk = random_trigger_value;
-        	}
-        	if (current_velocity > 0.0) {
-        		velocity_sum += current_velocity;
-        		num_velocities++;
-        		avg_velocity = velocity_sum/num_velocities;
+        	if (getTime() % 10 == 0) {
+        		turnRadarLeft(360);
+        		continue;
         	}
          	if (policy[state] == MDPUtility.ACTION_NORTH) {
          		goNorth(20);
@@ -110,10 +101,7 @@ public class MDPTestBotMovingTargetDynamic extends Robot {
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
     	goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
-    	if(goal_state >= 0 && goal_state < MDPUtility.NUM_STATES) last_valid_goal = goal_state;
-    	if (goal_state < 0) goal_state = last_valid_goal;
-    	if (goal_state >= MDPUtility.NUM_STATES) goal_state = last_valid_goal;
-    	if (!currently_updating /*&& e.getDistance() > distance_trigger*/) {
+    	if (!currently_updating) {
     		time1 = getTime();
     		currently_updating = true;
     		Thread policy_update = new Thread() {

@@ -47,13 +47,9 @@ public class MDPTestBotMovingTargetDynamicN extends Robot {
     	 while (true) {
     		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
          	int state = MDPUtility.getStateForXandY(getX(), getY());
-        	random_walk--;
-        	if (random_walk == 0){ 
-        		System.out.print("Eject policy");
-        		for (int i=0; i<MDPUtility.NUM_STATES; i++) {
-        			policy[i] = -1;
-        		}
-        		random_walk = random_trigger_value;
+        	if (getTime() % 10 == 0) {
+        		turnRadarLeft(360);
+        		continue;
         	}
         	double random = Math.random();
         	if (random > 0.8) System.out.print("Oops...slip\n");
@@ -122,10 +118,7 @@ public class MDPTestBotMovingTargetDynamicN extends Robot {
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
     	goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
-    	if(goal_state >= 0 && goal_state < MDPUtility.NUM_STATES) last_valid_goal = goal_state;
-    	if (goal_state < 0) goal_state = last_valid_goal;
-    	if (goal_state >= MDPUtility.NUM_STATES) goal_state = last_valid_goal;
-    	if (!currently_updating /*&& e.getDistance() > distance_trigger*/) {
+    	if (!currently_updating) {
     		time1 = getTime();
     		currently_updating = true;
     		Thread policy_update = new Thread() {
