@@ -12,8 +12,8 @@ public class VectorFieldsRadarLock extends AdvancedRobot
     private static final int SCREEN_WIDTH = 600;
     private static final int SCREEN_HEIGHT = 600;
     private static final double MAX_DISTANCE = Math.sqrt(Math.pow(SCREEN_WIDTH, 2) + Math.pow(SCREEN_HEIGHT, 2));
-    private static final int MAX_SPEED = 20;
-    private static final int GOAL_DISTANCE = 50;
+    private static final int MAX_SPEED = 10;
+    private static final int GOAL_DISTANCE = 100;
 
     private boolean foundGoal = false;
     private double goalX, goalY;
@@ -61,7 +61,7 @@ public class VectorFieldsRadarLock extends AdvancedRobot
                 }
 
                 setTurnLeft(adjustment);
-                ahead(calcRobotSpeedLinear(robotX, robotY, goalX, goalY));
+                setAhead(calcRobotSpeedLinear(robotX, robotY, goalX, goalY));
             }
             else
             {

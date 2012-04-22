@@ -7,26 +7,24 @@ import java.lang.*;
  * A Robocode robot that attempts to use vector fields to navigate towards a moving goal. This
  * uses an advanced robot in an effort to smooth out the motion issues with the simple robots.
  */
-public class VectorFieldsMovingGoalAdvancedNoise extends AdvancedRobot
+public class VectorFieldsRadarLock extends AdvancedRobot
 {
     private static final int SCREEN_WIDTH = 600;
     private static final int SCREEN_HEIGHT = 600;
     private static final double MAX_DISTANCE = Math.sqrt(Math.pow(SCREEN_WIDTH, 2) + Math.pow(SCREEN_HEIGHT, 2));
     private static final int MAX_SPEED = 10;
-    private static final int GOAL_DISTANCE = 150;
+    private static final int GOAL_DISTANCE = 100;
 	private static final int SLIPPAGE = 30;
 
     private boolean foundGoal = false;
     private double goalX, goalY;
 
-    //setAdjustGunForRobotTurn(false);
-    //setAdjustRadarForGunTurn(false);
-    //setAdjustRadarForRobotTurn(false);
-
     public void run()
     {
         double angleToGoal, adjustment;
         double robotX, robotY, heading;
+
+        setAdjustRadarForRobotTurn(true);
 
         while (true)
         {
@@ -34,7 +32,7 @@ public class VectorFieldsMovingGoalAdvancedNoise extends AdvancedRobot
             {
                 robotX = getX();
                 robotY = getY();
-                // Robocode headings return 0 degrees as North, 90 as East, etc
+                // Robocode headings return 0 degrees as North, 90 as East, etc.
                 heading = 360 - (getHeading() - 90);
                 angleToGoal = Math.toDegrees(Math.atan2(goalY - robotY, goalX - robotX));
 
@@ -63,17 +61,17 @@ public class VectorFieldsMovingGoalAdvancedNoise extends AdvancedRobot
                     adjustment -= 360;
                 }
 
-                setTurnRadarLeft(180);
 				adjustment = addNoise(adjustment);
                 setTurnLeft(adjustment);
                 setAhead(calcRobotSpeedLinear(robotX, robotY, goalX, goalY));
             }
             else
             {
-                setTurnRadarRight(180);
+                setTurnRadarRight(360);
             }
 
-            execute();
+            scan();
+            //execute();
         }
     }
 
@@ -89,6 +87,9 @@ public class VectorFieldsMovingGoalAdvancedNoise extends AdvancedRobot
         foundGoal = true;
         goalX = enemyX;
         goalY = enemyY;
+
+        double radarTurn = getHeadingRadians() + e.getBearingRadians() - getRadarHeadingRadians();
+        setTurnRadarRightRadians(robocode.util.Utils.normalRelativeAngle(radarTurn));
     }
 
     /**

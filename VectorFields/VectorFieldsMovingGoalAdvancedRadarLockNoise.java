@@ -14,6 +14,7 @@ public class VectorFieldsRadarLockNoise extends AdvancedRobot
     private static final double MAX_DISTANCE = Math.sqrt(Math.pow(SCREEN_WIDTH, 2) + Math.pow(SCREEN_HEIGHT, 2));
     private static final int MAX_SPEED = 20;
     private static final int GOAL_DISTANCE = 100;
+	private static final int SLIPPAGE = 30;
 
     private boolean foundGoal = false;
     private double goalX, goalY;
@@ -169,10 +170,10 @@ public class VectorFieldsRadarLockNoise extends AdvancedRobot
 		double rand = Math.random();
 		if (rand < 0.2 && rand >= 0.1) {
 			System.out.println("Slip!");
-			adj += 30;
+			adj += SLIPPAGE;
 		} else if (rand < 0.1 && rand >= 0.0) {
 		System.out.println("Slip!");
-			adj -= 30;
+			adj -= SLIPPAGE;
 		}
 		return adj;
 	}

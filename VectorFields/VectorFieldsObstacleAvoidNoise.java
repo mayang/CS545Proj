@@ -12,9 +12,10 @@ public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
     private static final int SCREEN_WIDTH = 600;
     private static final int SCREEN_HEIGHT = 600;
     private static final double MAX_DISTANCE = Math.sqrt(Math.pow(SCREEN_WIDTH, 2) + Math.pow(SCREEN_HEIGHT, 2));
-    private static final int MAX_SPEED = 20;
+    private static final int MAX_SPEED = 10;
     private static final int GOAL_DISTANCE = 50;
     private static final int OBJ_DISTANCE = 150;
+	private static final int SLIPPAGE = 30;
 
     private double goalX, goalY;
     private double obsX, obsY;
@@ -35,7 +36,7 @@ public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
 
         while (true)
         {
-            if (foundGoal)
+             if (foundGoal)
             {
                 robotX = getX();
                 robotY = getY();
@@ -49,34 +50,29 @@ public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
 
                 adjustment = angleToGoal - robotHeading;
                 adjustment = normalizeAngle(adjustment);
-				adjustment = addNoise(adjustment);
                 speedToGoal = calcRobotSpeedLinear(robotX, robotY, goalX, goalY);
 
                 if (foundObstacle)
                 {
-                    System.out.println("HANDLING OBSTACLE");
                     speedFromObj = calcObjRepulseSpeed(robotX, robotY, obsX, obsY);
 
                     if (speedFromObj != 0)
                     {
-                        System.out.println("SPEED IS NOT 0");
                         obsAngle = Math.toDegrees(Math.atan2(robotY - obsY, robotX - obsX));
                         if (obsAngle < 0)
                             obsAngle += 360;
 
                         angleDiff = obsAngle - angleToGoal;
+                        angleDiff = normalizeAngle(angleDiff);
                         adjustment += (angleDiff * (speedFromObj / speedToGoal));
-						adjustment = addNoise(adjustment);
-						speedToGoal -= speedFromObj;
-
-                        System.out.println("obsAngle: " + obsAngle);
-                        System.out.println("angleDiff: " + angleDiff);
-                        System.out.println("adjustmentTick: " + (angleDiff * (speedFromObj / speedToGoal)));
+                        speedToGoal -= speedFromObj;
                     }
                 }
 
-                setTurnLeft(adjustment);
-                ahead(speedToGoal);
+                adjustment = normalizeAngle(adjustment);
+                adjustment = addNoise(adjustment);
+				setTurnLeft(adjustment);
+                setAhead(speedToGoal);
             }
 
             execute();
@@ -176,10 +172,10 @@ public class VectorFieldsObstacleAvoidNoise extends AdvancedRobot
 		double rand = Math.random();
 		if (rand < 0.2 && rand >= 0.1) {
 			System.out.println("Slip!");
-			adj += 30;
+			adj += SLIPPAGE;
 		} else if (rand < 0.1 && rand >= 0.0) {
 		System.out.println("Slip!");
-			adj -= 30;
+			adj -= SLIPPAGE;
 		}
 		return adj;
 	}

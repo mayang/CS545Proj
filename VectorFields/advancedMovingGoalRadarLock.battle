@@ -6,4 +6,4 @@ robocode.battle.gunCoolingRate=0.1
 robocode.battle.rules.inactivityTime=450
 robocode.battle.hideEnemyNames=false
 robocode.battle.selectedRobots=VectorFields.VectorFieldsMovingGoal*, VectorFields.VectorFieldsRadarLock*
-robocode.battle.initialPositions = (10, 10, 0), (300, 300, 90)
+robocode.battle.initialPositions = (10, 510, 0), (300, 250, 90)

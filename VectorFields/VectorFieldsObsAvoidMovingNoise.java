@@ -14,6 +14,7 @@ public class VectorFieldsObsAvoidMovingNoise extends AdvancedRobot
     private static final int MAX_SPEED = 20;
     private static final int GOAL_DISTANCE = 50;
     private static final int OBJ_DISTANCE = 150;
+	private static final int SLIPPAGE = 30;
 
     private double goalX, goalY;
     private double obsX, obsY;
@@ -48,7 +49,6 @@ public class VectorFieldsObsAvoidMovingNoise extends AdvancedRobot
 
                 adjustment = angleToGoal - robotHeading;
                 adjustment = normalizeAngle(adjustment);
-				adjustment = addNoise(adjustment);
                 speedToGoal = calcRobotSpeedLinear(robotX, robotY, goalX, goalY);
 
                 if (foundObstacle)
@@ -64,12 +64,12 @@ public class VectorFieldsObsAvoidMovingNoise extends AdvancedRobot
                         angleDiff = obsAngle - angleToGoal;
                         angleDiff = normalizeAngle(angleDiff);
                         adjustment += (angleDiff * (speedFromObj / speedToGoal));
-						adjustment = addNoise(adjustment);
                         speedToGoal -= speedFromObj;
                     }
                 }
 
                 adjustment = normalizeAngle(adjustment); // Not 100% sure this is needed;
+				adjustment = addNoise(adjustment);
                 setTurnLeft(adjustment);
                 ahead(speedToGoal);
             }
@@ -172,10 +172,10 @@ public class VectorFieldsObsAvoidMovingNoise extends AdvancedRobot
 		double rand = Math.random();
 		if (rand < 0.2 && rand >= 0.1) {
 			System.out.println("Slip!");
-			adj += 30;
+			adj += SLIPPAGE;
 		} else if (rand < 0.1 && rand >= 0.0) {
 		System.out.println("Slip!");
-			adj -= 30;
+			adj -= SLIPPAGE;
 		}
 		return adj;
 	}
