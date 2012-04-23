@@ -89,6 +89,7 @@ public class VectorFieldsRadarLock extends AdvancedRobot
         goalY = enemyY;
 
         double radarTurn = getHeadingRadians() + e.getBearingRadians() - getRadarHeadingRadians();
+        radarTurn = addNoise(radarTurn);
         setTurnRadarRightRadians(robocode.util.Utils.normalRelativeAngle(radarTurn));
     }
 
