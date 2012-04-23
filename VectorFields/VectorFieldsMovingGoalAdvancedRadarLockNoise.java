@@ -108,6 +108,7 @@ public class VectorFieldsRadarLockNoise extends AdvancedRobot
 
 
         double radarTurn = getHeading() + e.getBearing() - getRadarHeadingRadians();
+        radarTurn = addNoise(radarTurn); // adding noise to radar
         setTurnRadarRightRadians(Util.normalRelativeAngle(radarTurn));
     }
 
