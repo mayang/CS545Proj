@@ -1,0 +1,18 @@
+#
+# test5.battle
+#
+# Runs a simple obstacle avoidance test with a fixed goal and fixed obstacle. A sample.SittingDuck
+# robot is used as the fixed position.
+#
+# The source for the goal is available in VectorFieldsGoal.java (It is pretty much just an empty file)
+# The source for the bot is available in VectorFieldsObstacleAvoid.java
+#
+
+robocode.battleField.width=600
+robocode.battleField.height=600
+robocode.battle.numRounds=10
+robocode.battle.gunCoolingRate=0.1
+robocode.battle.rules.inactivityTime=450
+robocode.battle.hideEnemyNames=false
+robocode.battle.selectedRobots=VectorFields.VectorFieldsGoal*, VectorFields.VectorFieldsObstacleAvoid*, sample.SittingDuck
+robocode.battle.initialPositions = (10, 10, 0), (300, 500, 180), (200, 200, 0)

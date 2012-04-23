@@ -1,0 +1,19 @@
+#
+# test4.battle
+#
+# This battle file shows a demonstraction of using a perfect radar lock to ensure the most up to date 
+# information on the goal is available for the robot to travel to. This method provides the fastest
+# movement so far. In fact with some settings tweaking the robot can easily catch up to the goal.
+#
+# The source file for the goal robot can be found in VectorFieldsMovingGoal.java
+# The source file for the radra lock bot can be found in VectorFieldsRadarLock.java
+#
+
+robocode.battleField.width=600
+robocode.battleField.height=600
+robocode.battle.numRounds=10
+robocode.battle.gunCoolingRate=0.1
+robocode.battle.rules.inactivityTime=450
+robocode.battle.hideEnemyNames=false
+robocode.battle.selectedRobots=VectorFields.VectorFieldsMovingGoal*, VectorFields.VectorFieldsRadarLock*
+robocode.battle.initialPositions = (10, 510, 0), (300, 250, 90)

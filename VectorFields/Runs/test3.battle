@@ -1,0 +1,20 @@
+#
+# test3.battle
+#
+# Sends an advanced goal tracking robot after a moving goal using potential fields.
+#
+# This file demonstrates the improved performance of using the Advanced Bots. The tracking is smoother
+# and the robot is able to reach higher max speeds while still maintaining accurate tracking of the goal.
+#
+# Source for the moving goal bot can be found in VectorFieldsMovingGoal.java
+# Source for the goal tracking bot can be found in VectorFieldsMovingGoalAdvanced.java
+#
+
+robocode.battleField.width=600
+robocode.battleField.height=600
+robocode.battle.numRounds=10
+robocode.battle.gunCoolingRate=0.1
+robocode.battle.rules.inactivityTime=450
+robocode.battle.hideEnemyNames=false
+robocode.battle.selectedRobots=VectorFields.VectorFieldsMovingGoal*, VectorFields.VectorFieldsMovingGoalAdvanced*
+robocode.battle.initialPositions = (10, 550, 0), (300, 300, 90)

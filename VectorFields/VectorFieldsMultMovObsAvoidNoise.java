@@ -12,7 +12,7 @@ public class VectorFieldsMultMovObsAvoidNoise extends AdvancedRobot
     private static final int SCREEN_WIDTH = 600;
     private static final int SCREEN_HEIGHT = 600;
     private static final double MAX_DISTANCE = Math.sqrt(Math.pow(SCREEN_WIDTH, 2) + Math.pow(SCREEN_HEIGHT, 2));
-    private static final int MAX_SPEED = 20;
+    private static final int MAX_SPEED = 5;
     private static final int GOAL_DISTANCE = 50;
     private static final int OBJ_DISTANCE = 150;
     private static final String GOAL_NAME = "VectorFields.VectorFieldsMovingGoal*";
@@ -90,7 +90,7 @@ public class VectorFieldsMultMovObsAvoidNoise extends AdvancedRobot
                 adjustment = normalizeAngle(adjustment);
 				adjustment = addNoise(adjustment);
                 setTurnLeft(adjustment);
-                ahead(speedToGoal);
+                setAhead(speedToGoal);
             }
 
             execute();
@@ -110,39 +110,6 @@ public class VectorFieldsMultMovObsAvoidNoise extends AdvancedRobot
         }
 
         obstacles.put(name, new Enemy(tmpX, tmpY, e.getBearing()));
-
-        //if (name.equals("VectorFields.VectorFieldsGoal*"))
-        //{
-            //foundGoal = true;
-            //goalX = tmpX;
-            //goalY = tmpY;
-
-        //if (obstacles.containsKey(name))
-        //{
-            //// Update the existing data
-            ////Enemy tmp = obstacles.get(name);
-            ////tmp.x = tmpX;
-            ////tmp.y = tmpY;
-            ////tmp.bearing = e.getBearing();
-            //obstacles.put(name, new Enemy(tmpX, tmpY, e.getBearing()));
-
-        //}
-        //else
-        //{
-            //obstacles.put(name, new Enemy(tmpX, tmpY, e.getBearing()));
-        //}
-        //}
-        //else
-        //{
-        //}
-        ////else if (e.getName().equals("sample.SittingDuck"))
-        ////{
-            ////System.out.println("Obstacle at " + tmpX + " " + tmpY);
-            ////foundObstacle = true;
-            ////obsX = tmpX;
-            ////obsY = tmpY;
-        ////}
-
         setTurnRadarRight(getRadarTurnRemaining());
     }
 

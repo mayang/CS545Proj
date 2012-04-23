@@ -1,0 +1,17 @@
+# 
+# test1.battle
+#
+# This battle runs a basic Potential Fields implementation. 
+#
+# sample.SittingDuck acts as the goal for this test. The full source code
+# for the bot using the potential fields can be found in VectorFieldsSimple.java.
+#
+
+robocode.battleField.width=600
+robocode.battleField.height=600
+robocode.battle.numRounds=10
+robocode.battle.gunCoolingRate=0.1
+robocode.battle.rules.inactivityTime=450
+robocode.battle.hideEnemyNames=false
+robocode.battle.selectedRobots=sample.SittingDuck, VectorFields.VectorFieldsSimple*
+robocode.battle.initialPositions = (0, 0, 0), (300, 550, 90)

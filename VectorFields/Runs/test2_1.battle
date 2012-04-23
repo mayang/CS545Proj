@@ -1,0 +1,20 @@
+#
+# test2_1.battle
+#
+# This test uses the same bots as test2.battle. The only difference is that the tracking robot starts
+# towards the middle of the arena instead of near the edge. This prevents the previously mentioned
+# problem where the tracking bot is no longer able to locate the goal with its radar due to sudden
+# direction changes. This still exibits the terribly slow movements due to the simple Robot model.
+#
+# Again, the source for the goal robot can be found in VectorFieldsMovingGoal.java
+# The source for the tracking robot can be found in VectorFieldsSimpleMovingGoal.java
+#
+
+robocode.battleField.width=600
+robocode.battleField.height=600
+robocode.battle.numRounds=10
+robocode.battle.gunCoolingRate=0.1
+robocode.battle.rules.inactivityTime=450
+robocode.battle.hideEnemyNames=false
+robocode.battle.selectedRobots=VectorFields.VectorFieldsMovingGoal*, VectorFields.VectorFieldsSimpleMovingGoal*
+robocode.battle.initialPositions = (10, 10, 0), (300, 300, 180)

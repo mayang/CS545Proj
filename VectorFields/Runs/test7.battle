@@ -1,0 +1,26 @@
+#
+# test7.battle
+#
+# Multiple objects (including moving ones) along with a moving goal.
+#
+# This shows the final state that this aspect of the project end up in. The robot is able to navigate
+# seemlessly through the various obstacles. The performance can be adjusted so that the robot 
+# navigates faster in addition to other changes to affect the behaviour. Most of the default settings 
+# for this run are meant to be conservative.
+#
+# Source code for the goal can be found in VectorFieldsMovingGoal
+# Source code for the stationary obstacle is in the sample bots provided by robocode. Specifically
+#       sample.SittingDuck
+# Source code for the moving obstacles can be found in SimgpleMovingObstacle[1, 2]
+#       The only difference between the two is their names.
+# Source for the navigating bot can be found in VectorFieldsMultMovObsAvoid.java
+#
+
+robocode.battleField.width=600
+robocode.battleField.height=600
+robocode.battle.numRounds=10
+robocode.battle.gunCoolingRate=0.1
+robocode.battle.rules.inactivityTime=450
+robocode.battle.hideEnemyNames=false
+robocode.battle.selectedRobots=VectorFields.VectorFieldsMovingGoal*, VectorFields.VectorFieldsMultMovObsAvoid*, sample.SittingDuck, VectorFields.SimpleMovingObstacle*, VectorFields.SimpleMovingObstacle2*
+robocode.battle.initialPositions = (10, 10, 0), (300, 500, 180), (200, 400, 0), (450, 450, 180), (450, 100, 270)

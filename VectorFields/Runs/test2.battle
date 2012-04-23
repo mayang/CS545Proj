@@ -1,0 +1,25 @@
+#
+# test2.battle
+#
+# Runs a potential fields test where the tracking robot attempts to follow a goal that moves.
+# VectorFieldsMovingGoal.java contains the source for the moving goal robot.
+# VectorFieldsSimpleMovingGoal.java contains the source for the robot that attempts to navigate
+#   towards the moving goal.
+#
+# Problems present with this method:
+# When running this test, you will see that the robot attempts to locate the goal and them move
+# towards it. Its movement is slow because of the physics of Robocode and the simple robots. The
+# basic robot, which this example is inherited from, has blocking actions. Each action must execute
+# entirely before the next may run. The robot still manages to track the goal well, albeit slowly,
+# until it has to make a sharp turn to catch the goal with its radar. The robot can no longer scan
+# the goal with its radar, and thus it thinks the old goal location is where it should go.
+#
+
+robocode.battleField.width=600
+robocode.battleField.height=600
+robocode.battle.numRounds=10
+robocode.battle.gunCoolingRate=0.1
+robocode.battle.rules.inactivityTime=450
+robocode.battle.hideEnemyNames=false
+robocode.battle.selectedRobots=VectorFields.VectorFieldsMovingGoal*, VectorFields.VectorFieldsSimpleMovingGoal*
+robocode.battle.initialPositions = (10, 10, 0), (300, 550, 90)
