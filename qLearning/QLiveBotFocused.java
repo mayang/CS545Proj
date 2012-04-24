@@ -3,6 +3,8 @@ package qLearning;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
 import robocode.HitByBulletEvent;
+
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 //Implements Q-Learning with the start state set to your current location rather than trying to determine a more general policy (with random start points).
@@ -25,10 +27,12 @@ public class QLiveBotFocused extends Robot {
     private int last_view = 0;
     
 ;	public void run() {
+		setAllColors(Color.RED);
 		currently_updating = false;
     	 while (true) {
     		 last_view = last_view + 1;
     		 if (last_view > MAX_BLIND) {
+    			 turnRadarLeft(360);
     			 updatePolicy();
     		 }
         	//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
@@ -88,7 +92,7 @@ public class QLiveBotFocused extends Robot {
     	System.out.print("Found enemy at: (" + enemyX + "," + enemyY + ")\n" );
     	goal_state = QUtilities.XYtoState(enemyX, enemyY);
     	updatePolicy();
-        fire(1);
+        //fire(1);
 	}
     
     public void updatePolicy() {

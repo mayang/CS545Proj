@@ -32,22 +32,22 @@ public class QLiveBotNoisyGridAdjust extends Robot {
     			 updatePolicy(301);
     		 }
         	//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
-        	int state = QUtilities3.XYtoState(getX(), getY());
-        	if (policy[state] == QUtilities3.ACTION_NORTH) {
+        	int state = QUtilitiesVariableField.XYtoState(getX(), getY());
+        	if (policy[state] == QUtilitiesVariableField.ACTION_NORTH) {
         		goNorth(10);
-        	} else if (policy[state] == QUtilities3.ACTION_SOUTH) {
+        	} else if (policy[state] == QUtilitiesVariableField.ACTION_SOUTH) {
         		goSouth(10);
-        	} else if (policy[state] == QUtilities3.ACTION_EAST) {
+        	} else if (policy[state] == QUtilitiesVariableField.ACTION_EAST) {
         		goEast(10);
-        	} else if (policy[state] == QUtilities3.ACTION_WEST) {
+        	} else if (policy[state] == QUtilitiesVariableField.ACTION_WEST) {
         		goWest(10);
-        	} else if (policy[state] == QUtilities3.ACTION_NORTHWEST) {
+        	} else if (policy[state] == QUtilitiesVariableField.ACTION_NORTHWEST) {
         		goNorthwest(10);
-        	} else if (policy[state] == QUtilities3.ACTION_NORTHEAST) {
+        	} else if (policy[state] == QUtilitiesVariableField.ACTION_NORTHEAST) {
         		goNortheast(10);
-        	} else if (policy[state] == QUtilities3.ACTION_SOUTHWEST) {
+        	} else if (policy[state] == QUtilitiesVariableField.ACTION_SOUTHWEST) {
         		goSouthwest(10);
-        	} else if (policy[state] == QUtilities3.ACTION_SOUTHEAST) {
+        	} else if (policy[state] == QUtilitiesVariableField.ACTION_SOUTHEAST) {
         		goSoutheast(10);
         	} else if (policy[state] == -1) {
             	double r = Math.random();
@@ -86,7 +86,7 @@ public class QLiveBotNoisyGridAdjust extends Robot {
     	double x = enemyX + e.getVelocity() * (est_update_time + time_to_target) * Math.sin(Math.toRadians(e.getHeading()));
         double y = enemyY + e.getVelocity() * (est_update_time + time_to_target) * Math.cos(Math.toRadians(e.getHeading()));
     	System.out.print("Found enemy at: (" + enemyX + "," + enemyY + ")\n" );
-    	goal_state = QUtilities3.XYtoState(enemyX, enemyY);
+    	goal_state = QUtilitiesVariableField.XYtoState(enemyX, enemyY);
     	updatePolicy(e.getDistance());
         fire(1);
 	}
@@ -99,9 +99,9 @@ public class QLiveBotNoisyGridAdjust extends Robot {
     		Thread policy_update = new Thread() {
     			public void run() {
     					if (distance > 300){
-    						policy = QUtilities3.QtoPolicy(QUtilities3.generateQTable(goal_state, QUtilities3.XYtoState(getX(), getY()), 2));
+    						policy = QUtilitiesVariableField.QtoPolicy(QUtilitiesVariableField.generateQTable(goal_state, QUtilitiesVariableField.XYtoState(getX(), getY()), 2));
     					} else {
-    						policy = QUtilities3.QtoPolicy(QUtilities3.generateQTable(goal_state, QUtilities3.XYtoState(getX(), getY()), 30));
+    						policy = QUtilitiesVariableField.QtoPolicy(QUtilitiesVariableField.generateQTable(goal_state, QUtilitiesVariableField.XYtoState(getX(), getY()), 30));
     					}
     					doneUpdating();
 			    	}
@@ -127,7 +127,7 @@ public class QLiveBotNoisyGridAdjust extends Robot {
     	// Set the paint color to red
     	g.setColor(java.awt.Color.WHITE);
     	// Paint a filled rectangle at (50,50) at size 100x150 pixels
-    	int state = QUtilities3.XYtoState(getX(), getY());
+    	int state = QUtilitiesVariableField.XYtoState(getX(), getY());
     	String state_str = Integer.toString(state);
     	String xpos_str = Double.toString(getX());
     	String ypos_str = Double.toString(getY());
