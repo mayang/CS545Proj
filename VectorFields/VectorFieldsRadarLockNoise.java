@@ -7,7 +7,7 @@ import java.lang.*;
  * A Robocode robot that attempts to use vector fields to navigate towards a moving goal. This
  * uses an advanced robot in an effort to smooth out the motion issues with the simple robots.
  */
-public class VectorFieldsRadarLock extends AdvancedRobot
+public class VectorFieldsRadarLockNoise extends AdvancedRobot
 {
     private static final int SCREEN_WIDTH = 600;
     private static final int SCREEN_HEIGHT = 600;
@@ -15,6 +15,7 @@ public class VectorFieldsRadarLock extends AdvancedRobot
     private static final int MAX_SPEED = 10;
     private static final int GOAL_DISTANCE = 100;
 	private static final int SLIPPAGE = 30;
+	private static final int RADAR_SLIP = 10;
 
     private boolean foundGoal = false;
     private double goalX, goalY;
@@ -61,7 +62,7 @@ public class VectorFieldsRadarLock extends AdvancedRobot
                     adjustment -= 360;
                 }
 
-				adjustment = addNoise(adjustment);
+				//adjustment = addNoise(adjustment);
                 setTurnLeft(adjustment);
                 setAhead(calcRobotSpeedLinear(robotX, robotY, goalX, goalY));
             }
@@ -86,10 +87,12 @@ public class VectorFieldsRadarLock extends AdvancedRobot
 
         foundGoal = true;
         goalX = enemyX;
+		goalX = radarSlip(goalX);
         goalY = enemyY;
+		goalY = radarSlip(goalY);
 
         double radarTurn = getHeadingRadians() + e.getBearingRadians() - getRadarHeadingRadians();
-        radarTurn = addNoise(radarTurn);
+        //radarTurn = addNoise(radarTurn);
         setTurnRadarRightRadians(robocode.util.Utils.normalRelativeAngle(radarTurn));
     }
 
@@ -133,5 +136,17 @@ public class VectorFieldsRadarLock extends AdvancedRobot
 			adj -= SLIPPAGE;
 		}
 		return adj;
+	}
+	
+		public double radarSlip(double slip) {
+		double rand = Math.random();
+		if (rand < 0.2 && rand >= 0.1) {
+			System.out.println("radar slip");
+			slip += RADAR_SLIP;
+		} else if (rand < 0.1 && rand >= 0.0) {
+			System.out.println("radar slip");
+			slip -= RADAR_SLIP;
+		}
+		return slip;
 	}
 }
