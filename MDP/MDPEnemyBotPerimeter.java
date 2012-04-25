@@ -31,6 +31,7 @@ public class MDPEnemyBotPerimeter extends Robot {
     	int DIRECTION_EAST = 2;
     	int DIRECTION_WEST = 3;
     	int direction = 1;
+    	this.setAllColors(java.awt.Color.yellow);
         while (true) {
         	//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
         	int state = MDPUtility.getStateForXandY(getX(), getY());
@@ -56,13 +57,13 @@ public class MDPEnemyBotPerimeter extends Robot {
         	}
         	if (direction == DIRECTION_NORTH) {
         		System.out.print("Going north \n");
-        		goNorth(30);
+        		goNorth(20);
         	} else if (direction == DIRECTION_EAST) {
-        		goEast(30);
+        		goEast(20);
         	} else if (direction == DIRECTION_WEST) {
-        		goWest(30);
+        		goWest(20);
         	} else if (direction == DIRECTION_SOUTH) {
-        		goSouth(30);
+        		goSouth(20);
         	}
         }
 }

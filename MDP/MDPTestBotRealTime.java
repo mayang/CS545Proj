@@ -43,14 +43,17 @@ public class MDPTestBotRealTime extends Robot {
     int last_valid_goal;
     int previous_goal;
     boolean ejected_policy;
+    int turn_count = 0;
     ScannedRobotEvent sre;
     public void run() {
 		currently_updating = false;
 		ejected_policy = false;
     	 while (true) {
+    		 turn_count++;
     		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
          	int state = MDPUtility.getStateForXandY(getX(), getY());
-        	if (getTime() % 10 == 0) {
+        	if (turn_count == 10) {
+        		turn_count = 0;
         		turnRadarLeft(360);
         		continue;
         	}
@@ -71,24 +74,7 @@ public class MDPTestBotRealTime extends Robot {
          	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
          		goSoutheast(30);
          	} else if (policy[state] == -1) {
-             	double r = Math.random();
-             	if (r < 0.125) {
-             		goNorth(30);
-             	} else if (r >= 0.125 && r < 0.25) {
-             		goSouth(30);
-             	} else if (r >= 0.25 && r < 0.375) {
-             		goEast(30);
-             	} else if (r >= 0.375 && r < 0.5) {
-             		goWest(30);
-             	} else if (r >= 0.5 && r < 0.625) {
-             		goNorthwest(30);
-             	} else if (r >= 0.625 && r < 0.750) {
-             		goSouthwest(30);
-             	} else if (r >=0.75 && r < 0.875) {
-             		goSoutheast(30);
-             	} else if (r >= 0.875 && r < 1.0) {
-             		goNortheast(30);
-             	}
+         		turnRadarLeft(360);
          	}
          	
         }
@@ -109,12 +95,12 @@ public class MDPTestBotRealTime extends Robot {
     	if(goal_state >= 0 && goal_state < MDPUtility.NUM_STATES) last_valid_goal = goal_state;
     	if (goal_state < 0) goal_state = last_valid_goal;
     	if (goal_state >= MDPUtility.NUM_STATES) goal_state = last_valid_goal;
-    	if (!currently_updating /*&& e.getDistance() > distance_trigger*/) {
+    	if (!currently_updating) {
     		time1 = getTime();
     		currently_updating = true;
     		Thread policy_update = new Thread() {
     			public void run() {
-    					if (transitions == null || ejected_policy || sre.getDistance() > 150.0) {
+    					if (transitions == null || sre.getDistance() > 150.0) {
     						System.out.print("Updating full\n");
     						transitions = MDPUtility.getTransitions();
     						rewards = MDPUtility.getRewards(transitions, goal_state);

@@ -57,8 +57,8 @@ public class MDPUtility {
 			}
 			count++;
 		}
-		//System.out.print("Convergence in " + count + " iterations");
-		//System.out.println();
+		System.out.print("Convergence in " + count + " iterations");
+		System.out.println();
 		return q_table;
 	}
 	
@@ -72,6 +72,14 @@ public class MDPUtility {
 				for (int a = 0; a< NUM_ACTIONS; a++) {
 					new_rewards[states_surrounding_new_goal[s]][a] = getRewardForGoal(states_surrounding_new_goal[s], a, transitions, goal_state);
 				}
+				int[] surrounding_states = getSurroundingStates(states_surrounding_new_goal[s]);
+				for (int s2 = 0; s2 < NUM_ACTIONS; s2++) {
+					for (int a = 0; a<NUM_ACTIONS; a++) {
+						if (surrounding_states[s2] != -1) {
+							new_rewards[surrounding_states[s2]][a] = getRewardForGoal(surrounding_states[s2], a, transitions, goal_state);
+						}
+					}
+				}
 			}
 		}
 		for (int a = 0; a < NUM_ACTIONS; a++) {
@@ -83,6 +91,14 @@ public class MDPUtility {
 				for (int a = 0; a< NUM_ACTIONS; a++) {
 					new_rewards[states_surrounding_old_goal[s]][a] = getRewardForGoal(states_surrounding_old_goal[s], a, transitions, goal_state);
 				}
+				int[] surrounding_states = getSurroundingStates(states_surrounding_old_goal[s]);
+				for (int s2 = 0; s2 < NUM_ACTIONS; s2++) {
+					for (int a = 0; a<NUM_ACTIONS; a++) {
+						if (surrounding_states[s2] != -1) {
+							new_rewards[surrounding_states[s2]][a] = getRewardForGoal(surrounding_states[s2], a, transitions, goal_state);
+						}
+					}
+				}
 			}
 		}
 		for (int a = 0; a < NUM_ACTIONS; a++) {
@@ -92,11 +108,10 @@ public class MDPUtility {
 	}
 	
 	
-	public static double[][] updateRewardsRealTimeWithObstacles(int goal_state, int previous_goal_state, double[][][] transitions, double[][] rewards, Map<String,Integer> obstacles) {
+	public static double[][] updateRewardsRealTimeWithObstacles(int goal_state, int previous_goal_state, double[][][] transitions, double[][] rewards, Map<String,Integer> obstacles, Map<String,Integer> obstacles_old) {
 		double[][] new_rewards = rewards;
 		int[] states_surrounding_new_goal = getSurroundingStates(goal_state);
 		int[] states_surrounding_old_goal = getSurroundingStates(previous_goal_state);
-		synchronized(obstacles) {
 			for (Map.Entry<String, Integer> entry : obstacles.entrySet()) {
 				int[] states_surrounding_obstacle = getSurroundingStates(entry.getValue());
 				for (int s = 0; s < NUM_ACTIONS; s++) {
@@ -114,9 +129,36 @@ public class MDPUtility {
 						}
 					}
 				}
-				
+				for (int a = 0; a<NUM_ACTIONS; a++) {
+					new_rewards[entry.getValue()][a] = getRewardForGoalWithObstacles(entry.getValue(), a, transitions, goal_state, obstacles);
+				}
+
 			}
-		}
+			
+			for (Map.Entry<String, Integer> entry : obstacles.entrySet()) {
+				int[] states_surrounding_obstacle = getSurroundingStates(entry.getValue());
+				for (int s = 0; s < NUM_ACTIONS; s++) {
+					if (states_surrounding_obstacle[s] != -1) {
+						for (int a = 0; a< NUM_ACTIONS; a++) {
+							new_rewards[states_surrounding_obstacle[s]][a] = getRewardForGoalWithObstacles(states_surrounding_obstacle[s], a, transitions, goal_state, obstacles);
+						}
+						int[] states_surrounding_surrounding_obstacles = getSurroundingStates(states_surrounding_obstacle[s]);
+						for (int s2 = 0; s2 < NUM_ACTIONS; s2++) {
+							if (states_surrounding_surrounding_obstacles[s2] != -1) {
+								for (int a = 0; a< NUM_ACTIONS; a++) {
+									new_rewards[states_surrounding_surrounding_obstacles[s2]][a] = getRewardForGoalWithObstacles(states_surrounding_surrounding_obstacles[s2], a, transitions, goal_state, obstacles);
+								}
+							}
+						}
+					}
+				}
+				for (int a = 0; a<NUM_ACTIONS; a++) {
+					new_rewards[entry.getValue()][a] = getRewardForGoalWithObstacles(entry.getValue(), a, transitions, goal_state, obstacles);
+				} 
+			}
+		
+
+		
 		for (int s = 0; s < NUM_ACTIONS; s++) {
 			if (states_surrounding_new_goal[s] != -1) {
 				for (int a = 0; a< NUM_ACTIONS; a++) {
@@ -127,7 +169,7 @@ public class MDPUtility {
 		for (int a = 0; a < NUM_ACTIONS; a++) {
 			new_rewards[goal_state][a] = getRewardForGoalWithObstacles(goal_state, a, transitions, goal_state, obstacles);
 		}
-		
+
 		for (int s = 0; s < NUM_ACTIONS; s++) {
 			if (states_surrounding_old_goal[s] != -1) {
 				for (int a = 0; a< NUM_ACTIONS; a++) {
@@ -142,10 +184,11 @@ public class MDPUtility {
 	}
 	
 	public static double[][] valueIterationRealTime(int goal_state, int previous_goal_state, double[][][] transitions, double[][] rewards, double[][] q_table) {
+		int num_states_to_update = 2*NUM_ACTIONS + 2 + (NUM_ACTIONS + NUM_ACTIONS*NUM_ACTIONS)*2;
 		double[][] new_q = q_table;
 		double[] value = new double[NUM_STATES];
 		double[] valuePrevious = new double[NUM_STATES];
-		int[] states_to_update = new int[2*NUM_ACTIONS + 2];
+		int[] states_to_update = new int[num_states_to_update];
 		int count = 0;
 		int[] states_surrounding_new_goal = getSurroundingStates(goal_state);
 		int[] states_surrounding_old_goal = getSurroundingStates(previous_goal_state);
@@ -158,14 +201,61 @@ public class MDPUtility {
 			states_to_update[s] = states_surrounding_old_goal[s - NUM_ACTIONS];
 		}
 		
+		int index = 2*NUM_ACTIONS + 2;
+		for (int s = 0; s < NUM_ACTIONS; s++) {
+			if (states_surrounding_new_goal[s] != -1) {
+				states_to_update[index] = states_surrounding_new_goal[s];
+				index++;
+				int[] surround = getSurroundingStates(states_surrounding_new_goal[s]);
+				for (int s2 = 0; s2< NUM_ACTIONS; s2++) {
+					if (surround[s2] != -1) {
+						states_to_update[index] = surround[s2];
+					} else {
+						states_to_update[index] = -1;
+					}
+					index++;
+				}
+			} else {
+				states_to_update[index] = -1;
+				index++;
+				for (int s2 = 0; s2< NUM_ACTIONS; s2++) {
+					states_to_update[index] = -1;
+					index++;
+				}
+			}
+			
+			
+			if (states_surrounding_old_goal[s] != -1) {
+				states_to_update[index] = states_surrounding_old_goal[s];
+				index++;
+				int[] surround = getSurroundingStates(states_surrounding_old_goal[s]);
+				for (int s2 = 0; s2< NUM_ACTIONS; s2++) {
+					if (surround[s2] != -1) {
+						states_to_update[index] = surround[s2];
+					} else {
+						states_to_update[index] = -1;
+					}
+					index++;
+				}
+			} else {
+				states_to_update[index] = -1;
+				index++;
+				for (int s2 = 0; s2< NUM_ACTIONS; s2++) {
+					states_to_update[index] = -1;
+					index++;
+				}
+			}
+			
+		}
+		
 		states_to_update[NUM_ACTIONS*2] = goal_state;
 		states_to_update[NUM_ACTIONS*2 + 1] = previous_goal_state;
 		
 		while (vectorNormOfDifference(value, valuePrevious) > RESIDUAL || count == 0) {
-			for (int i = 0; i < 2*NUM_ACTIONS + 2; i++) {
+			for (int i = 0; i < num_states_to_update; i++) {
 				if(states_to_update[i] != -1) valuePrevious[states_to_update[i]] = value[states_to_update[i]];
 			}
-			for (int s = 0; s < 2*NUM_ACTIONS+2; s++) {
+			for (int s = 0; s < num_states_to_update; s++) {
 				for (int a = 0; a < NUM_ACTIONS; a++) {
 					double backup = 0.0;
 					int[] sur = getSurroundingStates(states_to_update[s]);
@@ -191,18 +281,19 @@ public class MDPUtility {
 		return new_q;
 	}
 	
-	public static double[][] valueIterationRealTimeWithObstacles(int goal_state, int previous_goal_state, double[][][] transitions, double[][] rewards, double[][] q_table, Map<String, Integer> obstacles) {
+	
+	public static double[][] valueIterationRealTimeWithObstacles(int goal_state, int previous_goal_state, double[][][] transitions, double[][] rewards, double[][] q_table, Map<String, Integer> obstacles, Map<String, Integer> obstacles_old) {
+		int num_states_to_update = 2*NUM_ACTIONS + 2 + (NUM_ACTIONS + NUM_ACTIONS*NUM_ACTIONS)*obstacles.size() + (NUM_ACTIONS + NUM_ACTIONS*NUM_ACTIONS)*obstacles_old.size() + NUM_ACTIONS + NUM_ACTIONS;
 		double[][] new_q = q_table;
 		double[] value = new double[NUM_STATES];
 		double[] valuePrevious = new double[NUM_STATES];
 		int[] states_to_update;
 		int obstacles_size = 0;
-			states_to_update = new int[2*NUM_ACTIONS + 2 + (NUM_ACTIONS + NUM_ACTIONS*NUM_ACTIONS)*obstacles.size()];
+			states_to_update = new int[num_states_to_update];
 		int count = 0;
 		int[] states_surrounding_new_goal = getSurroundingStates(goal_state);
 		int[] states_surrounding_old_goal = getSurroundingStates(previous_goal_state);
 		int obstacles_index = 2*NUM_ACTIONS + 2;
-		synchronized(obstacles) {
 			for (Map.Entry<String, Integer> entry : obstacles.entrySet()) {
 				int[] states_surrounding_obstacle = getSurroundingStates(entry.getValue());
 				for (int s = 0; s < NUM_ACTIONS; s++) {
@@ -225,21 +316,51 @@ public class MDPUtility {
 						}
 					}
 				}
-				
+				states_to_update[obstacles_index] = entry.getValue();
+				obstacles_index++;
+
 			}
-		}
+			
+			for (Map.Entry<String, Integer> entry : obstacles_old.entrySet()) {
+				int[] states_surrounding_obstacle = getSurroundingStates(entry.getValue());
+				for (int s = 0; s < NUM_ACTIONS; s++) {
+					if (states_surrounding_obstacle[s] != -1) {
+						states_to_update[obstacles_index] = states_surrounding_obstacle[s];
+						obstacles_index++;
+						int[] states_surrounding_surrounding_obstacles = getSurroundingStates(states_surrounding_obstacle[s]);
+						for (int s2 = 0; s2 < NUM_ACTIONS; s2++) {
+							if (states_surrounding_surrounding_obstacles[s2] != -1) {
+								states_to_update[obstacles_index] = states_surrounding_surrounding_obstacles[s2];
+							} else {
+								states_to_update[obstacles_index] = -1;
+							}
+							obstacles_index++;
+						}
+					} else {
+						for (int s2 = 0; s2 < NUM_ACTIONS; s2++) {
+							states_to_update[obstacles_index] = -1;
+							obstacles_index++;
+						}
+					}
+				}
+				states_to_update[obstacles_index] = entry.getValue();
+				obstacles_index++;
+
+			}
+			
 		
+
 		for (int s = 0; s < NUM_ACTIONS; s++) {
 			states_to_update[s] = states_surrounding_new_goal[s];
 		}
-		
+
 		for (int s = NUM_ACTIONS; s < 2*NUM_ACTIONS; s++) {
 			states_to_update[s] = states_surrounding_old_goal[s - NUM_ACTIONS];
 		}
-		
+
 		states_to_update[NUM_ACTIONS*2] = goal_state;
 		states_to_update[NUM_ACTIONS*2 + 1] = previous_goal_state;
-		
+
 		while (vectorNormOfDifference(value, valuePrevious) > RESIDUAL || count == 0) {
 			for (int i = 0; i < 2*NUM_ACTIONS + 2 + (NUM_ACTIONS + NUM_ACTIONS*NUM_ACTIONS*obstacles_size); i++) {
 				if(states_to_update[i] != -1) valuePrevious[states_to_update[i]] = value[states_to_update[i]];
@@ -271,8 +392,9 @@ public class MDPUtility {
 	}
 	
 	public static int[] updatePolicyRealTime(int[] policy, double[][] q_table, int goal_state, int previous_goal_state) {
+		int num_states_to_update = 2*NUM_ACTIONS + 2 + (NUM_ACTIONS + NUM_ACTIONS*NUM_ACTIONS)*2;
 		int[] new_policy = policy;
-		int[] states_to_update = new int[2*NUM_ACTIONS + 2];
+		int[] states_to_update = new int[num_states_to_update];
 		int[] states_surrounding_new_goal = getSurroundingStates(goal_state);
 		int[] states_surrounding_old_goal = getSurroundingStates(previous_goal_state);
 		
@@ -287,7 +409,54 @@ public class MDPUtility {
 		states_to_update[NUM_ACTIONS*2] = goal_state;
 		states_to_update[NUM_ACTIONS*2 + 1] = previous_goal_state;
 		
-		for (int s = 0; s < 2*NUM_ACTIONS+2; s++) {
+		int index = 2*NUM_ACTIONS + 2;
+		for (int s = 0; s < NUM_ACTIONS; s++) {
+			if (states_surrounding_new_goal[s] != -1) {
+				states_to_update[index] = states_surrounding_new_goal[s];
+				index++;
+				int[] surround = getSurroundingStates(states_surrounding_new_goal[s]);
+				for (int s2 = 0; s2< NUM_ACTIONS; s2++) {
+					if (surround[s2] != -1) {
+						states_to_update[index] = surround[s2];
+					} else {
+						states_to_update[index] = -1;
+					}
+					index++;
+				}
+			} else {
+				states_to_update[index] = -1;
+				index++;
+				for (int s2 = 0; s2< NUM_ACTIONS; s2++) {
+					states_to_update[index] = -1;
+					index++;
+				}
+			}
+			
+			
+			if (states_surrounding_old_goal[s] != -1) {
+				states_to_update[index] = states_surrounding_old_goal[s];
+				index++;
+				int[] surround = getSurroundingStates(states_surrounding_old_goal[s]);
+				for (int s2 = 0; s2< NUM_ACTIONS; s2++) {
+					if (surround[s2] != -1) {
+						states_to_update[index] = surround[s2];
+					} else {
+						states_to_update[index] = -1;
+					}
+					index++;
+				}
+			} else {
+				states_to_update[index] = -1;
+				index++;
+				for (int s2 = 0; s2< NUM_ACTIONS; s2++) {
+					states_to_update[index] = -1;
+					index++;
+				}
+			}
+			
+		}
+		
+		for (int s = 0; s < num_states_to_update; s++) {
 			double maxq = -Double.MAX_VALUE;
 			int maxa = -1;
 			if (states_to_update[s] != -1) {
@@ -303,14 +472,14 @@ public class MDPUtility {
 		return new_policy;
 	}
 	
-	public static int[] updatePolicyRealTimeWithObstacles(int[] policy, double[][] q_table, int goal_state, int previous_goal_state, Map<String, Integer> obstacles) {
+	public static int[] updatePolicyRealTimeWithObstacles(int[] policy, double[][] q_table, int goal_state, int previous_goal_state, Map<String, Integer> obstacles, Map<String, Integer> obstacles_old) {
+		int num_states_to_update = 2*NUM_ACTIONS + 2 + (NUM_ACTIONS + NUM_ACTIONS*NUM_ACTIONS)*obstacles.size() + (NUM_ACTIONS + NUM_ACTIONS*NUM_ACTIONS)*obstacles_old.size() + NUM_ACTIONS + NUM_ACTIONS;
 		int[] new_policy = policy;
-		int[] states_to_update = new int[2*NUM_ACTIONS + 2 + (NUM_ACTIONS + NUM_ACTIONS*NUM_ACTIONS)*obstacles.size()];
+		int[] states_to_update = new int[num_states_to_update];
 		int[] states_surrounding_new_goal = getSurroundingStates(goal_state);
 		int[] states_surrounding_old_goal = getSurroundingStates(previous_goal_state);
 		
 		int obstacles_index = 2*NUM_ACTIONS + 2;
-		synchronized(obstacles) {
 			for (Map.Entry<String, Integer> entry : obstacles.entrySet()) {
 				int[] states_surrounding_obstacle = getSurroundingStates(entry.getValue());
 				for (int s = 0; s < NUM_ACTIONS; s++) {
@@ -333,9 +502,35 @@ public class MDPUtility {
 						}
 					}
 				}
-				
+				states_to_update[obstacles_index] = entry.getValue();
+				obstacles_index++;
 			}
-		}
+		
+			for (Map.Entry<String, Integer> entry : obstacles_old.entrySet()) {
+				int[] states_surrounding_obstacle = getSurroundingStates(entry.getValue());
+				for (int s = 0; s < NUM_ACTIONS; s++) {
+					if (states_surrounding_obstacle[s] != -1) {
+						states_to_update[obstacles_index] = states_surrounding_obstacle[s];
+						obstacles_index++;
+						int[] states_surrounding_surrounding_obstacles = getSurroundingStates(states_surrounding_obstacle[s]);
+						for (int s2 = 0; s2 < NUM_ACTIONS; s2++) {
+							if (states_surrounding_surrounding_obstacles[s2] != -1) {
+								states_to_update[obstacles_index] = states_surrounding_surrounding_obstacles[s2];
+							} else {
+								states_to_update[obstacles_index] = -1;
+							}
+							obstacles_index++;
+						}
+					} else {
+						for (int s2 = 0; s2 < NUM_ACTIONS; s2++) {
+							states_to_update[obstacles_index] = -1;
+							obstacles_index++;
+						}
+					}
+				}
+				states_to_update[obstacles_index] = entry.getValue();
+				obstacles_index++;
+			}
 		
 		for (int s = 0; s < NUM_ACTIONS; s++) {
 			states_to_update[s] = states_surrounding_new_goal[s];
@@ -348,7 +543,7 @@ public class MDPUtility {
 		states_to_update[NUM_ACTIONS*2] = goal_state;
 		states_to_update[NUM_ACTIONS*2 + 1] = previous_goal_state;
 		
-		for (int s = 0; s < 2*NUM_ACTIONS+2 + (NUM_ACTIONS + NUM_ACTIONS*NUM_ACTIONS*obstacles.size()); s++) {
+		for (int s = 0; s < num_states_to_update; s++) {
 			double maxq = -Double.MAX_VALUE;
 			int maxa = -1;
 			if (states_to_update[s] != -1) {
@@ -708,42 +903,43 @@ public class MDPUtility {
 	 */
 	public static double getRewardForGoalWithObstacles(int state, int action, double[][][] transitions, int goal_state, Map<String,Integer> obstacles) {
 		//running into the wall is -100 reward
-		if (state == goal_state) {
-			return 0.0;
-		} else {
-			synchronized(obstacles) {
-			for (Map.Entry<String, Integer> entry : obstacles.entrySet()) {
-				if (transitions[state][entry.getValue()][action] > 0.0) {
-					return -20.0;
-				}
-				int[] states = getSurroundingStates(entry.getValue());
-				for (int i=0; i<NUM_ACTIONS; i++) {
-					if(states[i] != -1) {
-						if(transitions[state][states[i]][action] > 0.0) {
+				if (state == goal_state) {
+					return 0.0;
+				} else {
+					for (Map.Entry<String, Integer> entry : obstacles.entrySet()) {
+						if (state == entry.getValue()) {
 							return -20.0;
 						}
-						int[] sub_states = getSurroundingStates(states[i]);
-							for (int j=0; j<NUM_ACTIONS; j++) {
-								if (sub_states[j] != -1) {
-									if (transitions[state][sub_states[j]][action] > 0.0) {
-										return -20.0;
-									}
+						if (transitions[state][entry.getValue()][action] > 0.0) {
+							return -20.0;
+						}
+						int[] states = getSurroundingStates(entry.getValue());
+						for (int i=0; i<NUM_ACTIONS; i++) {
+							if(states[i] != -1) {
+								if(transitions[state][states[i]][action] > 0.0) {
+									return -20.0;
 								}
+								int[] sub_states = getSurroundingStates(states[i]);
+									for (int j=0; j<NUM_ACTIONS; j++) {
+										if (sub_states[j] != -1) {
+											if (transitions[state][sub_states[j]][action] > 0.0) {
+												return -20.0;
+											}
+										}
+									}
+
 							}
-						
+						}
 					}
+					if (transitions[state][state][action] > 0.0) {
+						return -100.0;
+					}
+					if (transitions[state][goal_state][action] > 0.0) {
+						return 1.0;
+					//transitioning anywhere else is -1 reward
+					}
+					return -1.0;
 				}
-			}
-			}
-			if (transitions[state][state][action] > 0.0) {
-				return -100.0;
-			}
-			if (transitions[state][goal_state][action] > 0.0) {
-				return 1.0;
-			//transitioning anywhere else is -1 reward
-			}
-			return -1.0;
-		}
 	}
 	
 	public static double[][][] getTransitions() {
@@ -822,6 +1018,8 @@ public class MDPUtility {
 		int row = (int)y/TILE_SIZE;
 		int column = (int)x/TILE_SIZE;
 		state = row*NUM_STATES_IN_ROW + column;
+		if (state > NUM_STATES) return NUM_STATES -1;
+		if (state < 0) return 0;
 		return state;
 	}
 }

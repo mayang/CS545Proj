@@ -5,14 +5,14 @@ import robocode.ScannedRobotEvent;
 import robocode.HitByBulletEvent;
 import java.awt.Graphics2D;
 import mdp.MDPUtility;
-
+import java.util.*;
 /*
  * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
  * Date: 16 April 2012
  * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
  * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
  */
-public class MDPTestBotMovingTarget extends Robot {
+public class MDPTestBotFull extends Robot {
 	//Constants for orientation
 	private final double NORTH = 0.0;
 	private final double NORTH_ALT = 360.0;
@@ -30,31 +30,72 @@ public class MDPTestBotMovingTarget extends Robot {
     private int[] policy = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
     public boolean currently_updating;
     private int goal_state;
+    long time1;
+    long time2;
+    double avg_velocity = 2.0;
+    double current_velocity;
+    double velocity_sum = 0.0;
+    int random_walk = 50;
+    int random_trigger_value = 50;
+    int num_velocities = 0;
+    long est_update_time = 40;
+    double distance_trigger = 100.0;
+    int last_valid_goal;
+    int previous_goal;
+    int turn_count = 0;
+    boolean obstacles_need_updated = false;
+    ScannedRobotEvent sre;
+    volatile Map<String, Integer> obstacle_map = new HashMap<String,Integer>();
     public void run() {
     	this.setAllColors(java.awt.Color.white);
 		currently_updating = false;
     	 while (true) {
-        	//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
-        	int state = MDPUtility.getStateForXandY(getX(), getY());
+
+    		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
+         	int state = MDPUtility.getStateForXandY(getX(), getY());
+         	turn_count++;
+         	if (turn_count == 8) {
+         		turn_count = 0;
+         		turnRadarLeft(360);
+         	}
+         	double random = Math.random();
+        	if (random > 0.8) System.out.print("Oops...slip\n");
         	if (policy[state] == MDPUtility.ACTION_NORTH) {
-        		goNorth(10);
+        		if (random <=0.8) goNorth(30);
+        		else if (random > 0.8 && random < 0.9) goNortheast(30);
+        		else goNorthwest(30);
         	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
-        		goSouth(10);
+        		if (random <=0.8) goSouth(30);
+        		else if (random > 0.8 && random < 0.9) goSoutheast(30);
+        		else goSouthwest(30);
         	} else if (policy[state] == MDPUtility.ACTION_EAST) {
-        		goEast(10);
+        		if (random <=0.8) goEast(30);
+        		else if (random > 0.8 && random < 0.9) goNortheast(30);
+        		else goSoutheast(30);
         	} else if (policy[state] == MDPUtility.ACTION_WEST) {
-        		goWest(10);
+        		if (random <=0.8) goWest(30);
+        		else if (random > 0.8 && random < 0.9) goNorthwest(30);
+        		else goSouthwest(30);
         	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
-        		goNorthwest(10);
+        		if (random <=0.8) goNorthwest(30);
+        		else if (random > 0.8 && random < 0.9) goNorth(30);
+        		else goWest(30);
         	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
-        		goNortheast(10);
+        		if (random <=0.8) goNortheast(30);
+        		else if (random > 0.8 && random < 0.9) goNorth(30);
+        		else goEast(30);
         	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
-        		goSouthwest(10);
+        		if (random <=0.8) goSouthwest(30);
+        		else if (random > 0.8 && random < 0.9) goSouth(30);
+        		else goWest(30);
         	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
-        		goSoutheast(10);
+        		if (random <=0.8) goSoutheast(30);
+        		else if (random > 0.8 && random < 0.9) goSouth(30);
+        		else goEast(30);
         	} else if (policy[state] == -1) {
             	turnRadarLeft(360);
         	}
+         	
         }
 }
 
@@ -66,28 +107,51 @@ public class MDPTestBotMovingTarget extends Robot {
     	double enemyBearing = getHeading() + e.getBearing(); 
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
-    	System.out.print("Found enemy at: (" + enemyX + "," + enemyY + ")\n" );
-    	goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
-    	if (!currently_updating) {
-    		currently_updating = true;
-    		System.out.print("Updating the policy\n");
-    		Thread policy_update = new Thread() {
-    			public void run() {
-    					if (transitions == null) transitions = MDPUtility.getTransitions();
-    					rewards = MDPUtility.getRewards(transitions, goal_state);
-    					q_table = MDPUtility.valueIteration(transitions, rewards);
-    					policy = MDPUtility.generatePolicyFromQTable(q_table);
-    					doneUpdating();
-			    	}
-				};
-			policy_update.start();
+    	if(!e.getName().equals("mdp.MDPEnemyBotPerimeter*")) {
+        	synchronized(obstacle_map) {
+        		obstacle_map.put(e.getName(), MDPUtility.getStateForXandY(enemyX, enemyY));
+        		obstacles_need_updated = true;
+        	}
+    	} else {
+    		sre = e;
+    		previous_goal = goal_state;
+    		goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
+        	if (e.getName().equals("mdp.MDPEnemyBotPerimeter*")) {
+        		goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
+            	random_walk = random_trigger_value;
+            	if (!currently_updating) {
+            		time1 = getTime();
+            		currently_updating = true;
+            		Thread policy_update = new Thread() {
+            			public void run() {
+            				if (transitions == null || sre.getDistance() > 150.0 || obstacles_need_updated) {
+        						transitions = MDPUtility.getTransitionsNoisy();
+        						synchronized(obstacle_map) {
+        							rewards = MDPUtility.getRewardsWithObstacles(transitions, goal_state, obstacle_map);
+        						}
+            					q_table = MDPUtility.valueIteration(transitions, rewards);
+            					policy = MDPUtility.generatePolicyFromQTable(q_table);
+        					} else {
+        						System.out.print("Updating partial \n");
+        						rewards = MDPUtility.updateRewardsRealTime(goal_state, previous_goal, transitions, rewards);
+        						q_table = MDPUtility.valueIterationRealTime(goal_state, previous_goal, transitions, rewards, q_table);
+        						policy =  MDPUtility.updatePolicyRealTime(policy, q_table, goal_state, previous_goal);
+        					}
+        					doneUpdating();
+    			    	}
+            		};
+            		policy_update.start();
+            		fire(1);
+            	}
+        	}
     	}
-        fire(1);
 	}
 
 	public void doneUpdating() {
-		
 		currently_updating = false;
+		time2 = getTime();
+		est_update_time = time2-time1;
+		obstacles_need_updated = false;
 	}
 	
 	public void onHitByBullet(HitByBulletEvent e) {

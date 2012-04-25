@@ -1,8 +1,21 @@
-1. Static goal, static policy, enemy does not fire upon us. We want our robot, 
-in red, to move to the other robot, who is yellow (the goal). Value iteration
-converged in 114 iterations. The enemy is at 273. Our robot starts at an arbitrary location (279, 75). This is associated with the file MDPStatic.battle. The policy produced
-is in mdp_static_policy.png
+1. Static goal and static policy. Enemy does not fire upon us. Value iteration
+converged in 114 iterations. The enemy is at 273. Our robot starts at an arbitrary 
+location (279, 75). This is associated with the file MDPStatic.battle. The policy 
+produced is in mdp_static_policy.png.
 
-2. Same as above with noisy motion model. 80% of the time, the robot does the correct action. 20% of the time, the robot drifts to the state to the right or left of where
+2. Same as above with noisy motion model. 80% of the time, the robot does the correct action. 
+20% of the time, the robot drifts to the state to the right or left of where
 it was trying to go (assuming the robot's heading was toward where it wanted to go. our
-robot is green. The goal robot, again, is yellow. Value iteration converged in 116 iterations. The associated battle file is MDPStaticNoisy.battle. The policy produced is in mdp_static_noisy_policy.png.
+robot is white. The goal robot, again, is yellow. Value iteration converged in 116 iterations. 
+The associated battle file is MDPStaticNoisy.battle. The policy produced is in mdp_static_noisy_policy.png.
+
+3. Relocating Goal, Dynamic Policy. Enemy does not move, but value iteration is run online. The target is 
+acquired and we move toward him. Our robot and the enemy can begin in any positions, and our MDP robot will
+find the best way to get to the enemy. Value iteration generally takes about 8 turns to converge. The goal is
+yellow. The associated battle file is MDPRelocatingTarget.battle.
+
+4. Same as three with noisy motions. The associated battle file is in MDPRelocatingTargetNoisy.battle.
+
+5. Moving Goal, Dynamic Policy. Enemy moves, and value iteration is run online. Goal robot is yellow. The associated
+battle file is MDPMovingTarget.battle.
+6. Same as 5 with noisy motion model.

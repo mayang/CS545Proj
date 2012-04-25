@@ -36,9 +36,9 @@ public class MDPEnemyBotNorthSouth extends Robot {
         		direction = 1;
         	}
         	if (direction == 1) {
-        		goNorth(10);
+        		goNorth(2);
         	} else {
-        		goSouth(10);
+        		goSouth(2);
         	}
         }
 }
@@ -48,7 +48,7 @@ public class MDPEnemyBotNorthSouth extends Robot {
      * long as we keep our gun heading the same as our body heading
      */
     public void onScannedRobot(ScannedRobotEvent e) {
-        fire(1);
+        //fire(1);
 	}
 
 	

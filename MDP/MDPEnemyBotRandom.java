@@ -26,24 +26,25 @@ public class MDPEnemyBotRandom extends Robot {
 	//Policy
 	//Oscillates North and South along the battlefield
     public void run() {
+    	this.setAllColors(java.awt.Color.green);
         while (true) {
         	double r = Math.random();
         	if (r < 0.125) {
-        		goNorth(20);
+        		goNorth(1);
         	} else if (r >= 0.125 && r < 0.25) {
-        		goSouth(20);
+        		goSouth(1);
         	} else if (r >= 0.25 && r < 0.375) {
-        		goEast(20);
+        		goEast(1);
         	} else if (r >= 0.375 && r < 0.5) {
-        		goWest(20);
+        		goWest(1);
         	} else if (r >= 0.5 && r < 0.625) {
-        		goNorthwest(20);
+        		goNorthwest(1);
         	} else if (r >= 0.625 && r < 0.750) {
-        		goSouthwest(20);
+        		goSouthwest(1);
         	} else if (r >=0.75 && r < 0.875) {
-        		goSoutheast(20);
+        		goSoutheast(1);
         	} else if (r >= 0.875 && r < 1.0) {
-        		goNortheast(20);
+        		goNortheast(1);
         	}
         }
 }

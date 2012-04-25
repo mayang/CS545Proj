@@ -5,10 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 public class ValueIterationDriver {
 	public static final boolean OUTPUT_TRANSITIONS = false;
-	public static final boolean OUTPUT_REWARDS = true;
+	public static final boolean OUTPUT_REWARDS = false;
 	public static final boolean OUTPUT_POLICY = false;
-	public static final boolean OUTPUT_LOADABLE_POLICY = false;
-	public static final boolean OUTPUT_LOADABLE_POLICY_UPDATED = false;
+	public static final boolean OUTPUT_LOADABLE_POLICY = true;
+	public static final boolean OUTPUT_LOADABLE_POLICY_UPDATED = true;
+	public static final boolean OUTPUT_REWARDS_UPDATED = false;
 	public static final String OUTPUT_DIRECTORY = "/Users/collinst/Desktop/";
 
 	/**
@@ -17,8 +18,8 @@ public class ValueIterationDriver {
 	 */
 	public static void main(String[] args) throws IOException {
 		
-		FileWriter fstream, fstream2, fstream3, fstream4, fstream5;
-		BufferedWriter mout, mout2, mout3, mout4, mout5;
+		FileWriter fstream, fstream2, fstream3, fstream4, fstream5, fstream6;
+		BufferedWriter mout, mout2, mout3, mout4, mout5, mout6;
 		if (OUTPUT_TRANSITIONS) {
 			fstream = new FileWriter(OUTPUT_DIRECTORY + "transitions.txt");
 		}
@@ -33,6 +34,9 @@ public class ValueIterationDriver {
 		}
 		if (OUTPUT_LOADABLE_POLICY_UPDATED) {
 			fstream5 = new FileWriter(OUTPUT_DIRECTORY + "policy_load_updated.txt");
+		}
+		if (OUTPUT_REWARDS_UPDATED) {
+			fstream6 = new FileWriter(OUTPUT_DIRECTORY + "rewards_updated.txt");
 		}
 		if (OUTPUT_TRANSITIONS) {
 			mout = new BufferedWriter(fstream);
@@ -49,13 +53,15 @@ public class ValueIterationDriver {
 		if (OUTPUT_LOADABLE_POLICY_UPDATED) {
 			mout5= new BufferedWriter(fstream5);
 		}
-		//Build transition model
+		if (OUTPUT_REWARDS_UPDATED) {
+			mout6 = new BufferedWriter(fstream6);
+		}
 		double[][][] trans = MDPUtility.getTransitions();
-		//Build reward model
-		Map<String,Integer> m = new HashMap<String,Integer>();
-		m.put("s", MDPUtility.getStateForXandY(300.0,300.0));
-		System.out.print(MDPUtility.getStateForXandY(300, 300));
-		double[][] rew = MDPUtility.getRewardsWithObstacles(trans, 0, m);
+		//Get rewards for the given goal state
+		Map<String, Integer> m = new HashMap<String, Integer>();
+		m.put("1", 310);
+		m.put("2", 67);
+		double[][] rew = MDPUtility.getRewardsWithObstacles(trans, 190, m);
 		
 		if (OUTPUT_TRANSITIONS) {
 			for (int i=0;i<MDPUtility.NUM_STATES; i++) {
@@ -122,9 +128,9 @@ public class ValueIterationDriver {
 			}
 		}
 		
-		rew = MDPUtility.updateRewardsRealTime(20, 0, trans, rew);
-		q_table = MDPUtility.valueIterationRealTime(20, 0, trans, rew, q_table);
-		policy = MDPUtility.updatePolicyRealTime(policy, q_table, 20, 0);
+		rew = MDPUtility.updateRewardsRealTime(193, 190, trans, rew);
+		q_table = MDPUtility.valueIterationRealTime(193, 190, trans, rew, q_table);
+		policy = MDPUtility.updatePolicyRealTime(policy, q_table, 193, 190);
 		
 		for (int s=0; s<MDPUtility.NUM_STATES; s++) {
 			String action_string = "";
@@ -153,6 +159,32 @@ public class ValueIterationDriver {
 			}
 		}
 		
+		if (OUTPUT_REWARDS_UPDATED) {
+			for (int i=0;i<MDPUtility.NUM_STATES; i++) {
+				for (int j=0; j<MDPUtility.NUM_ACTIONS; j++) {
+					String action_string = "";
+					if (j == MDPUtility.ACTION_NORTH) {
+						action_string = "North";
+					} else if (j == MDPUtility.ACTION_SOUTH) {
+						action_string = "South";
+					} else if (j == MDPUtility.ACTION_EAST) {
+						action_string = "East";
+					} else if (j == MDPUtility.ACTION_WEST) {
+						action_string = "West";
+					} else if (j == MDPUtility.ACTION_NORTHWEST) {
+						action_string = "Northwest";
+					} else if (j == MDPUtility.ACTION_NORTHEAST) {
+						action_string = "Northeast";
+					} else if (j == MDPUtility.ACTION_SOUTHWEST) {
+						action_string = "Southwest";
+					} else if (j == MDPUtility.ACTION_SOUTHEAST) {
+						action_string = "Southeast";
+					}
+					mout6.write("Taking action " + action_string + " in state " + i + " gives reward " + rew[i][j] + "\n");
+				}
+			}	
+		}
+		
 		if (OUTPUT_TRANSITIONS) {
 			mout.close();
 		}
@@ -167,6 +199,9 @@ public class ValueIterationDriver {
 		}
 		if (OUTPUT_LOADABLE_POLICY_UPDATED) {
 			mout5.close();
+		}
+		if (OUTPUT_REWARDS_UPDATED) {
+			mout6.close();
 		}
 		
 	}
