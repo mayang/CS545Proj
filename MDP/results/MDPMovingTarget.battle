@@ -4,6 +4,6 @@ robocode.battleField.height=600
 robocode.battle.numRounds=10
 robocode.battle.gunCoolingRate=0.1
 robocode.battle.rules.inactivityTime=450
-robocode.battle.hideEnemyNames=false
-robocode.battle.selectedRobots=sample.SittingDuck, mdp.MDPTestBot*
-robocode.battle.initialPositions (400, 400, 0), (?,?,?)
+robocode.battle.hideEnemyNames=true
+robocode.battle.selectedRobots=mdp.MDPEnemyBotPerimeter*, mdp.MDPTestBotMovingTargetDynamic*
+robocode.battle.initialPositions (?, ?, ?), (?,?,?)
