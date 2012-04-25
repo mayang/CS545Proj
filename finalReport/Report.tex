@@ -1,0 +1,122 @@
+%%
+\documentclass{aiaa-tc}% insert '[draft]' option to show overfull boxes
+% \documentclass{article}% insert '[draft]' option to show overfull boxes
+%%
+
+% list packages between braces
+\usepackage{graphicx}
+\usepackage{varioref}%  smart page, figure, table, and equation referencing
+\usepackage{wrapfig}%   wrap figures/tables in text (i.e., Di Vinci style)
+\usepackage{threeparttable}% tables with footnotes
+\usepackage{dcolumn}%   decimal-aligned tabular math columns
+\newcolumntype{d}{D{.}{.}{-1}}
+\usepackage{nomencl}%   nomenclature generation via makeindex
+\makeglossary
+\usepackage{subfigure}% subcaptions for subfigures
+\usepackage{subfigmat}% matrices of similar subfigures, aka small mulitples
+\usepackage{fancyvrb}%  extended verbatim environments
+\fvset{fontsize=\footnotesize,xleftmargin=2em}
+\usepackage{lettrine}%  dropped capital letter at beginning of paragraph
+%\usepackage[dvips]{dropping}% alternative dropped capital package
+%\usepackage[colorlinks]{hyperref}%  hyperlinks [must be loaded after dropping]
+\usepackage{amsmath}
+
+%% Daoru added the following package
+\usepackage{multirow}
+%%
+
+\begin{document}
+
+\title{CSCI545 Robotics Final Project Report\\
+	Robotic Motion Planning}
+
+ \author
+{		May Ang%
+		\hspace{3pt},
+		Thomas Collins%
+		\hspace{3pt},
+		Justin Garten%
+		\hspace{3pt},
+		and Michael Joyce%
+		\\
+		\normalsize\itshape
+		University of Southern California, Los Angeles, CA, 90007, USA\\
+}
+\maketitle
+
+\begin{abstract}
+In a world gone mad, one project dared to impose its own brand of
+brutal justice on a world many thought too far gone to save.
+\end{abstract}
+
+\section{Introduction}
+\label{Introduction}
+
+\subsection{Background}
+
+Robots are no longer confined behind striped yellow lines
+with flashing lights to keep soft humans away from the moving
+parts. They are operate in busy hospital hallways, kitchens, and homes
+with pets, children, and clutter in a constant state of motion. As
+such, the ability to evaluate and interact with those dynamic environments is
+increasingly essential.
+
+There are a number of possible approaches to this, many of which are
+strongly influenced by the risks of the environment, nature of the
+task, and the type of information to which the robot has
+access. If uncertain, should it simply stop and wait for instructions?
+Should it push through, trusting others to get out of its way? An
+industrial bot capable of ripping through a wall might have very
+different issues than a robotic vacuum which will at most scuff a
+floorboard.
+
+\subsection{Problem Description}
+
+Issues relating to navigation and motion run up and down the entire
+robotic stack. We chose to focus on the high-level planning aspects of
+the problem, particularly relating to issues involved in dynamic,
+noisy environments. Our primary approach was to explore, extend, and
+evaluate three broad categories of methods for navigating in a dynamic
+environment.
+
+\subsection{Robocode Environment}
+
+As our aim was to focus in on the planning and navigation algorithms,
+we chose an environment which allowed us to abstract and control many
+surrounding
+
+
+\subsection{Report Outline}
+In the following three sections, we discuss our efforts to explore
+this task using Potential Fields, Markov Decision Processes (MDPs) and
+reinforcement learning, specifically Q-learning algorithms.
+
+\section{Potential Fields}
+\label{Potential Fields}
+Discussion and plots...
+
+\section{Markov Decision Processes}
+\label{Markov Decision Processes}
+Discussion and plots...
+
+\section{Q-learning}
+\label{Q-learning}
+
+
+\section{Conclusion}
+\label{Conclusion}
+To sum up...
+
+\subsection{Future work}
+
+\section{Acknowledgments}
+Our team would thank Franz Kafka, Alan Turing, and the Ghost of
+Christmas Past for their unwavering support during this project. We
+would also like to pour a drink for our homies in the ground.
+
+
+% \bibliographystyle{aiaa}
+
+% \bibliography{References_Database_Daoru}
+
+\end{document}
