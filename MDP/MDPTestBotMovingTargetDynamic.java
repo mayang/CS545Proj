@@ -42,50 +42,38 @@ public class MDPTestBotMovingTargetDynamic extends Robot {
     double distance_trigger = 100.0;
     int last_valid_goal;
     int previous_goal;
+    int turn_count = 0;
     public void run() {
 		currently_updating = false;
+		this.setAllColors(java.awt.Color.white);
+		
     	 while (true) {
+    		 turn_count++;
     		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
          	int state = MDPUtility.getStateForXandY(getX(), getY());
-        	if (getTime() % 10 == 0) {
+    		 if (turn_count == 8) {
+    			turn_count = 0;
         		turnRadarLeft(360);
         		continue;
         	}
          	if (policy[state] == MDPUtility.ACTION_NORTH) {
-         		goNorth(20);
+         		goNorth(30);
          	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
-         		goSouth(20);
+         		goSouth(30);
          	} else if (policy[state] == MDPUtility.ACTION_EAST) {
-         		goEast(20);
+         		goEast(30);
          	} else if (policy[state] == MDPUtility.ACTION_WEST) {
-         		goWest(20);
+         		goWest(30);
          	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
-         		goNorthwest(20);
+         		goNorthwest(30);
          	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
-         		goNortheast(20);
+         		goNortheast(30);
          	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
-         		goSouthwest(20);
+         		goSouthwest(30);
          	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
-         		goSoutheast(20);
+         		goSoutheast(30);
          	} else if (policy[state] == -1) {
-             	double r = Math.random();
-             	if (r < 0.125) {
-             		goNorth(20);
-             	} else if (r >= 0.125 && r < 0.25) {
-             		goSouth(20);
-             	} else if (r >= 0.25 && r < 0.375) {
-             		goEast(20);
-             	} else if (r >= 0.375 && r < 0.5) {
-             		goWest(20);
-             	} else if (r >= 0.5 && r < 0.625) {
-             		goNorthwest(20);
-             	} else if (r >= 0.625 && r < 0.750) {
-             		goSouthwest(20);
-             	} else if (r >=0.75 && r < 0.875) {
-             		goSoutheast(10);
-             	} else if (r >= 0.875 && r < 1.0) {
-             		goNortheast(20);
-             	}
+             	turnRadarLeft(360);
          	}
          	
         }

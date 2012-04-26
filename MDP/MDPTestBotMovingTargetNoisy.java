@@ -31,6 +31,7 @@ public class MDPTestBotMovingTargetNoisy extends Robot {
     public boolean currently_updating;
     private int goal_state;
     public void run() {
+    	this.setAllColors(java.awt.Color.white);
 		currently_updating = false;
     	 while (true) {
         	//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
@@ -70,24 +71,7 @@ public class MDPTestBotMovingTargetNoisy extends Robot {
         		else if (random > 0.8 && random < 0.9) goSouth(10);
         		else goEast(10);
         	} else if (policy[state] == -1) {
-            	double r = Math.random();
-            	if (r < 0.125) {
-            		goNorth(10);
-            	} else if (r >= 0.125 && r < 0.25) {
-            		goSouth(100);
-            	} else if (r >= 0.25 && r < 0.375) {
-            		goEast(100);
-            	} else if (r >= 0.375 && r < 0.5) {
-            		goWest(100);
-            	} else if (r >= 0.5 && r < 0.625) {
-            		goNorthwest(100);
-            	} else if (r >= 0.625 && r < 0.750) {
-            		goSouthwest(100);
-            	} else if (r >=0.75 && r < 0.875) {
-            		goSoutheast(100);
-            	} else if (r >= 0.875 && r < 1.0) {
-            		goNortheast(100);
-            	}
+            	turnRadarLeft(360);
         	}
         }
 }
@@ -100,11 +84,9 @@ public class MDPTestBotMovingTargetNoisy extends Robot {
     	double enemyBearing = getHeading() + e.getBearing(); 
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
-    	System.out.print("Found enemy at: (" + enemyX + "," + enemyY + ")\n" );
     	goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
     	if (!currently_updating) {
     		currently_updating = true;
-    		System.out.print("Updating the policy\n");
     		Thread policy_update = new Thread() {
     			public void run() {
     					if (transitions == null) transitions = MDPUtility.getTransitionsNoisy();

@@ -42,80 +42,57 @@ public class MDPTestBotDynamicObNoisy extends Robot {
     double distance_trigger = 100.0;
     int last_valid_goal;
     int previous_goal;
+    int turn_count = 0;
     volatile Map<String, Integer> obstacle_map = new HashMap<String,Integer>();
     public void run() {
+    	this.setAllColors(java.awt.Color.white);
 		currently_updating = false;
     	 while (true) {
 
     		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
          	int state = MDPUtility.getStateForXandY(getX(), getY());
-        	current_velocity = getVelocity();
-        	random_walk--;
-        	if (random_walk == 0){ 
-        		for (int i=0; i<MDPUtility.NUM_STATES; i++) {
-        			policy[i] = -1;
-        		}
-        		random_walk = random_trigger_value;
-        	}
-        	if (current_velocity > 0.0) {
-        		velocity_sum += current_velocity;
-        		num_velocities++;
-        		avg_velocity = velocity_sum/num_velocities;
-        	}
-        	double random = Math.random();
+         	turn_count++;
+         	if (turn_count == 8) {
+         		turn_count = 0;
+         		turnRadarLeft(360);
+         	}
+         	double random = Math.random();
         	if (random > 0.8) System.out.print("Oops...slip\n");
         	if (policy[state] == MDPUtility.ACTION_NORTH) {
-        		if (random <=0.8) goNorth(10);
-        		else if (random > 0.8 && random < 0.9) goNortheast(10);
-        		else goNorthwest(10);
+        		if (random <=0.8) goNorth(30);
+        		else if (random > 0.8 && random < 0.9) goNortheast(30);
+        		else goNorthwest(30);
         	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
-        		if (random <=0.8) goSouth(10);
-        		else if (random > 0.8 && random < 0.9) goSoutheast(10);
-        		else goSouthwest(10);
+        		if (random <=0.8) goSouth(30);
+        		else if (random > 0.8 && random < 0.9) goSoutheast(30);
+        		else goSouthwest(30);
         	} else if (policy[state] == MDPUtility.ACTION_EAST) {
-        		if (random <=0.8) goEast(10);
-        		else if (random > 0.8 && random < 0.9) goNortheast(10);
-        		else goSoutheast(10);
+        		if (random <=0.8) goEast(30);
+        		else if (random > 0.8 && random < 0.9) goNortheast(30);
+        		else goSoutheast(30);
         	} else if (policy[state] == MDPUtility.ACTION_WEST) {
-        		if (random <=0.8) goWest(10);
-        		else if (random > 0.8 && random < 0.9) goNorthwest(10);
-        		else goSouthwest(10);
+        		if (random <=0.8) goWest(30);
+        		else if (random > 0.8 && random < 0.9) goNorthwest(30);
+        		else goSouthwest(30);
         	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
-        		if (random <=0.8) goNorthwest(10);
-        		else if (random > 0.8 && random < 0.9) goNorth(10);
-        		else goWest(10);
+        		if (random <=0.8) goNorthwest(30);
+        		else if (random > 0.8 && random < 0.9) goNorth(30);
+        		else goWest(30);
         	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
-        		if (random <=0.8) goNortheast(10);
-        		else if (random > 0.8 && random < 0.9) goNorth(10);
-        		else goEast(10);
+        		if (random <=0.8) goNortheast(30);
+        		else if (random > 0.8 && random < 0.9) goNorth(30);
+        		else goEast(30);
         	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
-        		if (random <=0.8) goSouthwest(10);
-        		else if (random > 0.8 && random < 0.9) goSouth(10);
-        		else goWest(10);
+        		if (random <=0.8) goSouthwest(30);
+        		else if (random > 0.8 && random < 0.9) goSouth(30);
+        		else goWest(30);
         	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
-        		if (random <=0.8) goSoutheast(10);
-        		else if (random > 0.8 && random < 0.9) goSouth(10);
-        		else goEast(10);
+        		if (random <=0.8) goSoutheast(30);
+        		else if (random > 0.8 && random < 0.9) goSouth(30);
+        		else goEast(30);
         	} else if (policy[state] == -1) {
-             	double r = Math.random();
-             	if (r < 0.125) {
-             		goNorth(20);
-             	} else if (r >= 0.125 && r < 0.25) {
-             		goSouth(20);
-             	} else if (r >= 0.25 && r < 0.375) {
-             		goEast(20);
-             	} else if (r >= 0.375 && r < 0.5) {
-             		goWest(20);
-             	} else if (r >= 0.5 && r < 0.625) {
-             		goNorthwest(20);
-             	} else if (r >= 0.625 && r < 0.750) {
-             		goSouthwest(20);
-             	} else if (r >=0.75 && r < 0.875) {
-             		goSoutheast(10);
-             	} else if (r >= 0.875 && r < 1.0) {
-             		goNortheast(20);
-             	}
-         	}
+            	turnRadarLeft(360);
+        	}
          	
         }
 }
@@ -128,16 +105,15 @@ public class MDPTestBotDynamicObNoisy extends Robot {
     	double enemyBearing = getHeading() + e.getBearing(); 
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
-    	if(e.getName().substring(0,3).equals("sam")) {
+    	if(!e.getName().equals("mdp.MDPEnemyBotPerimeter*")) {
         	synchronized(obstacle_map) {
         		obstacle_map.put(e.getName(), MDPUtility.getStateForXandY(enemyX, enemyY));
         	}
     	} else {
-        	if (e.getName().substring(0, 21).equals("mdp.MDPEnemyBotRandom")) {
-        		System.out.print("Found the enemy.\n");
+        	if (e.getName().equals("mdp.MDPEnemyBotPerimeter*")) {
         		goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
             	random_walk = random_trigger_value;
-            	if (!currently_updating /*&& e.getDistance() > distance_trigger*/) {
+            	if (!currently_updating) {
             		time1 = getTime();
             		currently_updating = true;
             		Thread policy_update = new Thread() {

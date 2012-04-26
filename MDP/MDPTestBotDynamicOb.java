@@ -42,61 +42,38 @@ public class MDPTestBotDynamicOb extends Robot {
     double distance_trigger = 100.0;
     int last_valid_goal;
     int previous_goal;
+    int turn_count = 0;
     volatile Map<String, Integer> obstacle_map = new HashMap<String,Integer>();
     public void run() {
+    	this.setAllColors(java.awt.Color.white);
 		currently_updating = false;
     	 while (true) {
 
     		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
          	int state = MDPUtility.getStateForXandY(getX(), getY());
-        	current_velocity = getVelocity();
-        	random_walk--;
-        	if (random_walk == 0){ 
-        		for (int i=0; i<MDPUtility.NUM_STATES; i++) {
-        			policy[i] = -1;
-        		}
-        		random_walk = random_trigger_value;
-        	}
-        	if (current_velocity > 0.0) {
-        		velocity_sum += current_velocity;
-        		num_velocities++;
-        		avg_velocity = velocity_sum/num_velocities;
-        	}
+         	turn_count++;
+         	if (turn_count == 8) {
+         		turn_count = 0;
+         		turnRadarLeft(360);
+         	}
          	if (policy[state] == MDPUtility.ACTION_NORTH) {
-         		goNorth(10);
+         		goNorth(20);
          	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
-         		goSouth(10);
+         		goSouth(20);
          	} else if (policy[state] == MDPUtility.ACTION_EAST) {
-         		goEast(10);
+         		goEast(20);
          	} else if (policy[state] == MDPUtility.ACTION_WEST) {
-         		goWest(10);
+         		goWest(20);
          	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
-         		goNorthwest(10);
+         		goNorthwest(20);
          	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
-         		goNortheast(10);
+         		goNortheast(20);
          	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
-         		goSouthwest(10);
+         		goSouthwest(20);
          	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
-         		goSoutheast(10);
+         		goSoutheast(20);
          	} else if (policy[state] == -1) {
-             	double r = Math.random();
-             	if (r < 0.125) {
-             		goNorth(20);
-             	} else if (r >= 0.125 && r < 0.25) {
-             		goSouth(20);
-             	} else if (r >= 0.25 && r < 0.375) {
-             		goEast(20);
-             	} else if (r >= 0.375 && r < 0.5) {
-             		goWest(20);
-             	} else if (r >= 0.5 && r < 0.625) {
-             		goNorthwest(20);
-             	} else if (r >= 0.625 && r < 0.750) {
-             		goSouthwest(20);
-             	} else if (r >=0.75 && r < 0.875) {
-             		goSoutheast(10);
-             	} else if (r >= 0.875 && r < 1.0) {
-             		goNortheast(20);
-             	}
+             	turnRadarLeft(360);
          	}
          	
         }
@@ -110,16 +87,15 @@ public class MDPTestBotDynamicOb extends Robot {
     	double enemyBearing = getHeading() + e.getBearing(); 
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
-    	if(e.getName().substring(0,3).equals("sam")) {
+    	if(!e.getName().equals("mdp.MDPEnemyBotPerimeter*")) {
         	synchronized(obstacle_map) {
         		obstacle_map.put(e.getName(), MDPUtility.getStateForXandY(enemyX, enemyY));
         	}
     	} else {
-        	if (e.getName().substring(0, 21).equals("mdp.MDPEnemyBotRandom")) {
-        		System.out.print("Found the enemy.\n");
+        	if (e.getName().equals("mdp.MDPEnemyBotPerimeter*")) {
         		goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
             	random_walk = random_trigger_value;
-            	if (!currently_updating /*&& e.getDistance() > distance_trigger*/) {
+            	if (!currently_updating) {
             		time1 = getTime();
             		currently_updating = true;
             		Thread policy_update = new Thread() {
