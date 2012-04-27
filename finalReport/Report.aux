@@ -17,24 +17,45 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {C}Conclusion}{6}}
 \@writefile{toc}{\contentsline {section}{\numberline {III}Markov Decision Processes}{6}}
 \newlabel{Markov Decision Processes}{{III}{6}}
-\@writefile{toc}{\contentsline {section}{\numberline {IV}Q-learning}{6}}
-\newlabel{Q-learning}{{IV}{6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A}Setup}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B}Experiments}{7}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1}Offline trials}{7}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2}Taking it online}{7}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3}Performance and dynamic environments}{8}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Basic Q-learning generated policy.}}{9}}
-\newlabel{fig:basicQ}{{4}{9}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4}Obstacles}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Q-learning generated policy with wall present at $x=10$.}}{10}}
-\newlabel{fig:obstacleQ}{{5}{10}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5}Heuristic reward functions}{11}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Q-learning generated policy with a heuristic reward policy.}}{12}}
-\newlabel{fig:heuristicQ}{{6}{12}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {C}Evaluation}{13}}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Conclusion}{14}}
-\newlabel{Conclusion}{{V}{14}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A}Future work}{14}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Acknowledgments}{14}}
-\newlabel{LastPage}{{}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}Introduction}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B}Setup}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C}Implementation and Experimentation}{7}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1}Part I - Framework}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces MDP Policy to lead an MDP bot to state 273. The motion of the MDP bot following this policy is assumed to have no noise.}}{9}}
+\newlabel{fig:sample}{{4}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces MDP Policy to lead an MDP bot to state 273. The motion of the MDP bot following this policy is assumed to follow the noise model described above.}}{10}}
+\newlabel{fig:sample}{{5}{10}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2}Part II - Runloop Integrated Value Iteration}{11}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3}Part III - Moving Target Tracking}{11}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4}Part IV - Moving Target Tracking with Real-Time Optimizations}{11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces MDP Policy that has been updated from goal state 190 to goal state 150 using our real-time value iteration function.}}{13}}
+\newlabel{fig:sample}{{6}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces MDP Policy that has been updated from goal state 25 to goal state 31. With this large of a jump between goal states, the real-time value iteration algorithm fails.}}{15}}
+\newlabel{fig:sample}{{7}{15}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5}Part V - Dynamic Obstacle Avoidance}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces MDP Policy to lead an MDP bot to state 0 while avoiding obstacles at states 67 and 310.}}{17}}
+\newlabel{fig:sample}{{8}{17}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces MDP Policy to lead an MDP bot to state 68 while avoiding obstacles at states 67 and 310. The goal state is too close to the obstacles, and the path to the goal is obliterated.}}{18}}
+\newlabel{fig:sample}{{9}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {D}Analysis}{19}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Q-learning}{20}}
+\newlabel{Q-learning}{{IV}{20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}Setup}{20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B}Experiments}{20}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1}Offline trials}{20}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2}Taking it online}{20}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3}Performance and dynamic environments}{21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Basic Q-learning generated policy.}}{22}}
+\newlabel{fig:basicQ}{{10}{22}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4}Obstacles}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Q-learning generated policy with wall present at $x=10$.}}{23}}
+\newlabel{fig:obstacleQ}{{11}{23}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5}Heuristic reward functions}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Q-learning generated policy with a heuristic reward policy.}}{25}}
+\newlabel{fig:heuristicQ}{{12}{25}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C}Evaluation}{26}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Conclusion}{27}}
+\newlabel{Conclusion}{{V}{27}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}Future work}{27}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Acknowledgments}{27}}
+\newlabel{LastPage}{{}{27}}

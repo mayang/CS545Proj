@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  27 APR 2012 11:20
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  27 APR 2012 13:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -401,48 +401,154 @@ File: images/FinalRun.png Graphic file (type png)
 <use images/FinalRun.png>
 Package pdftex.def Info: images/FinalRun.png used on input line 196.
 (pdftex.def)             Requested size: 375.80241pt x 414.54494pt.
- [4 <./images/RadarLock.png>] [5 <./images/FinalRun.png>] [6] [7] <images/Basic
-Policy.png, id=41, 573.14125pt x 534.99875pt>
+ [4 <./images/RadarLock.png>] [5 <./images/FinalRun.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 226--233
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 234--238
+
+ []
+
+[7]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 251.
+
+ (/usr/local/texlive/2011/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 251.
+
+<mdp_policy_to_state_273.png, id=41, 1047.915pt x 776.9025pt>
+File: mdp_policy_to_state_273.png Graphic file (type png)
+
+<use mdp_policy_to_state_273.png>
+Package pdftex.def Info: mdp_policy_to_state_273.png used on input line 260.
+(pdftex.def)             Requested size: 483.69371pt x 358.6005pt.
+
+Overfull \hbox (13.93869pt too wide) in paragraph at lines 260--261
+ [][] 
+ []
+
+<static_policy_noisy_to_state_273.png, id=42, 967.615pt x 751.80875pt>
+File: static_policy_noisy_to_state_273.png Graphic file (type png)
+
+<use static_policy_noisy_to_state_273.png>
+Package pdftex.def Info: static_policy_noisy_to_state_273.png used on input lin
+e 266.
+(pdftex.def)             Requested size: 483.70297pt x 375.82314pt.
+
+Overfull \hbox (13.94795pt too wide) in paragraph at lines 266--267
+ [][] 
+ []
+
+[8] [9 <./mdp_policy_to_state_273.png>] [10 <./static_policy_noisy_to_state_273
+.png>] [11
+
+] <mdp_update_190_150.png, id=55, 1099.10625pt x 792.9625pt>
+File: mdp_update_190_150.png Graphic file (type png)
+
+<use mdp_update_190_150.png>
+Package pdftex.def Info: mdp_update_190_150.png used on input line 293.
+(pdftex.def)             Requested size: 483.6921pt x 348.96507pt.
+
+Overfull \hbox (13.93707pt too wide) in paragraph at lines 293--294
+ [][] 
+ []
+
+[12] [13 <./mdp_update_190_150.png>]
+<mdp_policy_update_25_to_31.png, id=63, 1054.94125pt x 777.90625pt>
+File: mdp_policy_update_25_to_31.png Graphic file (type png)
+
+<use mdp_policy_update_25_to_31.png>
+Package pdftex.def Info: mdp_policy_update_25_to_31.png used on input line 303.
+
+(pdftex.def)             Requested size: 483.68526pt x 356.66609pt.
+
+Overfull \hbox (13.93024pt too wide) in paragraph at lines 303--304
+ [][] 
+ []
+
+[14
+
+] [15 <./mdp_policy_update_25_to_31.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 309--311
+
+ []
+
+<mpd_noisy_obstacles.png, id=70, 980.66376pt x 801.99625pt>
+File: mpd_noisy_obstacles.png Graphic file (type png)
+
+<use mpd_noisy_obstacles.png>
+Package pdftex.def Info: mpd_noisy_obstacles.png used on input line 322.
+(pdftex.def)             Requested size: 483.68678pt x 395.5637pt.
+
+Overfull \hbox (13.93176pt too wide) in paragraph at lines 322--323
+ [][] 
+ []
+
+<mdp_proximity_error.png, id=71, 928.46875pt x 807.015pt>
+File: mdp_proximity_error.png Graphic file (type png)
+
+<use mdp_proximity_error.png>
+Package pdftex.def Info: mdp_proximity_error.png used on input line 328.
+(pdftex.def)             Requested size: 483.69907pt x 420.426pt.
+
+Overfull \hbox (13.94405pt too wide) in paragraph at lines 328--329
+ [][] 
+ []
+
+[16
+
+] [17 <./mpd_noisy_obstacles.png>] [18 <./mdp_proximity_error.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 339--341
+
+ []
+
+[19
+
+] [20] <images/BasicPolicy.png, id=89, 573.14125pt x 534.99875pt>
 File: images/BasicPolicy.png Graphic file (type png)
 
 <use images/BasicPolicy.png>
-Package pdftex.def Info: images/BasicPolicy.png used on input line 397.
+Package pdftex.def Info: images/BasicPolicy.png used on input line 512.
 (pdftex.def)             Requested size: 469.76022pt x 438.49773pt.
- [8] [9 <./images/BasicPolicy.png>]
-<images/Wall2.png, id=48, 738.76pt x 659.46375pt>
+ [21] [22 <./images/BasicPolicy.png>]
+<images/Wall2.png, id=96, 738.76pt x 659.46375pt>
 File: images/Wall2.png Graphic file (type png)
  <use images/Wall2.png>
-Package pdftex.def Info: images/Wall2.png used on input line 428.
+Package pdftex.def Info: images/Wall2.png used on input line 543.
 (pdftex.def)             Requested size: 469.74991pt x 419.32838pt.
 
-[10
+[23
 
  <./images/Wall2.png>]
-<images/HeuristicPolicy.png, id=53, 548.0475pt x 500.87125pt>
+<images/HeuristicPolicy.png, id=101, 548.0475pt x 500.87125pt>
 File: images/HeuristicPolicy.png Graphic file (type png)
 
 <use images/HeuristicPolicy.png>
-Package pdftex.def Info: images/HeuristicPolicy.png used on input line 476.
+Package pdftex.def Info: images/HeuristicPolicy.png used on input line 591.
 (pdftex.def)             Requested size: 469.76459pt x 429.32697pt.
- [11
+ [24
 
-] [12 <./images/HeuristicPolicy.png>]
-[13
+] [25 <./images/HeuristicPolicy.png>]
+[26
 
 ] AED: lastpage setting LastPage 
-[14] (./Report.aux)
+[27] (./Report.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 3915 strings out of 493633
- 54335 string characters out of 3143378
- 126247 words of memory out of 3000000
- 7121 multiletter control sequences out of 15000+200000
+ 3963 strings out of 493633
+ 55568 string characters out of 3143378
+ 130247 words of memory out of 3000000
+ 7160 multiletter control sequences out of 15000+200000
  10155 words of font info for 37 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 38i,11n,45p,1205b,251s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,10n,45p,2484b,311s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
@@ -452,15 +558,16 @@ r/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr
 ocal/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/loc
 al/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local
 /texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/t
-exlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texl
-ive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
-ve/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive
-/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/
-2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Report.pdf (14 pages, 517483 bytes).
+exlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texl
+ive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive
+/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/
+2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/20
+11/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/201
+1/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on Report.pdf (27 pages, 657469 bytes).
 PDF statistics:
- 112 PDF objects out of 1000 (max. 8388607)
- 75 compressed objects within 1 object stream
+ 164 PDF objects out of 1000 (max. 8388607)
+ 106 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 61 words of extra memory for PDF output out of 10000 (max. 10000000)
 
