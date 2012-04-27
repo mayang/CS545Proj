@@ -7,11 +7,17 @@ import java.awt.Graphics2D;
 import mdp.MDPUtility;
 
 /*
- * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
- * Date: 16 April 2012
- * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
- * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
+ * Abstract: Robocode robot that scans for its target (the only other robot on the battlefield). Once it has found the enemy,
+ * it determines the (x,y) position of the enemy and the state associated with that enemy position. It then uses this "goal"
+ * state to update its reward function and runs value iteration to find an optimal policy to lead itself to the "goal". It
+ * does this continuously as the enemy robot moves around the battlefield. This is the first way in which we were able to 
+ * apply value iteration online for a moving target. The code is very similar to the MDPTestBotMovingTarget code, but we had
+ * to add a periodic radar sweep in order to give good tracking performance. There was noise in this robot's motions
+ * Author: TJ Collins
+ * Notes: This robot was the third step in our exploration of MDPs in Robocode. It was the logical next step after MDPTestBotMovingTarget 
+ * because it required us to use value iteration online to follow a moving target.
  */
+
 public class MDPTestBotMovingTargetDynamicN extends Robot {
 	//Constants for orientation
 	private final double NORTH = 0.0;
@@ -50,11 +56,14 @@ public class MDPTestBotMovingTargetDynamicN extends Robot {
     		 turn_count++;
     		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
          	int state = MDPUtility.getStateForXandY(getX(), getY());
-        	if (turn_count == 10) {
+         	//This is a very important aspect of the code. We do a periodic radar sweep to reevaluate the position of the enemy.
+         	//We do this about every 8 turns because that is about how long it takes for value iteration to converge
+        	if (turn_count == 8) {
         		turn_count = 0;
         		turnRadarLeft(360);
         		continue;
         	}
+        	//The same noisy motion we used in MDPTestBotNoisy and other noisy bots
         	double random = Math.random();
         	if (random > 0.8) System.out.print("Oops...slip\n");
         	if (policy[state] == MDPUtility.ACTION_NORTH) {
@@ -101,6 +110,7 @@ public class MDPTestBotMovingTargetDynamicN extends Robot {
      */
     public void onScannedRobot(ScannedRobotEvent e) {
     	random_walk = random_trigger_value;
+    	//Determine enemy location and get state for that location
     	double enemyBearing = getHeading() + e.getBearing(); 
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
@@ -108,8 +118,10 @@ public class MDPTestBotMovingTargetDynamicN extends Robot {
     	if (!currently_updating) {
     		time1 = getTime();
     		currently_updating = true;
+    		//Do value iteration on a separate thread
     		Thread policy_update = new Thread() {
     			public void run() {
+    				//Make sure we have transitions, then get new rewards, new Q-table, and update policy
     					if (transitions == null) {
     						transitions = MDPUtility.getTransitionsNoisy();
     					}

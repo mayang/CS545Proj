@@ -56,13 +56,12 @@ public class ValueIterationDriver {
 		if (OUTPUT_REWARDS_UPDATED) {
 			mout6 = new BufferedWriter(fstream6);
 		}
-		double[][][] trans = MDPUtility.getTransitions();
+		double[][][] trans = MDPUtility.getTransitionsNoisy();
 		//Get rewards for the given goal state
 		Map<String, Integer> m = new HashMap<String, Integer>();
 		m.put("1", 310);
 		m.put("2", 67);
-		double[][] rew = MDPUtility.getRewardsWithObstacles(trans, 190, m);
-		
+		double[][] rew = MDPUtility.getRewards(trans, 68);		
 		if (OUTPUT_TRANSITIONS) {
 			for (int i=0;i<MDPUtility.NUM_STATES; i++) {
 				for (int j=0; j<MDPUtility.NUM_STATES; j++) {
@@ -128,9 +127,9 @@ public class ValueIterationDriver {
 			}
 		}
 		
-		rew = MDPUtility.updateRewardsRealTime(193, 190, trans, rew);
-		q_table = MDPUtility.valueIterationRealTime(193, 190, trans, rew, q_table);
-		policy = MDPUtility.updatePolicyRealTime(policy, q_table, 193, 190);
+		//rew = MDPUtility.updateRewardsRealTime(150, 190, trans, rew);
+		//q_table = MDPUtility.valueIterationRealTime(150, 190, trans, rew, q_table);
+		//policy = MDPUtility.updatePolicyRealTime(policy, q_table, 150, 190);
 		
 		for (int s=0; s<MDPUtility.NUM_STATES; s++) {
 			String action_string = "";

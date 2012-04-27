@@ -7,10 +7,9 @@ import java.awt.Graphics2D;
 import mdp.MDPUtility;
 
 /*
- * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
- * Date: 16 April 2012
- * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
- * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
+ * Abstract: Robocode robot that takes random motion actions
+ * Author: TJ Collins
+ * Notes: Simple Enemy Robot to test our MDP policies/extensions
  */
 public class MDPEnemyBotRandom extends Robot {
 	//Constants for orientation
@@ -23,38 +22,33 @@ public class MDPEnemyBotRandom extends Robot {
 	private final double NORTHEAST = 45.0;
 	private final double SOUTHWEST = 225.0;
 	private final double SOUTHEAST = 135.0;
-	//Policy
-	//Oscillates North and South along the battlefield
     public void run() {
-    	this.setAllColors(java.awt.Color.green);
+    	//this.setAllColors(java.awt.Color.green);
         while (true) {
         	double r = Math.random();
         	if (r < 0.125) {
-        		goNorth(1);
+        		goNorth(10);
         	} else if (r >= 0.125 && r < 0.25) {
-        		goSouth(1);
+        		goSouth(10);
         	} else if (r >= 0.25 && r < 0.375) {
-        		goEast(1);
+        		goEast(10);
         	} else if (r >= 0.375 && r < 0.5) {
-        		goWest(1);
+        		goWest(10);
         	} else if (r >= 0.5 && r < 0.625) {
-        		goNorthwest(1);
+        		goNorthwest(10);
         	} else if (r >= 0.625 && r < 0.750) {
-        		goSouthwest(1);
+        		goSouthwest(10);
         	} else if (r >=0.75 && r < 0.875) {
-        		goSoutheast(1);
+        		goSoutheast(10);
         	} else if (r >= 0.875 && r < 1.0) {
-        		goNortheast(1);
+        		goNortheast(10);
         	}
         }
 }
 
-    /*
-     * Fire when we scan a robot. Our policy keeps us oriented toward the enemy almost all the time, so firing straight ahead works, so
-     * long as we keep our gun heading the same as our body heading
-     */
+
     public void onScannedRobot(ScannedRobotEvent e) {
-        if(e.getName().substring(0,3).equals("mdp")) fire(1);
+        //if(e.getName().substring(0,3).equals("mdp")) fire(1);
 	}
 
 	

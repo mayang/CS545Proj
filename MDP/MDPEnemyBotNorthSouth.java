@@ -7,10 +7,9 @@ import java.awt.Graphics2D;
 import mdp.MDPUtility;
 
 /*
- * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
- * Date: 16 April 2012
- * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
- * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
+ * Abstract: Robocode robot that travels continuously North and South (back and forth)
+ * Author: TJ Collins
+ * Notes: Simple Enemy Robot to test our MDP policies/extensions
  */
 public class MDPEnemyBotNorthSouth extends Robot {
 	//Constants for orientation
@@ -23,12 +22,9 @@ public class MDPEnemyBotNorthSouth extends Robot {
 	private final double NORTHEAST = 45.0;
 	private final double SOUTHWEST = 225.0;
 	private final double SOUTHEAST = 135.0;
-	//Policy
-	//Oscillates North and South along the battlefield
     public void run() {
     	int direction = 1;
         while (true) {
-        	//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
         	int state = MDPUtility.getStateForXandY(getX(), getY());
         	if (state + MDPUtility.NUM_STATES_IN_ROW >= MDPUtility.NUM_STATES) {
         		direction = 0;
@@ -43,10 +39,7 @@ public class MDPEnemyBotNorthSouth extends Robot {
         }
 }
 
-    /*
-     * Fire when we scan a robot. Our policy keeps us oriented toward the enemy almost all the time, so firing straight ahead works, so
-     * long as we keep our gun heading the same as our body heading
-     */
+
     public void onScannedRobot(ScannedRobotEvent e) {
         //fire(1);
 	}

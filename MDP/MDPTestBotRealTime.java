@@ -7,10 +7,11 @@ import java.awt.Graphics2D;
 import mdp.MDPUtility;
 
 /*
- * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
- * Date: 16 April 2012
- * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
- * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
+ * Abstract: Robocode robot that runs value iteration online but runs the "real-time" value iteration update when it gets close enough to the
+ * enemy. The "real-time" value iteration gives an optimal policy if the robot is within about 150.0 points of the "goal". Thus, when the robot
+ * gets within that range of the goal, we switch from full value iteration to real-time value iteration updates. There is no noise in this robot's motions
+ * Author: TJ Collins
+ * Notes: This robot was the fifth step in our exploration of MDPs in Robocode.
  */
 public class MDPTestBotRealTime extends Robot {
 	//Constants for orientation
@@ -48,31 +49,33 @@ public class MDPTestBotRealTime extends Robot {
     public void run() {
 		currently_updating = false;
 		ejected_policy = false;
+		this.setAllColors(java.awt.Color.white);
     	 while (true) {
     		 turn_count++;
     		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
          	int state = MDPUtility.getStateForXandY(getX(), getY());
+         	//Sweep the radar every 10 steps instead of taking a movement action.
         	if (turn_count == 10) {
         		turn_count = 0;
         		turnRadarLeft(360);
         		continue;
         	}
          	if (policy[state] == MDPUtility.ACTION_NORTH) {
-         		goNorth(30);
+         		goNorth(40);
          	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
-         		goSouth(30);
+         		goSouth(40);
          	} else if (policy[state] == MDPUtility.ACTION_EAST) {
-         		goEast(30);
+         		goEast(40);
          	} else if (policy[state] == MDPUtility.ACTION_WEST) {
-         		goWest(30);
+         		goWest(40);
          	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
-         		goNorthwest(30);
+         		goNorthwest(40);
          	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
-         		goNortheast(30);
+         		goNortheast(40);
          	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
-         		goSouthwest(30);
+         		goSouthwest(40);
          	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
-         		goSoutheast(30);
+         		goSoutheast(40);
          	} else if (policy[state] == -1) {
          		turnRadarLeft(360);
          	}
@@ -85,21 +88,24 @@ public class MDPTestBotRealTime extends Robot {
      * long as we keep our gun heading the same as our body heading. http://old.nabble.com/Using-Random-Statements-td4010734.html
      */
     public void onScannedRobot(ScannedRobotEvent e) {
-    	random_walk = random_trigger_value;
+    	
+    	//Get the enemy x and y position
     	double enemyBearing = getHeading() + e.getBearing(); 
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
+    	//save the previous goal
     	previous_goal = goal_state;
     	sre = e;
+    	//get the new goal
     	goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
-    	if(goal_state >= 0 && goal_state < MDPUtility.NUM_STATES) last_valid_goal = goal_state;
-    	if (goal_state < 0) goal_state = last_valid_goal;
-    	if (goal_state >= MDPUtility.NUM_STATES) goal_state = last_valid_goal;
     	if (!currently_updating) {
     		time1 = getTime();
     		currently_updating = true;
+    		//new thread for value iteration
     		Thread policy_update = new Thread() {
     			public void run() {
+    					//If we have not updated fully before or if we are further away than our real-time policy should be, we 
+    				    //use the full value iteration update
     					if (transitions == null || sre.getDistance() > 150.0) {
     						System.out.print("Updating full\n");
     						transitions = MDPUtility.getTransitions();
@@ -107,10 +113,14 @@ public class MDPTestBotRealTime extends Robot {
     						q_table = MDPUtility.valueIteration(transitions, rewards);
         					policy = MDPUtility.generatePolicyFromQTable(q_table);
         					ejected_policy = false;
+        				//Otherwise, we use the partial value iteration udpate
     					} else {
     						System.out.print("Updating partial \n");
+    						//Update the rewards around the old and new goal state
     						rewards = MDPUtility.updateRewardsRealTime(goal_state, previous_goal, transitions, rewards);
+    						//Do real-time value iteration only around the states we updated rewards for
     						q_table = MDPUtility.valueIterationRealTime(goal_state, previous_goal, transitions, rewards, q_table);
+    						//Update the relevant parts of the policy
     						policy =  MDPUtility.updatePolicyRealTime(policy, q_table, goal_state, previous_goal);
     					}
     					doneUpdating();

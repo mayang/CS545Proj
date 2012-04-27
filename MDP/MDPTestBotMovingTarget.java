@@ -7,10 +7,16 @@ import java.awt.Graphics2D;
 import mdp.MDPUtility;
 
 /*
- * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
- * Date: 16 April 2012
- * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
- * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
+ * Abstract: Robocode robot that scans for its target (the only other robot on the battlefield). Once it has found the enemy,
+ * it determines the (x,y) position of the enemy and the state associated with that enemy position. It then uses this "goal"
+ * state to update its reward function and runs value iteration to find an optimal policy to lead itself to the "goal". The enemy
+ * robot is stationary in this case. It is only "moving" in the sense that, between rounds, it will change position. Unlike our
+ * MDPTestBot, this bot can account for this change in position, update its rewards, run value iteration online, and converge to 
+ * any stationary goal state, rather than just a single stationary goal state. This robot has no noise in its motions
+ * Author: TJ Collins
+ * Notes: This robot was the second step in our exploration of MDPs in Robocode. It was the logical next step after MDPTestBot 
+ * because it required us to integrate value iteration into the Robocode runtime and to use our sensors in order to determine
+ * where the "goal" was.
  */
 public class MDPTestBotMovingTarget extends Robot {
 	//Constants for orientation
@@ -60,33 +66,43 @@ public class MDPTestBotMovingTarget extends Robot {
 
     /*
      * Fire when we scan a robot. Our policy keeps us oriented toward the enemy almost all the time, so firing straight ahead works, so
-     * long as we keep our gun heading the same as our body heading. http://old.nabble.com/Using-Random-Statements-td4010734.html
+     * long as we keep our gun heading the same as our body heading. 
      */
     public void onScannedRobot(ScannedRobotEvent e) {
     	double enemyBearing = getHeading() + e.getBearing(); 
+    	//Calculate enemy (x,y) position
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
     	System.out.print("Found enemy at: (" + enemyX + "," + enemyY + ")\n" );
+    	//Determine goal state for this (x,y) position
     	goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
+    	//Make sure we don't update while we are updating currently
     	if (!currently_updating) {
     		currently_updating = true;
     		System.out.print("Updating the policy\n");
+    		//Create a new thread to do value iteration. We can't block the main thread for this amount of time without exploding.
     		Thread policy_update = new Thread() {
     			public void run() {
+    					//Update transitions only once
     					if (transitions == null) transitions = MDPUtility.getTransitions();
+    					//Make rewards for new goal_state
     					rewards = MDPUtility.getRewards(transitions, goal_state);
+    					//Generate Q-table via value iteration
     					q_table = MDPUtility.valueIteration(transitions, rewards);
+    					//Generate a new policy from the new Q-table
     					policy = MDPUtility.generatePolicyFromQTable(q_table);
+    					//Tell the main thread we are done updating
     					doneUpdating();
 			    	}
 				};
+				//start the policy update thread
 			policy_update.start();
     	}
         fire(1);
 	}
 
 	public void doneUpdating() {
-		
+		//Allow for new updating of policy
 		currently_updating = false;
 	}
 	

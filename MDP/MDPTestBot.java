@@ -5,11 +5,13 @@ import robocode.ScannedRobotEvent;
 import robocode.HitByBulletEvent;
 import java.awt.Graphics2D;
 import mdp.MDPUtility;
+
 /*
- * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
- * Date: 16 April 2012
- * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
- * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
+ * Abstract: Robocode robot that follows an MDP policy that is produced offline.
+ * Author: TJ Collins
+ * Notes: This was the first MDP robot I created. I generate the policy offline, and then plug it into the policy array below.
+ * The robot then, in each turn, determines its (x,y) position on the battlefield, determines what state that position maps
+ * to and takes the action specified in that state. This robot has no noise in its motions.
  */
 public class MDPTestBot extends Robot {
 	//Constants for orientation

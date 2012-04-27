@@ -7,10 +7,15 @@ import java.awt.Graphics2D;
 import mdp.MDPUtility;
 
 /*
- * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
- * Date: 16 April 2012
- * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
- * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
+ * Abstract: Robocode robot that scans for its target (the only other robot on the battlefield). Once it has found the enemy,
+ * it determines the (x,y) position of the enemy and the state associated with that enemy position. It then uses this "goal"
+ * state to update its reward function and runs value iteration to find an optimal policy to lead itself to the "goal". It
+ * does this continuously as the enemy robot moves around the battlefield. This is the first way in which we were able to 
+ * apply value iteration online for a moving target. The code is very similar to the MDPTestBotMovingTarget code, but we had
+ * to add a periodic radar sweep in order to give good tracking performance. There was no noise for this robot's motions
+ * Author: TJ Collins
+ * Notes: This robot was the third step in our exploration of MDPs in Robocode. It was the logical next step after MDPTestBotMovingTarget 
+ * because it required us to use value iteration online to follow a moving target.
  */
 public class MDPTestBotMovingTargetDynamic extends Robot {
 	//Constants for orientation
@@ -51,7 +56,9 @@ public class MDPTestBotMovingTargetDynamic extends Robot {
     		 turn_count++;
     		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
          	int state = MDPUtility.getStateForXandY(getX(), getY());
-    		 if (turn_count == 8) {
+    		//This is a very important aspect of the code. We do a periodic radar sweep to reevaluate the position of the enemy.
+         	//We do this about every 8 turns because that is about how long it takes for value iteration to converge
+         	if (turn_count == 8) {
     			turn_count = 0;
         		turnRadarLeft(360);
         		continue;
@@ -84,26 +91,35 @@ public class MDPTestBotMovingTargetDynamic extends Robot {
      * long as we keep our gun heading the same as our body heading. http://old.nabble.com/Using-Random-Statements-td4010734.html
      */
     public void onScannedRobot(ScannedRobotEvent e) {
-    	random_walk = random_trigger_value;
+    	//get enemy (x,y) position
     	double enemyBearing = getHeading() + e.getBearing(); 
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
+    	//get the state for the enemy's position
     	goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
+    	//If we aren't currently updating our policy
     	if (!currently_updating) {
     		time1 = getTime();
     		currently_updating = true;
+    		//Spawn a new thread for value iteration
     		Thread policy_update = new Thread() {
     			public void run() {
+    				//Make sure we have the transitions for the battlefield (which don't change)
     					if (transitions == null) {
     						System.out.print("Updating transitions\n");
     						transitions = MDPUtility.getTransitions();
     					}
+    					//Get the rewards for the state we saw the enemy in
     					rewards = MDPUtility.getRewards(transitions, goal_state);
+    					//Get the Q-table for the new policy via value iteration
     					q_table = MDPUtility.valueIteration(transitions, rewards);
+    					//update the policy
     					policy = MDPUtility.generatePolicyFromQTable(q_table);
+    					//Let the main thread know we are done
     					doneUpdating();
 			    	}
 				};
+				//Start value iteration thread
 			policy_update.start();
 			
     	}
@@ -111,6 +127,7 @@ public class MDPTestBotMovingTargetDynamic extends Robot {
 	}
 
 	public void doneUpdating() {
+		//Allow policy to be updated
 		currently_updating = false;
 		time2 = getTime();
 		est_update_time = time2-time1;

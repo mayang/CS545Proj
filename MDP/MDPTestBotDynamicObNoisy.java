@@ -7,10 +7,12 @@ import java.awt.Graphics2D;
 import mdp.MDPUtility;
 import java.util.*;
 /*
- * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
- * Date: 16 April 2012
- * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
- * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
+ * Abstract: Robocode robot that runs value iteration online but also takes obstacles into account. We save obstacles as a hash map
+ * based on the name of the obstacle robot. We factor these obstacles into our reward functions in order to avoid them. There was
+ * noise in the motion of this robot.
+ * Author: TJ Collins
+ * Notes: This robot was the fourth step in our exploration of MDPs in Robocode. It was the logical next step after MDPTestBotMovingTargetDynamic 
+ * because it required us to take obstacles into account when tracking a moving enemy robot.
  */
 public class MDPTestBotDynamicObNoisy extends Robot {
 	//Constants for orientation
@@ -52,10 +54,13 @@ public class MDPTestBotDynamicObNoisy extends Robot {
     		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
          	int state = MDPUtility.getStateForXandY(getX(), getY());
          	turn_count++;
+         	//Sweep the radar every 8 turns, because that is about how long it takes to do the value iteration update
          	if (turn_count == 8) {
          		turn_count = 0;
          		turnRadarLeft(360);
          	}
+         	
+         	//Same noisy motions as before
          	double random = Math.random();
         	if (random > 0.8) System.out.print("Oops...slip\n");
         	if (policy[state] == MDPUtility.ACTION_NORTH) {
@@ -102,27 +107,39 @@ public class MDPTestBotDynamicObNoisy extends Robot {
      * long as we keep our gun heading the same as our body heading. http://old.nabble.com/Using-Random-Statements-td4010734.html
      */
     public void onScannedRobot(ScannedRobotEvent e) {
+    	//Get new enemy (x,y) position
     	double enemyBearing = getHeading() + e.getBearing(); 
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
     	if(!e.getName().equals("mdp.MDPEnemyBotPerimeter*")) {
+    		//If the robot we saw is not the one we are tracking, we add it to the hashmap of obstacles based on its name
         	synchronized(obstacle_map) {
+        		//Save the obstacle's state keyed by its name. We must synchronize to prevent two obstacles from being seen at the same time
         		obstacle_map.put(e.getName(), MDPUtility.getStateForXandY(enemyX, enemyY));
         	}
     	} else {
         	if (e.getName().equals("mdp.MDPEnemyBotPerimeter*")) {
+        		//get the new goal state here
         		goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
             	random_walk = random_trigger_value;
             	if (!currently_updating) {
             		time1 = getTime();
             		currently_updating = true;
+            		//spawn new thread for value iteration
             		Thread policy_update = new Thread() {
             			public void run() {
+            				//Get the new transitions once
             				if (transitions == null) {
         						transitions = MDPUtility.getTransitionsNoisy();
         					}
-            				rewards = MDPUtility.getRewardsWithObstacles(transitions, goal_state, obstacle_map);
+            				//Get the new rewards for the new goal state, with the obstacles we have seen. We must synchronize to prevent
+            				//the list from changing while we are iterating over it
+            				synchronized (obstacle_map) {
+            					rewards = MDPUtility.getRewardsWithObstacles(transitions, goal_state, obstacle_map);
+            				}
+            				//Get new Q-table with rewards and transitions
         					q_table = MDPUtility.valueIteration(transitions, rewards);
+        					//Get new policy
         					policy = MDPUtility.generatePolicyFromQTable(q_table);
         					doneUpdating();
     			    	}

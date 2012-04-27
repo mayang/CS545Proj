@@ -7,10 +7,11 @@ import java.awt.Graphics2D;
 import mdp.MDPUtility;
 import java.util.*;
 /*
- * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
- * Date: 16 April 2012
- * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
- * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
+ * Abstract: Robocode robot representing a conglomeration of all the techniques we developed. This robot does online value iteration
+ * to track a target, avoid moving obstacles while doing so, and uses real-time updates of its policy when it is sufficiently close to
+ * the goal robot.
+ * Author: TJ Collins
+ * Notes: 
  */
 public class MDPTestBotFull extends Robot {
 	//Constants for orientation
@@ -53,45 +54,47 @@ public class MDPTestBotFull extends Robot {
 
     		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
          	int state = MDPUtility.getStateForXandY(getX(), getY());
+         	//Periodic sweep of radar
          	turn_count++;
          	if (turn_count == 8) {
          		turn_count = 0;
          		turnRadarLeft(360);
          	}
+         	//Same noisy motion model as other noisy bots
          	double random = Math.random();
         	if (random > 0.8) System.out.print("Oops...slip\n");
         	if (policy[state] == MDPUtility.ACTION_NORTH) {
-        		if (random <=0.8) goNorth(30);
-        		else if (random > 0.8 && random < 0.9) goNortheast(30);
-        		else goNorthwest(30);
+        		if (random <=0.8) goNorth(40);
+        		else if (random > 0.8 && random < 0.9) goNortheast(40);
+        		else goNorthwest(40);
         	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
-        		if (random <=0.8) goSouth(30);
-        		else if (random > 0.8 && random < 0.9) goSoutheast(30);
-        		else goSouthwest(30);
+        		if (random <=0.8) goSouth(40);
+        		else if (random > 0.8 && random < 0.9) goSoutheast(40);
+        		else goSouthwest(40);
         	} else if (policy[state] == MDPUtility.ACTION_EAST) {
-        		if (random <=0.8) goEast(30);
-        		else if (random > 0.8 && random < 0.9) goNortheast(30);
-        		else goSoutheast(30);
+        		if (random <=0.8) goEast(40);
+        		else if (random > 0.8 && random < 0.9) goNortheast(40);
+        		else goSoutheast(40);
         	} else if (policy[state] == MDPUtility.ACTION_WEST) {
-        		if (random <=0.8) goWest(30);
-        		else if (random > 0.8 && random < 0.9) goNorthwest(30);
-        		else goSouthwest(30);
+        		if (random <=0.8) goWest(40);
+        		else if (random > 0.8 && random < 0.9) goNorthwest(40);
+        		else goSouthwest(40);
         	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
-        		if (random <=0.8) goNorthwest(30);
-        		else if (random > 0.8 && random < 0.9) goNorth(30);
-        		else goWest(30);
+        		if (random <=0.8) goNorthwest(40);
+        		else if (random > 0.8 && random < 0.9) goNorth(40);
+        		else goWest(40);
         	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
-        		if (random <=0.8) goNortheast(30);
-        		else if (random > 0.8 && random < 0.9) goNorth(30);
-        		else goEast(30);
+        		if (random <=0.8) goNortheast(40);
+        		else if (random > 0.8 && random < 0.9) goNorth(40);
+        		else goEast(40);
         	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
-        		if (random <=0.8) goSouthwest(30);
-        		else if (random > 0.8 && random < 0.9) goSouth(30);
-        		else goWest(30);
+        		if (random <=0.8) goSouthwest(40);
+        		else if (random > 0.8 && random < 0.9) goSouth(40);
+        		else goWest(40);
         	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
-        		if (random <=0.8) goSoutheast(30);
-        		else if (random > 0.8 && random < 0.9) goSouth(30);
-        		else goEast(30);
+        		if (random <=0.8) goSoutheast(40);
+        		else if (random > 0.8 && random < 0.9) goSouth(40);
+        		else goEast(40);
         	} else if (policy[state] == -1) {
             	turnRadarLeft(360);
         	}
@@ -104,35 +107,44 @@ public class MDPTestBotFull extends Robot {
      * long as we keep our gun heading the same as our body heading. http://old.nabble.com/Using-Random-Statements-td4010734.html
      */
     public void onScannedRobot(ScannedRobotEvent e) {
+    	//Get the enemy (x, y) position
     	double enemyBearing = getHeading() + e.getBearing(); 
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
     	if(!e.getName().equals("mdp.MDPEnemyBotPerimeter*")) {
         	synchronized(obstacle_map) {
+        		//Add new obstacle to map/update obstacle position
         		obstacle_map.put(e.getName(), MDPUtility.getStateForXandY(enemyX, enemyY));
+        		//Tell the robot that we need to do a full update because the obstacle has changed position
         		obstacles_need_updated = true;
         	}
     	} else {
     		sre = e;
+    		//Save previous goal
     		previous_goal = goal_state;
-    		goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
+    		//Get new goal state
         	if (e.getName().equals("mdp.MDPEnemyBotPerimeter*")) {
         		goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
             	random_walk = random_trigger_value;
             	if (!currently_updating) {
             		time1 = getTime();
             		currently_updating = true;
+            		//value iteration thread
             		Thread policy_update = new Thread() {
             			public void run() {
+            				//Run full value iteration if 1) we haven't yet, 2) the distance to the goal is too great, or 3) the obstacles have changed position
             				if (transitions == null || sre.getDistance() > 150.0 || obstacles_need_updated) {
-        						transitions = MDPUtility.getTransitionsNoisy();
+        						if (transitions == null) transitions = MDPUtility.getTransitionsNoisy();
+        						//Get new rewards factoring in obstacles
         						synchronized(obstacle_map) {
         							rewards = MDPUtility.getRewardsWithObstacles(transitions, goal_state, obstacle_map);
         						}
+        						//Generate new Q-table and new policy from it
             					q_table = MDPUtility.valueIteration(transitions, rewards);
             					policy = MDPUtility.generatePolicyFromQTable(q_table);
         					} else {
         						System.out.print("Updating partial \n");
+        						//else, we forget about obstacles and do a real-time update
         						rewards = MDPUtility.updateRewardsRealTime(goal_state, previous_goal, transitions, rewards);
         						q_table = MDPUtility.valueIterationRealTime(goal_state, previous_goal, transitions, rewards, q_table);
         						policy =  MDPUtility.updatePolicyRealTime(policy, q_table, goal_state, previous_goal);

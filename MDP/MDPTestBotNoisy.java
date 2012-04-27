@@ -7,10 +7,11 @@ import java.awt.Graphics2D;
 import mdp.MDPUtility;
 
 /*
- * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
- * Date: 16 April 2012
- * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
- * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
+ * Abstract: Robocode robot that follows an MDP policy that is produced offline.
+ * Author: TJ Collins
+ * Notes: I generate the policy offline, and then plug it into the policy array below.
+ * The robot then, in each turn, determines its (x,y) position on the battlefield, determines what state that position maps
+ * to and takes the action specified in that state. This robot has noise in its motions.
  */
 public class MDPTestBotNoisy extends Robot {
 	//Constants for orientation
@@ -29,7 +30,11 @@ public class MDPTestBotNoisy extends Robot {
 		this.setAllColors(java.awt.Color.white);
         while (true) {
         	//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
+        	
         	int state = MDPUtility.getStateForXandY(getX(), getY());
+        	
+        	//Add noise into motion with 0.2 probability. As the robot is heading "straight", it veers to the right or left by 1 state
+        	//with a 20% chance.
         	double random = Math.random();
         	if (random > 0.8) System.out.print("Oops...slip\n");
         	if (policy[state] == MDPUtility.ACTION_NORTH) {

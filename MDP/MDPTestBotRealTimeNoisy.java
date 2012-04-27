@@ -6,10 +6,11 @@ import robocode.HitByBulletEvent;
 import java.awt.Graphics2D;
 import mdp.MDPUtility;
 /*
- * Abstract: Robocode Robot that discretizes the battlefield into a grid of states and follows an MDP policy produced by value iteration
- * Date: 16 April 2012
- * Notes: This was the first MDP robot we created. It allowed us to test that our value iteration function, state discretization, action model, transition
- * model, and reward model functioned properly and had the desired effects. This robot works only in static environments.
+ * Abstract: Robocode robot that runs value iteration online but runs the "real-time" value iteration update when it gets close enough to the
+ * enemy. The "real-time" value iteration gives an optimal policy if the robot is within about 150.0 points of the "goal". Thus, when the robot
+ * gets within that range of the goal, we switch from full value iteration to real-time value iteration updates. There is noise in this robot's motions
+ * Author: TJ Collins
+ * Notes: This robot was the fifth step in our exploration of MDPs in Robocode.
  */
 public class MDPTestBotRealTimeNoisy extends Robot {
 	//Constants for orientation
@@ -46,66 +47,52 @@ public class MDPTestBotRealTimeNoisy extends Robot {
     public void run() {
 		currently_updating = false;
 		ejected_policy = false;
+		this.setAllColors(java.awt.Color.white);
     	 while (true) {
     		//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
          	int state = MDPUtility.getStateForXandY(getX(), getY()); 
-        	if (getTime() % 10 == 0) {
+        	//periodic sweep of battlefield to reevaluate policy
+         	if (getTime() % 10 == 0) {
         		turnRadarLeft(360);
         		continue;
         	}
+        	//Same noisy motion as before
         	double random = Math.random();
         	if (random > 0.8) System.out.print("Oops...slip\n");
         	if (policy[state] == MDPUtility.ACTION_NORTH) {
-        		if (random <=0.8) goNorth(20);
-        		else if (random > 0.8 && random < 0.9) goNortheast(20);
-        		else goNorthwest(0);
+        		if (random <=0.8) goNorth(40);
+        		else if (random > 0.8 && random < 0.9) goNortheast(40);
+        		else goNorthwest(40);
         	} else if (policy[state] == MDPUtility.ACTION_SOUTH) {
-        		if (random <=0.8) goSouth(20);
-        		else if (random > 0.8 && random < 0.9) goSoutheast(20);
-        		else goSouthwest(20);
+        		if (random <=0.8) goSouth(40);
+        		else if (random > 0.8 && random < 0.9) goSoutheast(40);
+        		else goSouthwest(40);
         	} else if (policy[state] == MDPUtility.ACTION_EAST) {
-        		if (random <=0.8) goEast(20);
-        		else if (random > 0.8 && random < 0.9) goNortheast(20);
-        		else goSoutheast(20);
+        		if (random <=0.8) goEast(40);
+        		else if (random > 0.8 && random < 0.9) goNortheast(40);
+        		else goSoutheast(40);
         	} else if (policy[state] == MDPUtility.ACTION_WEST) {
-        		if (random <=0.8) goWest(20);
-        		else if (random > 0.8 && random < 0.9) goNorthwest(20);
-        		else goSouthwest(20);
+        		if (random <=0.8) goWest(40);
+        		else if (random > 0.8 && random < 0.9) goNorthwest(40);
+        		else goSouthwest(40);
         	} else if (policy[state] == MDPUtility.ACTION_NORTHWEST) {
-        		if (random <=0.8) goNorthwest(20);
-        		else if (random > 0.8 && random < 0.9) goNorth(20);
-        		else goWest(20);
+        		if (random <=0.8) goNorthwest(40);
+        		else if (random > 0.8 && random < 0.9) goNorth(40);
+        		else goWest(40);
         	} else if (policy[state] == MDPUtility.ACTION_NORTHEAST) {
-        		if (random <=0.8) goNortheast(20);
-        		else if (random > 0.8 && random < 0.9) goNorth(20);
-        		else goEast(20);
+        		if (random <=0.8) goNortheast(40);
+        		else if (random > 0.8 && random < 0.9) goNorth(40);
+        		else goEast(40);
         	} else if (policy[state] == MDPUtility.ACTION_SOUTHWEST) {
-        		if (random <=0.8) goSouthwest(20);
-        		else if (random > 0.8 && random < 0.9) goSouth(20);
-        		else goWest(20);
+        		if (random <=0.8) goSouthwest(40);
+        		else if (random > 0.8 && random < 0.9) goSouth(40);
+        		else goWest(40);
         	} else if (policy[state] == MDPUtility.ACTION_SOUTHEAST) {
-        		if (random <=0.8) goSoutheast(20);
-        		else if (random > 0.8 && random < 0.9) goSouth(20);
-        		else goEast(20);
+        		if (random <=0.8) goSoutheast(40);
+        		else if (random > 0.8 && random < 0.9) goSouth(40);
+        		else goEast(40);
         	} else if (policy[state] == -1) {
-            	double r = Math.random();
-            	if (r < 0.125) {
-            		goNorth(50);
-            	} else if (r >= 0.125 && r < 0.25) {
-            		goSouth(50);
-            	} else if (r >= 0.25 && r < 0.375) {
-            		goEast(50);
-            	} else if (r >= 0.375 && r < 0.5) {
-            		goWest(50);
-            	} else if (r >= 0.5 && r < 0.625) {
-            		goNorthwest(50);
-            	} else if (r >= 0.625 && r < 0.750) {
-            		goSouthwest(50);
-            	} else if (r >=0.75 && r < 0.875) {
-            		goSoutheast(50);
-            	} else if (r >= 0.875 && r < 1.0) {
-            		goNortheast(50);
-            	}
+        		turnRadarLeft(360);
         	}
          	
         }
@@ -116,30 +103,33 @@ public class MDPTestBotRealTimeNoisy extends Robot {
      * long as we keep our gun heading the same as our body heading. http://old.nabble.com/Using-Random-Statements-td4010734.html
      */
     public void onScannedRobot(ScannedRobotEvent e) {
+    	//get new enemy position
     	random_walk = random_trigger_value;
     	double enemyBearing = getHeading() + e.getBearing(); 
     	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
     	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
+    	//save previous goal
     	previous_goal = goal_state;
     	sre = e;
+    	//get new goal from enemy position
     	goal_state = MDPUtility.getStateForXandY(enemyX, enemyY);
-    	if(goal_state >= 0 && goal_state < MDPUtility.NUM_STATES) last_valid_goal = goal_state;
-    	if (goal_state < 0) goal_state = last_valid_goal;
-    	if (goal_state >= MDPUtility.NUM_STATES) goal_state = last_valid_goal;
-    	if (!currently_updating /*&& e.getDistance() > distance_trigger*/) {
+    	if (!currently_updating) {
     		time1 = getTime();
     		currently_updating = true;
     		Thread policy_update = new Thread() {
     			public void run() {
-    					if (transitions == null || ejected_policy || sre.getDistance() > 150.0) {
+    				//Run full value iteration the first time and when we are too far away from enemy
+    					if (transitions == null || sre.getDistance() > 150.0) {
     						System.out.print("Updating full\n");
     						transitions = MDPUtility.getTransitionsNoisy();
     						rewards = MDPUtility.getRewards(transitions, goal_state);
     						q_table = MDPUtility.valueIteration(transitions, rewards);
         					policy = MDPUtility.generatePolicyFromQTable(q_table);
         					ejected_policy = false;
+        				//Otherwise run a partial value iteration update
     					} else {
     						System.out.print("Updating partial \n");
+    						//Update the rewards, q-table, and policy only in the area surrounding the old and new goal state
     						rewards = MDPUtility.updateRewardsRealTime(goal_state, previous_goal, transitions, rewards);
     						q_table = MDPUtility.valueIterationRealTime(goal_state, previous_goal, transitions, rewards, q_table);
     						policy =  MDPUtility.updatePolicyRealTime(policy, q_table, goal_state, previous_goal);
