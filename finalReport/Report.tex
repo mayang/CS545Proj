@@ -77,12 +77,13 @@ robotic stack. We chose to focus on the high-level planning aspects of
 the problem, particularly relating to issues involved in dynamic,
 noisy environments. Our primary approach was to explore, extend, and
 evaluate three broad categories of methods for navigating in a dynamic
-environment.
+environment: potential fields, Markov decision processes, and
+reinforcement learning.
 
 \subsection{Robocode Environment}
 
 As the environment for our experiments, we chose to work with a small
-framework called Robocode (http://robocode.sourceforge.net/). This system is designed for small-scale
+framework called Robocode \\(http://robocode.sourceforge.net/). This system is designed for small-scale
 simulated robotic tank battles. Users of the system are able to write
 the central processing loops for the robots which have access to
 standard sensors, weapons, and motion controls. 
@@ -98,9 +99,12 @@ The motion controls proved to be similarly flexible, lending
 themselves to discretization when necessary, while leaving access to
 the low-level controls where appropriate.
 
-The sensors were similarly flexible, offering a flexible base
-model which was easily extended to account for our particular
-experiments.
+The sensors offered a range of options, providing a flexible base
+model which was easily extended to account for the particular
+structure of individual
+experiments. This was abstracted in the Robocode context with the
+concept of radar. Basically, each bot had a narrow-band sensor which
+could be rotated 360 degrees to provide a sweep of the environment.
 
 Finally, the visualization was an appealing fringe benefit, providing
 rapid feedback on experiments and allowing us to more easily evaluate
@@ -129,7 +133,7 @@ existing features, particularly in terms of visualization.
 We settled on the Robocode environment as a good compromise for our
 needs. It proved to be a solid choice as it provided us with the
 ability to add in features as required while working in a simple
-space, not much more complicated than a basic grid world, when needed.
+space when needed, not much more complicated than a basic grid world.
 
 
 \subsection{Report Outline}
@@ -160,14 +164,13 @@ cases.
 
 \subsection{Setup}
 
-The basic Robocode setup for Q-learning was done in conjunction with
-the setup for MDPs. The basic structure of discretizing the state
+The basic Robocode setup for Q-learning extends
+the setup for MDPs. The basic structures of discretizing the state
 space, discretizing robot movements, and handling the threading needed
 for long-running processes were similar between the two methods.
 
-Given the structure of the algorithm, it was possible to simplify the
-noisy motion model. In particular, we didn't require the full table of
-transition probabilities as the noise could be added on each movement
+Given the structure of the algorithm, the large transition tables of
+the MDP approach were not required. The noise could be added on each movement
 step during training and actual runs. As such, all we required was a
 basic randomization method to send the bot on an incorrect path a
 certain percentage of the time. This was kept the same as in the MDP
@@ -181,18 +184,20 @@ which caused motion into a
 wall (or, later, an obstacle) gave a -100 reward, and all other
 actions returned a reward of -1.
 
-For visualization, we wrote a method in Matlab to take the output
-policy and convert it into a quiver graph.
+For policy visualization, we wrote a method in Matlab to take the output
+policy and convert it into a quiver graph which proved useful for
+visualization of all discrete policies.
 
-\subsection{Basic Trials}
+\subsection{Experiments}
 
 The first step was to confirm the functioning of the basic
 Q-learning method. To do this, we ran initial tests with a fixed
-starting point of the bot and a fixed location for a stationary
-goal. The learning was run offline, a policy generated and added to a
-fixed-policy test bot.
+starting point for the bot and a fixed, stationary
+goal. The learning was run offline, a policy generated and
+incorporated into a simple bot whose only processing was to determine
+its current state and run the appropriate policy.
 
-The initial version of these tests was in a noiseless environment to
+Initially these tests were run in a noiseless environment to
 confirm basic operations of the various components. Adding in noise
 produced distinctly rougher bot motion, but did not impact the overall
 effectiveness of the method.
@@ -200,21 +205,22 @@ effectiveness of the method.
 Both Boltzmann explorations and $\epsilon$-greedy were experimented
 with at this phase.  We began by exploring the quality of the bots
 given a similar numbers of trials. Here Boltzmann was clearly
-superior, 
+superior, producing policies which more consistently and directly led
+to the goal.
 
 But the constraint was on computational time, not episodes so we
 further ran a series of rough tests comparing along this axis. $\epsilon$-greedy method ran in approximately half the
 time for a given number of trials (a ratio which seemed to scale with
 the number of trials). So, at this point we compared $\epsilon$-greedy
 with twice the number of trials against Boltzmann. Even in this case,
-the overall policy produced Boltzmann was better with fewer failure
+the overall policy produced by Boltzmann was better with fewer failure
 incidents and better tracking performance.
 
 While both were left in as options on all future
 bots, Boltzmann was the default from this point on. The advantages in
 overall performance and quality per unit of computational effort were clear.
 
-Things became a bit more interesting as we shifted to
+Things became a bit more complex as we shifted to
 learning in the context of the environment itself. This required
 several basic elements. First, the bot required the ability to scan
 the environment for the location of the goal state. Second, the bot
@@ -231,18 +237,19 @@ policy was executed as the robot continued to scan the field.
 
 For initial testing, we started the bot and goal in fixed points so
 that we could control for the starting conditions. However, we were
-quickly able to transition to randomly placing the two. The overall
+quickly able to transition to randomly placing the two elements. The overall
 performance on these tests was good. The bot could randomly move while
-calculating its policy and then shift over to that once complete.
+calculating its policy and then shift over to the resulting policy once complete.
 
 At this point we shifted over to allowing for motion in the goal
 state. Several issues became apparent at this point. The first was that, as we'd expected, the
 speed of Q-learning was an issue in a dynamic environment. The numbers
-of episodes we'd run in the offline tests (up to 20,000,000) or in the
-static test (500,000) were no
+of episodes we'd run in the offline tests or even in the
+static tests were no
 longer feasible. 
 
-The first thing we tried was lowering the number of episodes. However, shifting this down to smaller numbers of episodes produced policies of a noticeably lower quality. In
+The first thing we tried was lowering the number of episodes. 
+However, shifting this down to smaller numbers of episodes produced policies of a noticeably lower quality. In
 particular, the bot had a tendency to get caught in state loops where
 an incompletely learned policy would have two states which pointed to
 one another. The other primary failure mode were states which directed
@@ -253,9 +260,10 @@ the quality of the policy. However, we were not able to implement a
 precise way of tuning this relationship. We settled on 100,000 episode as a manageable
 compromise. While not producing perfect episodes, it ran in under two
 seconds (often closer to one) which was essential to
-keeping tracking reasonably accurate.
+keeping tracking reasonably accurate. This would clearly be an area
+for more detailed future exploration.
 
-However, that time still imposed a cost on the process. Notably, in
+However, even that shortened learning time imposed a cost on the process. Notably, in
 that period of time the bot (and, in later experiments, the goal)
 could have shifted location rather dramatically. Several pieces were
 needed to account for this.
@@ -313,7 +321,7 @@ allowing dynamic obstacles in the environment which the bot had to
 scan and incorporate into its model.
 
 The changes required to support this weren't huge. The bot had to be
-capable of scanning for obstacles and goal and treating the two
+capable of distinguishing obstacles from the goal and treating the two
 differently. On the learning side, this required an adjustment to
 reward model to account for obstacles in the learning
 process. We treated obstacles as equivalent to walls with a -100
@@ -372,7 +380,7 @@ The largest issue with our implementation of Q-learning is that it
 relies on information which, if present, could better drive a more
 efficient and/or complete method. By pulling information about the
 field into what amounts to a local simulation in which the learning
-takes place, we undercut much of the entire real-world justification for the
+takes place, we undercut much of the real-world justification for the
 use of a learning method. However, our aim was to consider these
 methods primarily for future use (Robocode, while charming, is not the
 end goal for any of us). In that context, our results suggest certain
@@ -416,15 +424,26 @@ optimization. Clearly there is a great deal of tweaking and rebalancing
 possible, but we were not able to fully explore the implications of
 this. However, our experiment on shifting from fixed rewards to
 heuristic rewards was interesting in itself. In particular, it
+suggested some interesting possibilities in terms of injecting
+additional information into learning methods as a way to take
+advantage of additional information if present. This might be
+especially useful in a situation where such information were only
+sporadically present.
+
+Additionally, it
 emphasized the need for improved reward information to be combined with a greater emphasis
-on exploration.
+on exploration. Uncertainty in the system (from both sensors and
+motions) has to be reflected in the learning process. If that process
+effectively learns as though the environment were purely
+deterministic, the resulting policy will be unlikely to respond
+correctly when acted on in that environment.
 
 This type of tradeoff tended to be a central theme with this
 method. While it's an extremely powerful method (most of that power
 left untapped in this case), the tradeoffs involved in its application
 seem to strongly call for its use in combination with other
 methods so that its strengths can be exploited while its weaknesses
-are handled in other ways.
+are avoided in other ways.
 
 \section{Conclusion}
 \label{Conclusion}
