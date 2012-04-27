@@ -308,7 +308,14 @@ failure modes were far more severe when entered. As can be seen in the
 following policy areas away from the primary route from bot to goal
 were nearly unlearned.
 
-[Insert image]
+\vspace{.3in}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/BasicPolicy.png} 
+  \label{fig:basicQ}
+\end{figure}
+\clearpage
 
 However, frequent updates proved an effective antidote to these
 issues. In most cases, even when the robot was caught in a loop of
@@ -355,11 +362,27 @@ backtracking required. Over a number of episodes, this would start to
 look more like a best-first search, specifically A* given the use of a
 valid heuristic function.
 
-Surprisingly, the results were not dramatically better for larger
-numbers of iterations. This may well have been a result of exploration
+Surprisingly, the results were not better for this method with a larger
+numbers of iterations. What we observed were policies that actually
+gave less complete coverage of the state space. This can be seen in
+the following policy which can be compared to the previous image (same
+start and goal locations).
+
+\vspace{.3in}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/HeuristicPolicy.png} 
+  \label{fig:basicQ}
+\end{figure}
+\clearpage
+
+This may well have been a result of exploration
 not being properly tuned to the improvement in the reward
-function. Given the heuristic reward, convergence on the goal would
-tend to be far more rapid than in the normal case. This may have led to a failure to explore
+function. The heuristic reward, in pulling each step towards a greedy
+depth-first approach, would require a more powerful push to exploration
+to overcome the additional pull of the new reward function. The lack
+of this may have led to a failure to explore
 the state space as widely. Of course, if this type
 of reward and environment information were available to an actual bot,
 simply
@@ -422,15 +445,14 @@ a learned evaluation over a given set of state parameters.
 One area where more work is definitely needed is on reward function
 optimization. Clearly there is a great deal of tweaking and rebalancing
 possible, but we were not able to fully explore the implications of
-this. However, our experiment on shifting from fixed rewards to
-heuristic rewards was interesting in itself. In particular, it
-suggested some interesting possibilities in terms of injecting
-additional information into learning methods as a way to take
-advantage of additional information if present. This might be
-especially useful in a situation where such information were only
-sporadically present.
+this.
 
-Additionally, it
+However, our experiment on shifting from fixed rewards to
+heuristic rewards provided some interesting hints as to future possibilities. First, the hidden cost of
+adding information into the reward in terms of overwhelming the
+pressure to explore was not something we expected. 
+
+It
 emphasized the need for improved reward information to be combined with a greater emphasis
 on exploration. Uncertainty in the system (from both sensors and
 motions) has to be reflected in the learning process. If that process
@@ -438,12 +460,23 @@ effectively learns as though the environment were purely
 deterministic, the resulting policy will be unlikely to respond
 correctly when acted on in that environment.
 
-This type of tradeoff tended to be a central theme with this
-method. While it's an extremely powerful method (most of that power
-left untapped in this case), the tradeoffs involved in its application
-seem to strongly call for its use in combination with other
-methods so that its strengths can be exploited while its weaknesses
-are avoided in other ways.
+Additionally, it
+suggested some interesting possibilities in terms of injecting
+additional information into learning methods as a way to take
+advantage of additional information if present. This might be
+especially useful in a situation where such information were only
+sporadically present. For example, a noisy sensor which sporadically
+gave a distance measure could be incorporated, but with the awareness
+that additional weight might need to be given to exploration to
+balance this out in a learning context.
+
+The central theme in our exploration of Q-learning in a dynamic
+context was one of tradeoffs. While this and related reinforcement
+learning methods are extremely powerful and flexible (most of that power
+left untapped in this case), the tradeoffs involved in their application
+seem to strongly call for use in combination with other
+methods. Applied properly, those strengths can be exploited while the weaknesses
+are shored up by other methods.
 
 \section{Conclusion}
 \label{Conclusion}
