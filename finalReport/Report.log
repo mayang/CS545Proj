@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  26 APR 2012 20:38
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  26 APR 2012 22:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -258,7 +258,11 @@ LaTeX Info: Redefining \] on input line 2667.
 (/usr/local/texlive/2011/texmf-dist/tex/latex/multirow/multirow.sty
 \bigstrutjot=\dimen142
 )
-(./Report.aux)
+(./Report.aux
+
+LaTeX Warning: Label `fig:basicQ' multiply defined.
+
+)
 \openout1 = `Report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
@@ -382,44 +386,56 @@ Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 File: images/BasicPolicy.png Graphic file (type png)
 
 <use images/BasicPolicy.png>
-Package pdftex.def Info: images/BasicPolicy.png used on input line 315.
+Package pdftex.def Info: images/BasicPolicy.png used on input line 319.
 (pdftex.def)             Requested size: 469.76022pt x 438.49773pt.
- [4 <./images/BasicPolicy.png>]
-<images/HeuristicPolicy.png, id=25, 548.0475pt x 500.87125pt>
+ [4] [5 <./images/BasicPolicy.png>]
+<images/Wall2.png, id=28, 738.76pt x 659.46375pt>
+File: images/Wall2.png Graphic file (type png)
+ <use images/Wall2.png>
+Package pdftex.def Info: images/Wall2.png used on input line 350.
+(pdftex.def)             Requested size: 469.74991pt x 419.32838pt.
+
+[6
+
+ <./images/Wall2.png>]
+<images/HeuristicPolicy.png, id=32, 548.0475pt x 500.87125pt>
 File: images/HeuristicPolicy.png Graphic file (type png)
 
 <use images/HeuristicPolicy.png>
-Package pdftex.def Info: images/HeuristicPolicy.png used on input line 376.
+Package pdftex.def Info: images/HeuristicPolicy.png used on input line 396.
 (pdftex.def)             Requested size: 469.76459pt x 429.32697pt.
- [5
+ [7
 
-] [6 <./images/HeuristicPolicy.png>]
-[7
+] [8 <./images/HeuristicPolicy.png>]
+[9
 
 ] AED: lastpage setting LastPage 
-[8] (./Report.aux) ) 
+[10] (./Report.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 3891 strings out of 493633
- 53806 string characters out of 3143378
- 126188 words of memory out of 3000000
- 7102 multiletter control sequences out of 15000+200000
+ 3896 strings out of 493633
+ 53898 string characters out of 3143378
+ 125229 words of memory out of 3000000
+ 7106 multiletter control sequences out of 15000+200000
  9987 words of font info for 36 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
  38i,10n,45p,269b,251s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmbx10.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmbx12.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmbx8.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmbx9.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmmi10.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmr10.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mr12.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
-8.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10
-.pfb>
-Output written on Report.pdf (8 pages, 165793 bytes).
+</usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
+usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></us
+r/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr
+/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/l
+ocal/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loc
+al/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/
+texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on Report.pdf (10 pages, 189798 bytes).
 PDF statistics:
- 69 PDF objects out of 1000 (max. 8388607)
- 47 compressed objects within 1 object stream
+ 76 PDF objects out of 1000 (max. 8388607)
+ 51 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

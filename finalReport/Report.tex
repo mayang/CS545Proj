@@ -72,10 +72,8 @@ floorboard.
 
 \subsection{Problem Description}
 
-Issues relating to navigation and motion run up and down the entire
-robotic stack. We chose to focus on the high-level planning aspects of
-the problem, particularly relating to issues involved in dynamic,
-noisy environments. Our primary approach was to explore, extend, and
+Issues relating to navigation and motion planning run up and down the entire
+robotic stack. We chose to focus on the high-level planning aspects of the problem, particularly those relating to dynamic, noisy environments. Our primary approach was to explore, extend, and
 evaluate three broad categories of methods for navigating in a dynamic
 environment: potential fields, Markov decision processes, and
 reinforcement learning.
@@ -103,8 +101,7 @@ The sensors offered a range of options, providing a flexible base
 model which was easily extended to account for the particular
 structure of individual
 experiments. This was abstracted in the Robocode context with the
-concept of radar. Basically, each bot had a narrow-band sensor which
-could be rotated 360 degrees to provide a sweep of the environment.
+concept of radar. Basically, each bot had a narrow-band sensor which could be rotated 360 degrees to provide a sweep of the environment and in internal sensor to keep track of its (x, y) position on the battlefield at all times.
 
 Finally, the visualization was an appealing fringe benefit, providing
 rapid feedback on experiments and allowing us to more easily evaluate
@@ -190,6 +187,7 @@ visualization of all discrete policies.
 
 \subsection{Experiments}
 
+\subsubsection{Offline trials}
 The first step was to confirm the functioning of the basic
 Q-learning method. To do this, we ran initial tests with a fixed
 starting point for the bot and a fixed, stationary
@@ -218,7 +216,10 @@ incidents and better tracking performance.
 
 While both were left in as options on all future
 bots, Boltzmann was the default from this point on. The advantages in
-overall performance and quality per unit of computational effort were clear.
+overall performance and quality per unit of computational effort were
+clear.
+
+\subsubsection{Taking it online}
 
 Things became a bit more complex as we shifted to
 learning in the context of the environment itself. This required
@@ -239,7 +240,10 @@ For initial testing, we started the bot and goal in fixed points so
 that we could control for the starting conditions. However, we were
 quickly able to transition to randomly placing the two elements. The overall
 performance on these tests was good. The bot could randomly move while
-calculating its policy and then shift over to the resulting policy once complete.
+calculating its policy and then shift over to the resulting policy
+once complete.
+
+\subsubsection{Performance and dynamic environments}
 
 At this point we shifted over to allowing for motion in the goal
 state. Several issues became apparent at this point. The first was that, as we'd expected, the
@@ -322,6 +326,8 @@ However, frequent updates proved an effective antidote to these
 issues. In most cases, even when the robot was caught in a loop of
 states, the next update would free it to continue tracking the goal.
 
+\subsubsection{Obstacles}
+
 The final major addition we made was to add obstacles to the
 environment. In the first iteration of this, these were fixed and
 pre-specified environmental features. At the next phase we moved to
@@ -333,7 +339,19 @@ capable of distinguishing obstacles from the goal and treating the two
 differently. On the learning side, this required an adjustment to
 reward model to account for obstacles in the learning
 process. We treated obstacles as equivalent to walls with a -100
-reward for colliding with an obstacle.
+reward for colliding with an obstacle. An example of a policy which
+accounts for obstacles (in this case, a wall in the lower left quadrant) can be
+seen below.
+
+\vspace{.3in}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/Wall2.png} 
+  \caption{Q-learning generated policy with obstacles.}
+  \label{fig:basicQ}
+\end{figure}
+\clearpage
 
 There were several issues with this. Obstacles could shield one
 another, preventing the back one from being scanned. This was
@@ -349,6 +367,8 @@ However, given all of the previous issues, moving obstacles proved
 slightly too much for these methods. Beyond a certain amount of
 complexity on the field, the updates were simply too slow to produce a
 viable policy.
+
+\subsubsection{Heuristic reward functions}
 
 Two other experiments were tried that produced more ambiguous
 results. First, we attempted to replace the reward function with a
