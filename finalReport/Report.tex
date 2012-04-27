@@ -313,6 +313,7 @@ were nearly unlearned.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/BasicPolicy.png} 
+  \caption{Basic Q-learning generated policy.}
   \label{fig:basicQ}
 \end{figure}
 \clearpage
@@ -365,7 +366,7 @@ valid heuristic function.
 Surprisingly, the results were not better for this method with a larger
 numbers of iterations. What we observed were policies that actually
 gave less complete coverage of the state space. This can be seen in
-the following policy which can be compared to the previous image (same
+the following policy which can be compared to Figure~\ref{fig:basicQ} (same
 start and goal locations).
 
 \vspace{.3in}
@@ -373,7 +374,8 @@ start and goal locations).
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/HeuristicPolicy.png} 
-  \label{fig:basicQ}
+  \caption{Q-learning generated policy with a heuristic reward policy.}
+  \label{fig:heurQ}
 \end{figure}
 \clearpage
 
