@@ -426,12 +426,14 @@ seen below.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/Wall2.png} 
-  \caption{Q-learning generated policy with obstacles.}
-  \label{fig:basicQ}
+  \caption{Q-learning generated policy with wall present at $x=10$.}
+  \label{fig:obstacleQ}
 \end{figure}
 \clearpage
 
-There were several issues with this. Obstacles could shield one
+There were several issues with this. The first was a slow-down in overall processing. We were unable to isolate the causes for this precisely, but handled it by adding threads (to the max supported by Robocode, five) and lowering the number of episodes in each cycle. This worked, but nonetheless the tracking performance was far from optimal.
+
+Additionally, obstacles could shield one
 another, preventing the back one from being scanned. This was
 generally not an issue as, by the time the second obstacle was
 reached, a new scan had generally taken place. More issues were caused
@@ -473,7 +475,7 @@ start and goal locations).
   \centering
   \includegraphics[width=\linewidth]{images/HeuristicPolicy.png} 
   \caption{Q-learning generated policy with a heuristic reward policy.}
-  \label{fig:heurQ}
+  \label{fig:heuristicQ}
 \end{figure}
 \clearpage
 
@@ -484,20 +486,15 @@ depth-first approach, would require a more powerful push to exploration
 to overcome the additional pull of the new reward function. The lack
 of this may have led to a failure to explore
 the state space as widely. Of course, if this type
-of reward and environment information were available to an actual bot,
+of reward and environment information were consistently available to an actual bot,
 simply
 running a true A* would be far more
 efficient and could be updated real-time for such a highly discretized
 space.
 
-Finally, we explored variable grid sizes for the evaluation with the
-aim being to run with a coarser grained grid the farther away from the
-goal we were (once again, assuming that such information was
-accessible to the model which, in reality, would likely open up other
-methods). Unfortunately, we weren't able to get this piece working
-correctly by the deadline.
-
 \subsection{Evaluation}
+
+While Q-learning had clear weaknesses in this context, we were able to take it farther towards a real-time context then we expected. Additionally, our exploration of heuristic reward functions pointed to an interesting tension between information and exploration. We look at these issues in detail below.
 
 The largest issue with our implementation of Q-learning is that it
 relies on information which, if present, could better drive a more
@@ -506,19 +503,18 @@ field into what amounts to a local simulation in which the learning
 takes place, we undercut much of the real-world justification for the
 use of a learning method. However, our aim was to consider these
 methods primarily for future use (Robocode, while charming, is not the
-end goal for any of us). In that context, our results suggest certain
-more interesting elements.
+end goal). In that context, our results suggest certain
+more interesting possibilities.
 
-First, we must note that, as expected, Q-learning is not an ideal method for the type of
-conditions we set up for these experiments. It's update time is too
-slow, policies are far less efficient, and it can easily get caught in
+As expected, Q-learning has a number of weaknesses under the conditions in these experiments. It's update time is
+slow, policies can be non-optimal, and it can easily get caught in
 local state loops. Moreover, the method proved somewhat brittle, in
 many cases failing completely. This seemed to be an interaction with
 the Robocode environment. For example, when an incorrect policy would
-have the bot attempt to repeatedly ram a wall, Robocode would at times
+have the bot repeatedly attempt to push through a wall, Robocode would
 disable the bot.
 
-However, while certainly not the best choice, the more surprising
+However, the more surprising
 result is that we were able to get Q-learning running well-enough to
 successfully operate in a dynamic real-time environment at all. The
 fact that policy updates could be recomputed on the fly fast enough to
@@ -550,7 +546,7 @@ this.
 However, our experiment on shifting from fixed rewards to
 heuristic rewards provided some interesting hints as to future possibilities. First, the hidden cost of
 adding information into the reward in terms of overwhelming the
-pressure to explore was not something we expected. 
+pressure to explore was not something we expected. The difference in the size of the explored portion of the field was clear both in extracted policies (see Figure~\ref{fig:basicQ} and Figure~\ref{fig:heuristicQ}) and in actual bot performance.
 
 It
 emphasized the need for improved reward information to be combined with a greater emphasis
@@ -558,7 +554,7 @@ on exploration. Uncertainty in the system (from both sensors and
 motions) has to be reflected in the learning process. If that process
 effectively learns as though the environment were purely
 deterministic, the resulting policy will be unlikely to respond
-correctly when acted on in that environment.
+correctly when acted on in that environment. In particular, a reward function that pulls the bot too strongly towards the goal will need to be balanced by a stronger tendency towards exploration. However, the precise nature of this balance depends a great deal on the structure of the situation and what level of generality is required from the policy.
 
 Additionally, it
 suggested some interesting possibilities in terms of injecting
@@ -573,8 +569,8 @@ balance this out in a learning context.
 The central theme in our exploration of Q-learning in a dynamic
 context was one of tradeoffs. While this and related reinforcement
 learning methods are extremely powerful and flexible (most of that power
-left untapped in this case), the tradeoffs involved in their application
-seem to strongly call for use in combination with other
+left untapped in this case), the tradeoffs involved in their application require an awareness on the part of the designer of both the overall structure of the problem and what is desired from their resulting policies. More, it 
+seems to suggest their ideal use might be in combination with other
 methods. Applied properly, those strengths can be exploited while the weaknesses
 are shored up by other methods.
 
