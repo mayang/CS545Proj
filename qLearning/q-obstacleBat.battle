@@ -1,0 +1,10 @@
+#Battle Properties
+#Fri Apr 27 01:13:01 PDT 2012
+robocode.battle.numRounds=10
+robocode.battle.gunCoolingRate=0.1
+robocode.battleField.width=600
+robocode.battle.rules.inactivityTime=450
+robocode.battle.selectedRobots=mdp.Goal*,qLearning.QLiveBotObstacles*,VectorFields.Obstacle*,VectorFields.Obstacle*
+robocode.battle.hideEnemyNames=false
+robocode.battleField.height=600
+robocode.battle.initialPositions = (50, 50, 0), (550,550, 0), (300, 150, 0), (150, 400, 0)

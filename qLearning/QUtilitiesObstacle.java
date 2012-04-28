@@ -68,8 +68,8 @@ public class QUtilitiesObstacle {
 					T = T/2;
 				}
 				sNext = transitionResult(s, a);
-//				rNext = transitionReward(s, a, sNext);
-				rNext = heuristicTransitionReward(s, sNext, goal);
+				rNext = transitionReward(s, a, sNext);
+//				rNext = heuristicTransitionReward(s, sNext, goal);
 				
 				updateQ(Q, s, a, r, sNext);
 				s = sNext;
@@ -120,6 +120,18 @@ public class QUtilitiesObstacle {
 			}
 		}
 		return maxQ;
+	}
+	
+	public static double transitionReward(int state, int sNext, int goal) {
+		// If it hits a wall -100, reaches goal +100, else -1
+		if(state == goal) {
+			// This assumes the current transition model where ending up in the same state means you hit a wall. As I extend that out, we'll need to adapt this.
+			return 100;
+		} else if (state == sNext) {
+			return -100;
+		} else {
+			return -1;
+		}
 	}
 	
 	public static double heuristicTransitionReward(int state, int sNext, int goal) {
