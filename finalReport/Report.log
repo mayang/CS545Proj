@@ -1,9 +1,23 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  27 APR 2012 17:27
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.2.2)  27 APR 2012 19:22
 entering extended mode
- restricted \write18 enabled.
+ \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
-**\input Report.tex
-(./Report.tex (./aiaa-tc.cls
+**Report.tex
+(./Report.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman-x-2011-07-01, ngerman-x-2011-07-01, afrikaans, ancientgreek, ibycus, arabi
+c, armenian, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danis
+h, dutch, ukenglish, usenglishmax, esperanto, estonian, ethiopic, farsi, finnis
+h, french, galician, german, ngerman, swissgerman, monogreek, greek, hungarian,
+ icelandic, assamese, bengali, gujarati, hindi, kannada, malayalam, marathi, or
+iya, panjabi, tamil, telugu, indonesian, interlingua, irish, italian, kurmanji,
+ lao, latin, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk, pol
+ish, portuguese, romanian, russian, sanskrit, serbian, serbianc, slovak, sloven
+ian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian, welsh, loaded
+.
+(./aiaa-tc.cls
 Document Class: aiaa-tc 2004/04/03 v3.5 AIAA technical conference paper
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
@@ -93,7 +107,7 @@ Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
 Package: overcite 1999/04/23  v 3.8
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/lastpage/lastpage.sty
-Package: lastpage 2011/02/01 v1.2g Refers to last page's name (HMM; JPG)
+Package: lastpage 2011/09/01 v1.2k Refers to last page's name (HMM; JPG)
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 \fancy@headwidth=\skip45
@@ -110,7 +124,7 @@ Package: lastpage 2011/02/01 v1.2g Refers to last page's name (HMM; JPG)
 \c@aiaa@cfootnote=\count92
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/tools/varioref.sty
-Package: varioref 2009/09/13 v1.4w package for extended references (FMi)
+Package: varioref 2011/10/02 v1.4z package for extended references (FMi)
 \c@vrcnt=\count93
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/wrapfig/wrapfig.sty
@@ -258,7 +272,26 @@ LaTeX Info: Redefining \] on input line 2667.
 (/usr/local/texlive/2011/texmf-dist/tex/latex/multirow/multirow.sty
 \bigstrutjot=\dimen142
 )
-No file Report.aux.
+(./Report.aux
+
+LaTeX Warning: Label `Radar Lock Example' multiply defined.
+
+
+LaTeX Warning: Label `fig:sample' multiply defined.
+
+
+LaTeX Warning: Label `fig:sample' multiply defined.
+
+
+LaTeX Warning: Label `fig:sample' multiply defined.
+
+
+LaTeX Warning: Label `fig:sample' multiply defined.
+
+
+LaTeX Warning: Label `fig:sample' multiply defined.
+
+)
 \openout1 = `Report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
@@ -273,6 +306,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 28.
 LaTeX Font Info:    ... okay on input line 28.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 28.
 LaTeX Font Info:    ... okay on input line 28.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -363,299 +397,287 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package lastpage Info: Please have a look at the pagesLTS package at
+Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             http://www.ctan.org/tex-archive/ 
-(lastpage)             macros/latex/contrib/pagesLTS/ 
+(lastpage)             macros/latex/contrib/pageslts/ 
 (lastpage)             or
 (lastpage)             http://www.ctan.org/tex-archive/ 
-(lastpage)             install/macros/latex/contrib/pagesLTS.tds.zip
+(lastpage)             install/macros/latex/contrib/pageslts.tds.zip
 (lastpage)             ! on input line 28.
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
-Underfull \hbox (badness 10000) in paragraph at lines 57--71
+Underfull \hbox (badness 10000) in paragraph at lines 52--65
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 81--124
+Underfull \hbox (badness 10000) in paragraph at lines 76--119
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 81--124
+Underfull \hbox (badness 10000) in paragraph at lines 76--119
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 81--124
+Underfull \hbox (badness 10000) in paragraph at lines 76--119
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 81--124
+Underfull \hbox (badness 10000) in paragraph at lines 76--119
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 81--124
+Underfull \hbox (badness 10000) in paragraph at lines 76--119
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 81--124
+Underfull \hbox (badness 10000) in paragraph at lines 76--119
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 81--124
+Underfull \hbox (badness 10000) in paragraph at lines 76--119
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 81--124
+Underfull \hbox (badness 10000) in paragraph at lines 76--119
 
  []
-
-
-LaTeX Warning: Reference `LastPage' on page 1 undefined on input line 124.
 
 [1
 
 {/usr/local/texlive/2011/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<images/SimpleRadarFailure.png, id=14, 284.06125pt x 228.855pt>
+<images/SimpleRadarFailure.png, id=12, 284.06125pt x 228.855pt>
 File: images/SimpleRadarFailure.png Graphic file (type png)
 
 <use images/SimpleRadarFailure.png>
-Package pdftex.def Info: images/SimpleRadarFailure.png used on input line 145.
+Package pdftex.def Info: images/SimpleRadarFailure.png used on input line 140.
 (pdftex.def)             Requested size: 234.88654pt x 189.23721pt.
 
-<images/RadarLock.png, id=15, 375.4025pt x 309.155pt>
+<images/RadarLock.png, id=13, 375.4025pt x 309.155pt>
 File: images/RadarLock.png Graphic file (type png)
 
 <use images/RadarLock.png>
-Package pdftex.def Info: images/RadarLock.png used on input line 154.
+Package pdftex.def Info: images/RadarLock.png used on input line 149.
 (pdftex.def)             Requested size: 234.88374pt x 193.43367pt.
 
-<images/FinalRun.png, id=16, 486.81876pt x 537.00626pt>
+<images/FinalRun.png, id=14, 486.81876pt x 537.00626pt>
 File: images/FinalRun.png Graphic file (type png)
 
 <use images/FinalRun.png>
-Package pdftex.def Info: images/FinalRun.png used on input line 169.
+Package pdftex.def Info: images/FinalRun.png used on input line 164.
 (pdftex.def)             Requested size: 375.80241pt x 414.54494pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--173
+Underfull \hbox (badness 10000) in paragraph at lines 134--168
 
  []
 
-
-LaTeX Warning: Reference `LastPage' on page 2 undefined on input line 173.
-
-[2]
-
-LaTeX Warning: Reference `LastPage' on page 3 undefined on input line 173.
-
-[3 <./images/SimpleRadarFailure.png>]
-
-LaTeX Warning: Reference `LastPage' on page 4 undefined on input line 173.
-
-[4 <./images/RadarLock.png>]
-
-LaTeX Warning: Reference `LastPage' on page 5 undefined on input line 173.
-
-[5]
-
-LaTeX Warning: Reference `LastPage' on page 6 undefined on input line 173.
-
+[2] [3 <./images/SimpleRadarFailure.png>] [4 <./images/RadarLock.png>] [5]
 [6 <./images/FinalRun.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 174--181
+Underfull \hbox (badness 10000) in paragraph at lines 169--176
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 174--181
+Underfull \hbox (badness 10000) in paragraph at lines 169--176
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 174--181
+Underfull \hbox (badness 10000) in paragraph at lines 169--176
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 174--181
+Underfull \hbox (badness 10000) in paragraph at lines 169--176
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 182--187
+Underfull \hbox (badness 10000) in paragraph at lines 177--182
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 182--187
+Underfull \hbox (badness 10000) in paragraph at lines 177--182
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 182--187
+Underfull \hbox (badness 10000) in paragraph at lines 177--182
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 182--187
+Underfull \hbox (badness 10000) in paragraph at lines 177--182
 
  []
-
-
-LaTeX Warning: Reference `LastPage' on page 7 undefined on input line 187.
 
 [7
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 190--197
+Underfull \hbox (badness 10000) in paragraph at lines 185--192
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 190--197
+Underfull \hbox (badness 10000) in paragraph at lines 185--192
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 198--204
+Underfull \hbox (badness 10000) in paragraph at lines 193--199
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 198--204
+Underfull \hbox (badness 10000) in paragraph at lines 193--199
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 198--204
+Underfull \hbox (badness 10000) in paragraph at lines 193--199
 
  []
-
-
-LaTeX Warning: Reference `LastPage' on page 8 undefined on input line 204.
 
 [8]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 218.
+Underfull \hbox (badness 10000) in paragraph at lines 209--214
 
- (/usr/local/texlive/2011/texmf-dist/tex/latex/base/omscmr.fd
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 209--214
+
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 215.
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 218.
-
-<mdp_policy_to_state_273.png, id=44, 1047.915pt x 776.9025pt>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 215.
+ [9]
+<mdp_policy_to_state_273.png, id=46, 1047.915pt x 776.9025pt>
 File: mdp_policy_to_state_273.png Graphic file (type png)
 
 <use mdp_policy_to_state_273.png>
-Package pdftex.def Info: mdp_policy_to_state_273.png used on input line 227.
+Package pdftex.def Info: mdp_policy_to_state_273.png used on input line 224.
 (pdftex.def)             Requested size: 483.69371pt x 358.6005pt.
 
-Overfull \hbox (13.93869pt too wide) in paragraph at lines 227--228
+Overfull \hbox (13.93869pt too wide) in paragraph at lines 224--225
  [][] 
  []
 
-<static_policy_noisy_to_state_273.png, id=45, 967.615pt x 751.80875pt>
+<static_policy_noisy_to_state_273.png, id=47, 967.615pt x 751.80875pt>
 File: static_policy_noisy_to_state_273.png Graphic file (type png)
 
 <use static_policy_noisy_to_state_273.png>
 Package pdftex.def Info: static_policy_noisy_to_state_273.png used on input lin
-e 233.
+e 230.
 (pdftex.def)             Requested size: 483.70297pt x 375.82314pt.
 
-Overfull \hbox (13.94795pt too wide) in paragraph at lines 233--234
+Overfull \hbox (13.94795pt too wide) in paragraph at lines 230--231
  [][] 
  []
 
+[10 <./mdp_policy_to_state_273.png>] [11 <./static_policy_noisy_to_state_273.pn
+g>]
+Underfull \hbox (badness 10000) in paragraph at lines 246--249
 
-LaTeX Warning: Reference `LastPage' on page 9 undefined on input line 237.
+ []
 
-[9]
 
-LaTeX Warning: Reference `LastPage' on page 10 undefined on input line 237.
+Underfull \hbox (badness 10000) in paragraph at lines 246--249
 
-[10 <./mdp_policy_to_state_273.png>]
+ []
 
-LaTeX Warning: Reference `LastPage' on page 11 undefined on input line 237.
 
-[11 <./static_policy_noisy_to_state_273.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 250--253
 
-LaTeX Warning: Reference `LastPage' on page 12 undefined on input line 253.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 250--253
+
+ []
 
 [12
 
-] <mdp_update_190_150.png, id=58, 1099.10625pt x 792.9625pt>
+] <mdp_update_190_150.png, id=57, 1099.10625pt x 792.9625pt>
 File: mdp_update_190_150.png Graphic file (type png)
 
 <use mdp_update_190_150.png>
@@ -666,394 +688,334 @@ Overfull \hbox (13.93707pt too wide) in paragraph at lines 260--261
  [][] 
  []
 
-
-LaTeX Warning: Reference `LastPage' on page 13 undefined on input line 264.
-
-[13]
-
-LaTeX Warning: Reference `LastPage' on page 14 undefined on input line 264.
-
-[14 <./mdp_update_190_150.png>]
-<mdp_policy_update_25_to_31.png, id=66, 1054.94125pt x 777.90625pt>
+[13] [14 <./mdp_update_190_150.png>]
+<mdp_policy_update_25_to_31.png, id=65, 1054.94125pt x 777.90625pt>
 File: mdp_policy_update_25_to_31.png Graphic file (type png)
 
 <use mdp_policy_update_25_to_31.png>
-Package pdftex.def Info: mdp_policy_update_25_to_31.png used on input line 270.
+Package pdftex.def Info: mdp_policy_update_25_to_31.png used on input line 271.
 
 (pdftex.def)             Requested size: 483.68526pt x 356.66609pt.
 
-Overfull \hbox (13.93024pt too wide) in paragraph at lines 270--271
+Overfull \hbox (13.93024pt too wide) in paragraph at lines 271--272
  [][] 
  []
 
 
-LaTeX Warning: Reference `LastPage' on page 15 undefined on input line 274.
+Underfull \hbox (badness 10000) in paragraph at lines 266--275
+
+ []
 
 [15
 
-]
-
-LaTeX Warning: Reference `LastPage' on page 16 undefined on input line 274.
-
-[16 <./mdp_policy_update_25_to_31.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 276--278
+] [16 <./mdp_policy_update_25_to_31.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 277--279
 
  []
 
-<mpd_noisy_obstacles.png, id=73, 980.66376pt x 801.99625pt>
+<mpd_noisy_obstacles.png, id=72, 980.66376pt x 801.99625pt>
 File: mpd_noisy_obstacles.png Graphic file (type png)
 
 <use mpd_noisy_obstacles.png>
-Package pdftex.def Info: mpd_noisy_obstacles.png used on input line 289.
+Package pdftex.def Info: mpd_noisy_obstacles.png used on input line 292.
 (pdftex.def)             Requested size: 483.68678pt x 395.5637pt.
 
-Overfull \hbox (13.93176pt too wide) in paragraph at lines 289--290
+Overfull \hbox (13.93176pt too wide) in paragraph at lines 292--293
  [][] 
  []
 
-<mdp_proximity_error.png, id=74, 928.46875pt x 807.015pt>
+<mdp_proximity_error.png, id=73, 928.46875pt x 807.015pt>
 File: mdp_proximity_error.png Graphic file (type png)
 
 <use mdp_proximity_error.png>
-Package pdftex.def Info: mdp_proximity_error.png used on input line 295.
+Package pdftex.def Info: mdp_proximity_error.png used on input line 298.
 (pdftex.def)             Requested size: 483.69907pt x 420.426pt.
 
-Overfull \hbox (13.94405pt too wide) in paragraph at lines 295--296
+Overfull \hbox (13.94405pt too wide) in paragraph at lines 298--299
  [][] 
  []
 
 
-LaTeX Warning: Reference `LastPage' on page 17 undefined on input line 300.
-
-[17
-
-]
-
-LaTeX Warning: Reference `LastPage' on page 18 undefined on input line 300.
-
-[18 <./mpd_noisy_obstacles.png>]
-
-LaTeX Warning: Reference `LastPage' on page 19 undefined on input line 300.
-
-[19 <./mdp_proximity_error.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 304--306
+Underfull \hbox (badness 10000) in paragraph at lines 287--302
 
  []
 
 
-LaTeX Warning: Reference `LastPage' on page 20 undefined on input line 318.
+Underfull \hbox (badness 10000) in paragraph at lines 287--302
+
+ []
+
+[17
+
+] [18 <./mpd_noisy_obstacles.png>] [19 <./mdp_proximity_error.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 307--309
+
+ []
 
 [20
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 319--339
+Underfull \hbox (badness 10000) in paragraph at lines 322--342
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 319--339
+Underfull \hbox (badness 10000) in paragraph at lines 322--342
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 319--339
+Underfull \hbox (badness 10000) in paragraph at lines 322--342
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 343--369
+Underfull \hbox (badness 10000) in paragraph at lines 346--372
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 343--369
+Underfull \hbox (badness 10000) in paragraph at lines 346--372
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 343--369
+Underfull \hbox (badness 10000) in paragraph at lines 346--372
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 343--369
+Underfull \hbox (badness 10000) in paragraph at lines 346--372
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 371--390
+Underfull \hbox (badness 10000) in paragraph at lines 374--393
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 371--390
+Underfull \hbox (badness 10000) in paragraph at lines 374--393
 
  []
-
-
-LaTeX Warning: Reference `LastPage' on page 21 undefined on input line 390.
 
 [21]
-Underfull \hbox (badness 10000) in paragraph at lines 392--451
+Underfull \hbox (badness 10000) in paragraph at lines 395--454
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 392--451
+Underfull \hbox (badness 10000) in paragraph at lines 395--454
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 392--451
+Underfull \hbox (badness 10000) in paragraph at lines 395--454
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 392--451
+Underfull \hbox (badness 10000) in paragraph at lines 395--454
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 392--451
+Underfull \hbox (badness 10000) in paragraph at lines 395--454
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 392--451
+Underfull \hbox (badness 10000) in paragraph at lines 395--454
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 392--451
+Underfull \hbox (badness 10000) in paragraph at lines 395--454
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 392--451
+Underfull \hbox (badness 10000) in paragraph at lines 395--454
 
  []
 
-
-LaTeX Warning: Reference `LastPage' on page 22 undefined on input line 451.
-
-[22] <images/BasicPolicy.png, id=95, 573.14125pt x 534.99875pt>
+[22] <images/BasicPolicy.png, id=94, 573.14125pt x 534.99875pt>
 File: images/BasicPolicy.png Graphic file (type png)
 
 <use images/BasicPolicy.png>
-Package pdftex.def Info: images/BasicPolicy.png used on input line 454.
+Package pdftex.def Info: images/BasicPolicy.png used on input line 457.
 (pdftex.def)             Requested size: 469.76022pt x 438.49773pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 23 undefined on input line 458.
-
-[23 <./images/BasicPolicy.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 466--480
+ [23 <./images/BasicPolicy.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 469--483
 
  []
 
-<images/Wall2.png, id=99, 738.76pt x 659.46375pt>
+<images/Wall2.png, id=98, 738.76pt x 659.46375pt>
 File: images/Wall2.png Graphic file (type png)
  <use images/Wall2.png>
-Package pdftex.def Info: images/Wall2.png used on input line 483.
+Package pdftex.def Info: images/Wall2.png used on input line 486.
 (pdftex.def)             Requested size: 469.74991pt x 419.32838pt.
-
-
-LaTeX Warning: Reference `LastPage' on page 24 undefined on input line 487.
 
 [24
 
  <./images/Wall2.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 490--504
+Underfull \hbox (badness 10000) in paragraph at lines 493--507
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 490--504
+Underfull \hbox (badness 10000) in paragraph at lines 493--507
 
  []
 
 
-LaTeX Warning: Reference `fig:basicQ' on page 25 undefined on input line 521.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 506--523
+Underfull \hbox (badness 10000) in paragraph at lines 509--526
 
  []
 
-<images/HeuristicPolicy.png, id=104, 548.0475pt x 500.87125pt>
+<images/HeuristicPolicy.png, id=103, 548.0475pt x 500.87125pt>
 File: images/HeuristicPolicy.png Graphic file (type png)
 
 <use images/HeuristicPolicy.png>
-Package pdftex.def Info: images/HeuristicPolicy.png used on input line 528.
+Package pdftex.def Info: images/HeuristicPolicy.png used on input line 531.
 (pdftex.def)             Requested size: 469.76459pt x 429.32697pt.
+ [25
 
-
-LaTeX Warning: Reference `LastPage' on page 25 undefined on input line 532.
-
-[25
-
-]
-
-LaTeX Warning: Reference `LastPage' on page 26 undefined on input line 532.
-
-[26 <./images/HeuristicPolicy.png>]
-
-LaTeX Warning: Reference `fig:basicQ' on page 27 undefined on input line 592.
-
-
-LaTeX Warning: Reference `fig:heuristicQ' on page 27 undefined on input line 59
-2.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 547--613
+] [26 <./images/HeuristicPolicy.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 550--616
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 547--613
+Underfull \hbox (badness 10000) in paragraph at lines 550--616
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 547--613
+Underfull \hbox (badness 10000) in paragraph at lines 550--616
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 547--613
+Underfull \hbox (badness 10000) in paragraph at lines 550--616
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 547--613
+Underfull \hbox (badness 10000) in paragraph at lines 550--616
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 547--613
+Underfull \hbox (badness 10000) in paragraph at lines 550--616
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 547--613
+Underfull \hbox (badness 10000) in paragraph at lines 550--616
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 547--613
+Underfull \hbox (badness 10000) in paragraph at lines 550--616
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 547--613
+Underfull \hbox (badness 10000) in paragraph at lines 550--616
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 547--613
+Underfull \hbox (badness 10000) in paragraph at lines 550--616
 
  []
-
-
-LaTeX Warning: Reference `LastPage' on page 27 undefined on input line 613.
 
 [27
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 615--640
+Underfull \hbox (badness 10000) in paragraph at lines 618--643
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--640
+Underfull \hbox (badness 10000) in paragraph at lines 618--643
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--640
+Underfull \hbox (badness 10000) in paragraph at lines 618--643
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--640
+Underfull \hbox (badness 10000) in paragraph at lines 618--643
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--640
+Underfull \hbox (badness 10000) in paragraph at lines 618--643
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--640
+Underfull \hbox (badness 10000) in paragraph at lines 618--643
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--640
+Underfull \hbox (badness 10000) in paragraph at lines 618--643
 
  []
-
-
-LaTeX Warning: Reference `LastPage' on page 28 undefined on input line 640.
 
 [28]
-Underfull \hbox (badness 10000) in paragraph at lines 653--656
+Underfull \hbox (badness 10000) in paragraph at lines 656--659
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 653--656
+Underfull \hbox (badness 10000) in paragraph at lines 656--659
 
  []
-
-
-LaTeX Warning: Reference `LastPage' on page 29 undefined on input line 656.
 
 [29]
-Underfull \hbox (badness 10000) in paragraph at lines 659--661
+Underfull \hbox (badness 10000) in paragraph at lines 662--664
 
  []
 
-AED: lastpage setting LastPage 
 
-LaTeX Warning: Reference `LastPage' on page 30 undefined on input line 672.
-
+AED: lastpage setting LastPage
 [30] (./Report.aux)
 
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 3961 strings out of 493633
- 55546 string characters out of 3143378
- 138121 words of memory out of 3000000
- 7160 multiletter control sequences out of 15000+200000
- 10155 words of font info for 37 fonts, out of 3000000 for 9000
+ 3969 strings out of 493629
+ 55690 string characters out of 3143324
+ 138801 words of memory out of 3000000
+ 7172 multiletter control sequences out of 15000+200000
+ 9548 words of font info for 35 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 38i,10n,45p,2484b,312s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,10n,45p,2477b,311s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
-usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></us
-r/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr
-/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/l
-ocal/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/loc
-al/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local
-/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/t
-exlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texl
-ive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive
-/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/
-2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/20
-11/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/201
-1/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Report.pdf (30 pages, 665291 bytes).
+usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
+sr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr
+/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/l
+ocal/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/loc
+al/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local
+/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/te
+xlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texli
+ve/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texliv
+e/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/
+2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2
+011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on Report.pdf (30 pages, 651521 bytes).
 PDF statistics:
- 173 PDF objects out of 1000 (max. 8388607)
- 112 compressed objects within 2 object streams
+ 169 PDF objects out of 1000 (max. 8388607)
+ 109 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  61 words of extra memory for PDF output out of 10000 (max. 10000000)
 
