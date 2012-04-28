@@ -637,7 +637,27 @@ However, we were able to discover some interesting issues relating to the struct
 In summary, the performance of these three methods relative to one another was pretty much exactly what we expected. We knew that the low computational complexity of the potential field calculations would make methods based on those calculations highly reactive and suitable to online applications in dynamic environments. Due to the high computational effort required by both Q-learning and MDPs, we anticipated that any online version of these methods would be less reactive and less effective than a method based on potential fields. In addition, because Q-learning generally requires such large training sets to learn an effective policy, we were almost positive that value iteration would converge to a more optimal policy more quickly than Q-learning. \\ \\
 What did surprise (and delight!) us was how well we were able to make both MDPs and Q-learning work online in a dynamic Robocode environment. With a few clever tricks and some experimental real-time optimizations to both methods, we were successfully able to use them to generate dynamic policies to follow moving targets and avoid obstacles. Though the performance of these two techniques was nowhere near that of the potential field methods (with their various optimizations), they speak to the effectiveness of probabilistic robotics techniques in a wide range of different situations. Furthermore, the generality of these techniques and their ability to compensate for lack of information and lack of fidelity in robot motion makes them powerful tools in situations with greater uncertainty than we faced. Consider Q-learning as an example. Though Q-learning faired more poorly than the other two techniques, it gives the us ability to track a moving target without even knowing what effect the robot's actions have. Given enough uncertainty about the environment or the robot, the probabilistic techniques we considered would be the only possible way to 
 make rational decisions. Deterministic techniques like vector fields simply would not be able to function.
+
+
 \subsection{Future work}
+
+There are a number of ways we could extend this work going
+forward. Three broad directions we considered were applying these methods to more real-world environments (relaxing the simplifying assumptions of our model), extending and recombining the methods explored here, and further work on the underlying structure of the methods.
+
+\subsubsection{Environment and model complexity}
+
+In order to focus in on the core of the methods that we explored, we chose a highly simplified environment. Motion, sensing, environmental variability, and available communication and processing were all idealized from a real world setting. An initial step would be to translate this work into a more expansive simulator environment, ROS being an excellent candidate. From there, the next obvious step would be to test on physical platforms.
+
+\subsubsection{Extensions of existing methods}
+
+One clear next step for both of the discretized methods would be to incorporate some of the sensing and motion improvements used in the potential fields approach. For example, the methods used there for maintaining a constant ``lock'' on the target would apply as well to the discretized methods. On the motion side, dynamically adjusting the distance of moves based on distance to target or other conditions could lead to more effective goal following.\\ \\
+Additionally, there are a number of options for adjusting the structure of the methods based on distance to the target. This could be as simple as using a coarser grid size or, for the MDP method, converting between partial and whole-field updates depending on distance (or even just do a full-field update every few turns to maintain optimality). Of course, care has to be taken to use the available information in the best way possible. So, for example, if we have noise-free distance and bearing information, simpler planning methods are available.\\ \\
+Another promising direction is to consider hybrid methods. One version of this would have multiple planning methods, each voting on the correct action. These votes could be weighted by some confidence measure or by a separate heuristic which considers the current situation. Alternately, different methods could feed into one another. So, for example, longer running methods could develop more general plans while lower-level, more efficient methods could handle the immediate choices and kinematic control.
+
+\subsubsection{Algorithmic research}
+
+Finally, our work suggested some interesting directions for further research into the underlying algorithms. The update methods we used to make MDPs functional at the level of real-time updates could be explored in terms of how to determine the correct scope for updates, under what conditions optimality will be guaranteed, and how to quantify those tradeoffs.\\ \\
+In terms of reward functions, there is clearly a great deal of work to be done on the most basic questions of how to tune relative reward values and evaluate those adjustments. Additionally, the initial results we produced on the incorporation of heuristic methods suggests a promising line of inquiry into the interaction between weights and available information. The notion of additional information as differentially weighting aspects of the learning algorithms is intriguing.
 
 \section{Acknowledgments}
 Our team would thank Franz Kafka, Alan Turing, and the Ghost of
