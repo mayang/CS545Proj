@@ -61,12 +61,13 @@ public class MDPEnemyBotPerimeter extends Robot {
         	} else if (direction == DIRECTION_SOUTH) {
         		goSouth(20);
         	}
+        	//turnGunLeft(360);
         }
 }
 
 
     public void onScannedRobot(ScannedRobotEvent e) {
-        fire(1);
+        //fire(1);
 	}
 
 	

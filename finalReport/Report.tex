@@ -78,7 +78,7 @@ framework called Robocode \\(http://robocode.sourceforge.net/). This system is d
 simulated robotic tank battles. Users of the system are able to write
 the central processing loops for the robotic tanks which have access to
 standard sensors, weapons, and motion controls. \\ \\
-Several features in particular appealed to us. It's semi-continuous underlying state
+Several features in particular appealed to us. Its semi-continuous underlying state
 representation (locations as doubles) gave us flexibility in
 terms of laying a grid over the environment rather than existing in a
 pre-defined grid. Critically, this made it far easier to experiment
@@ -102,10 +102,10 @@ encapsulate as many
 surrounding issues as possible. After a certain amount of exploration, we did
 in-depth evaluations of three options: ROS, a simple grid world, and
 Robocode. \\ \\
-The primary concern we had about using ROS was the potential for lengthy setup time.
+The primary concern we had about using ROS was the potential for a lengthy setup time.
 As none of us had extensive prior experience, our
 initial efforts suggested that we might end up spending a good portion
-of project time on learning the tools. While this is an environment that all
+of the project just learning the tools. While this is an environment that all
 of us were interested in, even in the best case it would not have left
 us a great deal of time to explore the planning and navigation
 algorithms we were primarily interested in. \\ \\
@@ -151,7 +151,7 @@ The main issue was the wasted ticks sweeping the radar through empty space. This
 \label{Radar Lock Example}
 \end{figure} \\ \\
 \noindent
-To implement a radar lock that would never slip required simple algebraic manipulation of the state information present when a onScannedRobot event occurred. Whenever the goal was scanned, the radar's rotation was set to the tracking robot's heading added to the scanned ``goal'' robot's heading minus the radar's heading. More succinctly, $NewRadarHeading = RobotHeading + GoalHeading - CurRadarHeading$. This angle was then normalized so that it fell within the range of $[-\pi, \pi]$. This caused the radar to constantly rotate towards the direction that the goal was navigating so the radar never slipped and the goal was never lost. It also minimized the amount that the radar needed to be rotated so that less ticks were spent uselessly spinning the radar. \\ \\
+To implement a radar lock that would never slip required simple algebraic manipulation of the state information present when an onScannedRobot event occurred. Whenever the goal was scanned, the radar's rotation was set to the tracking robot's heading added to the scanned ``goal'' robot's heading minus the radar's heading. More succinctly, $NewRadarHeading = RobotHeading + GoalHeading - CurRadarHeading$. This angle was then normalized so that it fell within the range of $[-\pi, \pi]$. This caused the radar to constantly rotate towards the direction that the goal was navigating so the radar never slipped and the goal was never lost. It also minimized the amount that the radar needed to be rotated so that less ticks were spent uselessly spinning the radar. \\ \\
 Performance with the radar lock implemented was near as perfect as the simulation would allow. The robot could travel just as fast as the goal and never lose track of the location. In fact, the max speed of the tracking robot had to be turned down to ensure that it didn't catch up to and crash into the goal. In addition, because the tracking was so smooth, the speed of the bot could be appropriately scaled based on distance to the goal without fear of any blocking actions causing a loss of the goal or a slow scan resulting in a crash. \\ \\
 Once the moving goal tracking had been sufficiently implemented, the next obvious step was obstacle avoidance. As with the goal, obstacles were nothing more than stationary or moving robot entities added to the simulation. The initial implementation of obstacle avoidance was simplified to include a single stationary obstacle and a stationary goal. This ensured that all issues with obstacle avoidance could be ironed out before dealing with the issues of adding a moving goal to the equation.  \\ \\
 When a robot was scanned by the tracking robot that wasn't recognized as the goal, the robot would calculate and save the coordinates of that bot and assume it was an obstacle. Goal or obstacle recognition was handled in the onScannedRobot event handler by accessing the scanned object's name. The appropriate name values were simply coded into constants and checked whenever something was scanned. \\ \\
@@ -315,7 +315,7 @@ examined. Given these obvious downsides, especially in a
 real-time dynamic context, why is this approach worth
 considering? Primarily, it brings the potential for a great deal of
 flexibility in handling unknown environments, sensor quality, and
-motion models. While, if other methods are possible they should likely
+motion models. While, if other methods are possible, they should likely
 be the first choices, it does provide a valuable option in certain
 cases. 
 \subsection{Setup}
@@ -354,18 +354,16 @@ confirm basic operations of the various components. Adding in noise
 produced distinctly rougher bot motion, but did not impact the overall
 effectiveness of the method. \\ \\
 Both Boltzmann explorations and $\epsilon$-greedy were experimented
-with at this phase.  We began by exploring the quality of the bots
-given a similar numbers of trials. Here Boltzmann was clearly
+with at this phase.  We began by exploring the quality of the policies
+given an equal numbers of trials. Here Boltzmann was clearly
 superior, producing policies which more consistently and directly led
 to the goal. \\ \\
 But the constraint was on computational time, not episodes so we
 further ran a series of rough tests comparing along this axis. $\epsilon$-greedy method ran in approximately half the
-time for a given number of trials (a ratio which seemed to scale with
-the number of trials). So, at this point we compared $\epsilon$-greedy
+time for a given number of trials (a ratio which seemed to scale). So, at this point, we compared $\epsilon$-greedy
 with twice the number of trials against Boltzmann. Even in this case,
 the overall policy produced by Boltzmann was better with fewer failure
-incidents and better tracking performance. \\ \\
-While both were left in as options on all future
+incidents and better tracking performance. While both were left in as options on all future
 bots, Boltzmann was the default from this point on. The advantages in
 overall performance and quality per unit of computational effort were
 clear.
@@ -399,22 +397,22 @@ of episodes we'd run in the offline tests or even in the
 static tests were no
 longer feasible.  \\ \\
 The first thing we tried was lowering the number of episodes. 
-However, shifting this down to smaller numbers of episodes produced policies of a noticeably lower quality. In
+However, this produced policies of a noticeably lower quality. In
 particular, the bot had a tendency to get caught in state loops where
 an incompletely learned policy would have two states which pointed to
 one another. The other primary failure mode were states which directed
 the bot directly into a wall. \\ \\
-Effectively, the number of episodes traded off fairly directly with
-the quality of the policy. However, we were not able to implement a
+While the number of episodes traded off fairly directly with
+the quality of the policy, we were not able to implement a
 precise way of tuning this relationship. We settled on 100,000 episodes as a manageable
-compromise. While not producing perfect episodes, it ran in under two
+compromise. While not producing perfect policies, it generally ran in under two
 seconds (often closer to one) which was essential to
 keeping tracking reasonably accurate. This would clearly be an area
 for more detailed future exploration. \\ \\
 However, even that shortened learning time imposed a cost on the process. Notably, in
 that period of time the bot (and, in later experiments, the goal)
 could have shifted location rather dramatically. Several pieces were
-needed to account for this. \\ \\
+added to attempt to account for this. \\ \\
 First, we added a basic predictive aspect to the location of the goal
 state. This meant accounting for its current velocity and bearing and
 predicting where it would be after the policy was completed. However,
@@ -506,12 +504,11 @@ complexity on the field, the updates were simply too slow to produce a
 viable policy.
 
 \subsubsection{Heuristic reward functions}
-Two other experiments were tried that produced more ambiguous
-results. First, we attempted to replace the reward function with a
+Finally, we explored replacing the fixed reward function with a
 heuristic based on euclidean distance to the goal. For smaller numbers
 of episodes, this produced much better policies. The reason is that,
-given the structure we'd set up, this method basically became a
-search method. Effectively, at each step, it
+given the structure we'd set up, this basically approximated a
+search function. Effectively, at each step, it
 would choose the step closest to the goal. For a single episode,
 this would look like a depth-first search. In the simplified
 environments we were working with, there would be little or no
@@ -557,9 +554,8 @@ use of a learning method. However, our aim was to consider these
 methods primarily for future use (Robocode, while charming, is not the
 end goal). In that context, our results suggest certain
 more interesting possibilities. \\ \\
-As expected, Q-learning has a number of weaknesses under the conditions in these experiments. Its update time is
-slow, policies can be non-optimal, and it can easily get caught in
-local state loops. Moreover, the method proved somewhat brittle, in
+In addition to the expected downsides: slow update time, non-optimal policies, and risk of being caught in
+local state loops, Q-learning also proved somewhat brittle, in
 many cases failing completely. This seemed to be an interaction with
 the Robocode environment. For example, when an incorrect policy would
 have the bot repeatedly attempt to push through a wall, Robocode would
@@ -567,7 +563,7 @@ disable the bot. \\ \\
 However, the more surprising
 result is that we were able to get Q-learning running well-enough to
 successfully operate in a dynamic real-time environment at all. The
-fact that policy updates could be recomputed on the fly fast enough to
+fact that policy updates could be recomputed fast enough to
 maintain tracking on a moving goal was interesting and somewhat
 surprising. We'd expected that this method would have to be used
 largely offline with policies generated and fed in. Being able to get
@@ -645,7 +641,7 @@ make rational decisions. Deterministic techniques like vector fields simply woul
 \subsection{Future work}
 
 There are a number of ways we could extend this work going
-forward. Three broad directions we considered were applying these methods to more real-world environments (relaxing the simplifying assumptions of our model), extending and recombining the methods explored here, and further work on the underlying structure of the methods.
+forward. Three broad directions we considered were applying these methods to more real-world environments (relaxing the simplifying assumptions of our model), extending and recombining the methods explored here, and further work on the underlying structure of the algorithms.
 
 \subsubsection{Environment and model complexity}
 
@@ -659,7 +655,7 @@ Another promising direction is to consider hybrid methods. One version of this w
 
 \subsubsection{Algorithmic research}
 
-Finally, our work suggested some interesting directions for further research into the underlying algorithms. The update methods we used to make MDPs functional at the level of real-time updates could be explored in terms of how to determine the correct scope for updates, under what conditions optimality will be guaranteed, and how to quantify those tradeoffs.\\ \\
+Finally, our work suggested some interesting directions for further research into the underlying algorithms. The methods we used to make MDPs functional at the level of real-time updates could be explored in terms of how to determine the correct scope for updates, under what conditions optimality will be guaranteed, and how to quantify those tradeoffs.\\ \\
 In terms of reward functions, there is clearly a great deal of work to be done on the most basic questions of how to tune relative reward values and evaluate those adjustments. Additionally, the initial results we produced on the incorporation of heuristic methods suggests a promising line of inquiry into the interaction between weights and available information. The notion of additional information as differentially weighting aspects of the learning algorithms is intriguing.
 
 
