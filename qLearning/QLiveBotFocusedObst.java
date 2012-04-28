@@ -8,7 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 //Implements Q-Learning with the start state set to your current location rather than trying to determine a more general policy (with random start points).
-public class QLiveBotNoisyFocus extends Robot {
+public class QLiveBotFocusedObst extends Robot {
 	//Constants for orientation
 	private final double NORTH = 0.0;
 	private final double NORTH_ALT = 360.0;
@@ -25,6 +25,7 @@ public class QLiveBotNoisyFocus extends Robot {
     public boolean currently_updating;
     private int goal_state;
     private int last_view = 0;
+    private String goal_name = "mdp.Goal*";
     
 ;	public void run() {
 		setAllColors(Color.RED);
@@ -36,23 +37,23 @@ public class QLiveBotNoisyFocus extends Robot {
     			 updatePolicy();
     		 }
         	//Each time we get a turn, we find out the state we are in and execute the action our policy tells us to
-        	int state = QUtilitiesNoise.XYtoState(getX(), getY());
-        	if (policy[state] == QUtilitiesNoise.ACTION_NORTH) {
-        		goNorth(20);
-        	} else if (policy[state] == QUtilitiesNoise.ACTION_SOUTH) {
-        		goSouth(20);
-        	} else if (policy[state] == QUtilitiesNoise.ACTION_EAST) {
-        		goEast(20);
-        	} else if (policy[state] == QUtilitiesNoise.ACTION_WEST) {
-        		goWest(20);
-        	} else if (policy[state] == QUtilitiesNoise.ACTION_NORTHWEST) {
-        		goNorthwest(20);
-        	} else if (policy[state] == QUtilitiesNoise.ACTION_NORTHEAST) {
-        		goNortheast(20);
-        	} else if (policy[state] == QUtilitiesNoise.ACTION_SOUTHWEST) {
-        		goSouthwest(20);
-        	} else if (policy[state] == QUtilitiesNoise.ACTION_SOUTHEAST) {
-        		goSoutheast(20);
+        	int state = QUtilities.XYtoState(getX(), getY());
+        	if (policy[state] == QUtilities.ACTION_NORTH) {
+        		goNorth(10);
+        	} else if (policy[state] == QUtilities.ACTION_SOUTH) {
+        		goSouth(30);
+        	} else if (policy[state] == QUtilities.ACTION_EAST) {
+        		goEast(30);
+        	} else if (policy[state] == QUtilities.ACTION_WEST) {
+        		goWest(30);
+        	} else if (policy[state] == QUtilities.ACTION_NORTHWEST) {
+        		goNorthwest(30);
+        	} else if (policy[state] == QUtilities.ACTION_NORTHEAST) {
+        		goNortheast(30);
+        	} else if (policy[state] == QUtilities.ACTION_SOUTHWEST) {
+        		goSouthwest(30);
+        	} else if (policy[state] == QUtilities.ACTION_SOUTHEAST) {
+        		goSoutheast(30);
         	} else if (policy[state] == -1) {
             	double r = Math.random();
             	if (r < 0.125) {
@@ -81,18 +82,20 @@ public class QLiveBotNoisyFocus extends Robot {
      * long as we keep our gun heading the same as our body heading. http://old.nabble.com/Using-Random-Statements-td4010734.html
      */
     public void onScannedRobot(ScannedRobotEvent e) {
-    	last_view = 0;
-    	double enemyBearing = getHeading() + e.getBearing(); 
-    	double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
-    	double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
-    	double time_to_target = e.getDistance() / 2.0;
-    	double est_update_time = 3.0;
-    	double x = enemyX + e.getVelocity() * (est_update_time + time_to_target) * Math.sin(Math.toRadians(e.getHeading()));
-        double y = enemyY + e.getVelocity() * (est_update_time + time_to_target) * Math.cos(Math.toRadians(e.getHeading()));
-    	System.out.print("Found enemy at: (" + enemyX + "," + enemyY + ")\n" );
-    	goal_state = QUtilitiesNoise.XYtoState(enemyX, enemyY);
-    	updatePolicy();
-//        fire(1);
+    	if (e.getName().equals(goal_name)){
+    		last_view = 0;
+    		double enemyBearing = getHeading() + e.getBearing(); 
+    		double enemyX = getX() + e.getDistance() * Math.sin(Math.toRadians(enemyBearing)); 
+    		double enemyY = getY() + e.getDistance() * Math.cos(Math.toRadians(enemyBearing));
+    		double time_to_target = e.getDistance() / 2.0;
+    		double est_update_time = 3.0;
+    		double x = enemyX + e.getVelocity() * (est_update_time + time_to_target) * Math.sin(Math.toRadians(e.getHeading()));
+    		double y = enemyY + e.getVelocity() * (est_update_time + time_to_target) * Math.cos(Math.toRadians(e.getHeading()));
+    		System.out.print("Found enemy at: (" + enemyX + "," + enemyY + ")\n" );
+    		goal_state = QUtilities.XYtoState(enemyX, enemyY);
+    		updatePolicy();
+    		//fire(1);
+    	}
 	}
     
     public void updatePolicy() {
@@ -101,7 +104,7 @@ public class QLiveBotNoisyFocus extends Robot {
     		System.out.print("Updating the policy\n");
     		Thread policy_update = new Thread() {
     			public void run() {
-    					policy = QUtilitiesNoise.QtoPolicy(QUtilitiesNoise.generateQTable(goal_state, QUtilitiesNoise.XYtoState(getX(), getY())));
+    					policy = QUtilities.QtoPolicy(QUtilities.generateQTable(goal_state, QUtilities.XYtoState(getX(), getY())));
     					doneUpdating();
 			    	}
 				};
@@ -126,7 +129,7 @@ public class QLiveBotNoisyFocus extends Robot {
     	// Set the paint color to red
     	g.setColor(java.awt.Color.WHITE);
     	// Paint a filled rectangle at (50,50) at size 100x150 pixels
-    	int state = QUtilitiesNoise.XYtoState(getX(), getY());
+    	int state = QUtilities.XYtoState(getX(), getY());
     	String state_str = Integer.toString(state);
     	String xpos_str = Double.toString(getX());
     	String ypos_str = Double.toString(getY());

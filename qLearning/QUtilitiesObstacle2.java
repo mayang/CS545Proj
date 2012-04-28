@@ -8,11 +8,11 @@ import java.util.Map;
 import java.util.Set;
 
 public class QUtilitiesObstacle2 {
-	public static final int ROW_LENGTH = 20;
+	public static final int ROW_LENGTH = 30;
 	public static final double TILE_SIZE = 600/ROW_LENGTH;
 	public static final int NUM_STATES = ROW_LENGTH * ROW_LENGTH;
 	public static final int NUM_ACTIONS = 8;
-	public static final int NUM_EPISODES = 100000;
+	public static final int NUM_EPISODES = 50000;
 	public static final int GOAL_STATE = 2;
 	public static  int[] OBSTACLES = {};
 //	public static Set<Integer> OBSTACLE_STATES = new HashSet<Integer>(Arrays.asList(95, 190, 315));
@@ -48,8 +48,10 @@ public class QUtilitiesObstacle2 {
 //	}
 	
 	public static double[][] generateQTable(int goal, int current) {
+//		OBSTACLE_STATES.add(225);
+//		OBSTACLE_STATES.add(607);
 		System.out.println("obstacles");
-		Iterator it = OBSTACLE_STATES.iterator();
+		Iterator<Integer> it = OBSTACLE_STATES.iterator();
 		while(it.hasNext()) {
 			System.out.println(it.next());
 		}
@@ -80,13 +82,13 @@ public class QUtilitiesObstacle2 {
 					T = T/2;
 				}
 				sNext = transitionResult(s, a);
-//				rNext = transitionReward(s, a, sNext);
-				rNext = heuristicTransitionReward(s, sNext, goal);
+				rNext = transitionReward(s, sNext, goal);
+//				rNext = heuristicTransitionReward(s, sNext, goal);
 				
 				updateQ(Q, s, a, r, sNext);
 				s = sNext;
 				r = rNext;
-//				a = epsilonPickAction(s, Q, QUtilities.epsilon);
+//				a = epsilonPickAction(s, Q, epsilon);
 				a = noisyBoltzmannPickAction(s, Q, T);
 			}
 		}
@@ -140,6 +142,18 @@ public class QUtilitiesObstacle2 {
 			}
 		}
 		return maxQ;
+	}
+	
+	public static double transitionReward(int state, int sNext, int goal) {
+		// If it hits a wall -100, reaches goal +100, else -1
+		if(state == goal) {
+			// This assumes the current transition model where ending up in the same state means you hit a wall. As I extend that out, we'll need to adapt this.
+			return 100;
+		} else if (state == sNext) {
+			return -100;
+		} else {
+			return -1;
+		}
 	}
 	
 	public static double heuristicTransitionReward(int state, int sNext, int goal) {
