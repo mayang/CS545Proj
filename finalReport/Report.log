@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.20)  27 APR 2012 20:59
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.20)  27 APR 2012 21:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -978,9 +978,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 658--660
  []
 
 
-Package lastpage Warning: Rerun to get the references right on input line 666.
-
-
 AED: lastpage setting LastPage
 [30] (./Report.aux)
 
@@ -990,7 +987,7 @@ LaTeX Warning: There were multiply-defined labels.
 Here is how much of TeX's memory you used:
  3969 strings out of 493625
  55690 string characters out of 3143269
- 138796 words of memory out of 3000000
+ 138802 words of memory out of 3000000
  7176 multiletter control sequences out of 15000+200000
  9548 words of font info for 35 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
