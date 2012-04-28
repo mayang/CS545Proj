@@ -27,21 +27,21 @@ public class MDPEnemyBotRandom extends Robot {
         while (true) {
         	double r = Math.random();
         	if (r < 0.125) {
-        		goNorth(10);
+        		goNorth(70);
         	} else if (r >= 0.125 && r < 0.25) {
-        		goSouth(10);
+        		goSouth(70);
         	} else if (r >= 0.25 && r < 0.375) {
-        		goEast(10);
+        		goEast(70);
         	} else if (r >= 0.375 && r < 0.5) {
-        		goWest(10);
+        		goWest(70);
         	} else if (r >= 0.5 && r < 0.625) {
-        		goNorthwest(10);
+        		goNorthwest(70);
         	} else if (r >= 0.625 && r < 0.750) {
-        		goSouthwest(10);
+        		goSouthwest(70);
         	} else if (r >=0.75 && r < 0.875) {
-        		goSoutheast(10);
+        		goSoutheast(70);
         	} else if (r >= 0.875 && r < 1.0) {
-        		goNortheast(10);
+        		goNortheast(70);
         	}
         }
 }
