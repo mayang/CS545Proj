@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.2.2)  27 APR 2012 15:12
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.2.2)  27 APR 2012 17:11
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -890,37 +890,37 @@ Underfull \hbox (badness 10000) in paragraph at lines 547--613
 [27
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 615--627
+Underfull \hbox (badness 10000) in paragraph at lines 615--640
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--627
+Underfull \hbox (badness 10000) in paragraph at lines 615--640
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--627
+Underfull \hbox (badness 10000) in paragraph at lines 615--640
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--627
+Underfull \hbox (badness 10000) in paragraph at lines 615--640
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--627
+Underfull \hbox (badness 10000) in paragraph at lines 615--640
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--627
+Underfull \hbox (badness 10000) in paragraph at lines 615--640
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 615--627
+Underfull \hbox (badness 10000) in paragraph at lines 615--640
 
  []
 
@@ -954,7 +954,7 @@ ive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive
 2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/20
 11/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/201
 1/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Report.pdf (29 pages, 659179 bytes).
+Output written on Report.pdf (29 pages, 661262 bytes).
 PDF statistics:
  170 PDF objects out of 1000 (max. 8388607)
  110 compressed objects within 2 object streams
