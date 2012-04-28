@@ -1,9 +1,22 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  27 APR 2012 20:38
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.20)  27 APR 2012 20:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**\input Report.tex
-(./Report.tex (./aiaa-tc.cls
+**Report.tex
+(./Report.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman-x-2011-07-01, ngerman-x-2011-07-01, afrikaans, ancientgreek, ibycus, arabi
+c, armenian, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danis
+h, dutch, ukenglish, usenglishmax, esperanto, estonian, ethiopic, farsi, finnis
+h, french, galician, german, ngerman, swissgerman, monogreek, greek, hungarian,
+ icelandic, assamese, bengali, gujarati, hindi, kannada, malayalam, marathi, or
+iya, panjabi, tamil, telugu, indonesian, interlingua, irish, italian, kurmanji,
+ lao, latin, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk, pol
+ish, portuguese, romanian, russian, sanskrit, serbian, serbianc, slovak, sloven
+ian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian, welsh, loaded
+.
+(./aiaa-tc.cls
 Document Class: aiaa-tc 2004/04/03 v3.5 AIAA technical conference paper
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
@@ -93,7 +106,7 @@ Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
 Package: overcite 1999/04/23  v 3.8
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/lastpage/lastpage.sty
-Package: lastpage 2011/02/01 v1.2g Refers to last page's name (HMM; JPG)
+Package: lastpage 2011/09/01 v1.2k Refers to last page's name (HMM; JPG)
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 \fancy@headwidth=\skip45
@@ -110,7 +123,7 @@ Package: lastpage 2011/02/01 v1.2g Refers to last page's name (HMM; JPG)
 \c@aiaa@cfootnote=\count92
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/tools/varioref.sty
-Package: varioref 2009/09/13 v1.4w package for extended references (FMi)
+Package: varioref 2011/10/02 v1.4z package for extended references (FMi)
 \c@vrcnt=\count93
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/wrapfig/wrapfig.sty
@@ -383,12 +396,12 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package lastpage Info: Please have a look at the pagesLTS package at
+Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             http://www.ctan.org/tex-archive/ 
-(lastpage)             macros/latex/contrib/pagesLTS/ 
+(lastpage)             macros/latex/contrib/pageslts/ 
 (lastpage)             or
 (lastpage)             http://www.ctan.org/tex-archive/ 
-(lastpage)             install/macros/latex/contrib/pagesLTS.tds.zip
+(lastpage)             install/macros/latex/contrib/pageslts.tds.zip
 (lastpage)             ! on input line 28.
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/ifthen.sty
@@ -964,20 +977,24 @@ Underfull \hbox (badness 10000) in paragraph at lines 658--660
 
  []
 
-AED: lastpage setting LastPage 
+
+Package lastpage Warning: Rerun to get the references right on input line 666.
+
+
+AED: lastpage setting LastPage
 [30] (./Report.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 3959 strings out of 493633
- 55532 string characters out of 3143378
- 138261 words of memory out of 3000000
- 7158 multiletter control sequences out of 15000+200000
+ 3969 strings out of 493625
+ 55690 string characters out of 3143269
+ 138796 words of memory out of 3000000
+ 7176 multiletter control sequences out of 15000+200000
  9548 words of font info for 35 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 38i,10n,45p,2484b,311s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,10n,45p,2477b,311s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
@@ -992,7 +1009,7 @@ ve/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texliv
 e/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/
 2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2
 011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Report.pdf (30 pages, 651335 bytes).
+Output written on Report.pdf (30 pages, 651333 bytes).
 PDF statistics:
  169 PDF objects out of 1000 (max. 8388607)
  109 compressed objects within 2 object streams
